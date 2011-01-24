@@ -1,0 +1,19 @@
+<apex:page >
+<p>This page contains samples of using the facebook toolkit.</p>
+
+<br/>Profile pic tag: (set to your facebook id and the application id of your authorized app<br/>
+<c:FacebookProfilePicture fbid="717838202" clientid="136520473033312" width="60" height="60" />
+ 
+<br/><br/><hr/><br/>
+(Note: the following tags are intended to  be used on a sites page in order to get the correct share url. To view them correctly, expose this page as a sites page)
+<br/>Facebook like tag:<br/>
+<c:FacebookLike />
+
+<br/>Facebook recommendations tag:<br/>
+<c:FacebookRecommendations />
+
+<br/>Facebook Activities tag:<br/>
+<c:FacebookActivity />
+
+
+</apex:page>

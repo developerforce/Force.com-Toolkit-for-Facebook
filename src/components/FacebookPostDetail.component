@@ -1,0 +1,50 @@
+<apex:component >
+	<apex:attribute name="post" type="FacebookPost" required="true"  description="Post Object"/>
+	
+	<apex:pageBlock title="Post: {!post.id}">
+		<apex:pageBlockSection columns="2" title="From">
+			<apex:outputLabel >From Id</apex:outputLabel><apex:outputText value="{!post.fromId}"/>
+			<apex:outputLabel >From Name</apex:outputLabel><apex:outputText value="{!post.fromName}"/>
+			<apex:outputLabel >From Category</apex:outputLabel><apex:outputText value="{!post.fromCategory}"/>
+		</apex:pageBlockSection>
+
+		<apex:pageBlockSection columns="1" title="To">
+			<apex:outputPanel rendered="{!post.hasTo}">
+				<apex:pageBlockTable value="{!post.to}" var="to">
+					<apex:column value="{!to.id}" headerValue="Id"/>
+					<apex:column value="{!to.name}" headerValue="Name"/>
+				</apex:pageBlockTable>
+			</apex:outputPanel>
+		</apex:pageBlockSection>
+
+		<apex:pageBlockSection columns="2" title="Post"> 	
+			<apex:outputLabel >Name</apex:outputLabel><apex:outputText value="{!post.name}"/>
+			<apex:outputLabel >Description</apex:outputLabel><apex:outputText value="{!post.description}"/>
+			<apex:outputLabel >Message</apex:outputLabel><apex:outputText value="{!post.message}"/>
+			<apex:outputLabel >Caption</apex:outputLabel><apex:outputText value="{!post.caption}"/>
+			<apex:outputLabel >Picture</apex:outputLabel><apex:outputText value="{!post.picture}"/>
+			<apex:outputLabel >Icon</apex:outputLabel><apex:outputText value="{!post.icon}"/>
+			<apex:outputLabel >Link</apex:outputLabel><apex:outputText value="{!post.link}"/>
+			<apex:outputLabel >Source</apex:outputLabel><apex:outputText value="{!post.source}"/>
+		</apex:pageBlockSection>
+
+		<apex:pageBlockSection columns="2" title="Other Info">
+			<apex:outputLabel >Likes</apex:outputLabel><apex:outputText value="{!post.likes}"/>
+			<apex:outputLabel >Item Type</apex:outputLabel><apex:outputText value="{!post.itemType}"/>
+			<apex:outputLabel >Created Time</apex:outputLabel><apex:outputText value="{!post.created_time}"/>
+			<apex:outputLabel >Updated Time</apex:outputLabel><apex:outputText value="{!post.updated_time}"/>
+		</apex:pageBlockSection>     
+
+		<apex:pageBlockSection columns="1" title="Comments">  
+			<apex:outputPanel rendered="{!post.hasComments}">
+				<apex:pageBlockTable value="{!post.comments}" var="comment">
+					<apex:column value="{!comment.fromId}" headerValue="Id"/>
+					<apex:column value="{!comment.fromName}" headerValue="Name"/>
+					<apex:column value="{!comment.message}" headerValue="Message"/>
+					<apex:column value="{!comment.created_time}" headerValue="Created Time"/>
+				</apex:pageBlockTable>
+			</apex:outputPanel>
+		</apex:pageBlockSection>
+		
+	</apex:pageBlock>
+</apex:component>

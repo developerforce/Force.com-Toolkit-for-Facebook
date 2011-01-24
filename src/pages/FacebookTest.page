@@ -1,0 +1,26 @@
+<apex:page controller="FacebookTestPageController">
+	<!-- Begin Default Content REMOVE THIS 
+	<apex:form >
+		<apex:pageBlock title="My Content" mode="edit">
+		            <apex:pageBlockButtons >
+		                <apex:commandButton action="{!doTest}" value="Do Test" rerender="resultspanel"/>
+		            </apex:pageBlockButtons>
+		            <apex:pageBlockSection title="Select Test Criteria" columns="2">
+		                <apex:outputLabel value="Username" for="uname"/><apex:inputText id="uname" value="{!username}"/>
+		                <apex:outputLabel value="ClientID" for="clientid"/><apex:inputText id="clientid" value="{!clientID}"/>
+		                <apex:outputLabel value="Select Type" for="uname"/>
+		                <apex:selectList value="{!reqType}" multiselect="false" id="type" size="1">
+		            		<apex:selectOptions value="{!reqItems}"/>
+		       			 </apex:selectList>
+		            </apex:pageBlockSection>
+		            <apex:pageBlockSection title="JSON Response" columns="1">
+		            	<apex:outputPanel id="resultspanel">
+		            		<apex:inputTextarea id="response" value="{!response}" rows="50" cols="150"/>
+		            		<br/><apex:outputText value="Next Page: {!nextPage}"/>
+		            		<br/><apex:outputText value="Previous Page: {!prevPage}"/>
+		        		</apex:outputPanel>
+		            </apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>-->
+	 
+</apex:page>

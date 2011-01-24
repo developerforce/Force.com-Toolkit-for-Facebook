@@ -1,0 +1,8 @@
+<apex:component controller="FacebookStandardController" selfClosing="true" >
+<apex:attribute name="fbid" type="String" required="true"  description="Facebook User ID" assignTo="{!fbID}"  />
+<apex:attribute name="clientid" type="String" required="true"  description="Facebook Application ID" assignTo="{!clientID}"  />
+<apex:attribute name="width" type="String" required="false" default="60" description="Width of Image" />
+<apex:attribute name="height" type="String" required="false" default="60" description="Height of Image" />
+ <apex:image value="{!profileImageUrl}" width="{!width}" height="{!height}" /> 
+
+</apex:component>

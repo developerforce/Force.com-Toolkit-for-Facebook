@@ -1,0 +1,21 @@
+<apex:page controller="FacebookStandardController" action="{!login}">
+
+<!-- 
+
+	Application ID	136520473033312	
+	API Key	5fd75d16f4372217b3740bdecef6c4e9	
+	Secret	66ce8c3e932f25dba7d5fba8e48bbba2
+
+  1. step 1: call url https://graph.facebook.com/oauth/authorize?client_id=136520473033312&redirect_uri=http://www.example.com/oauth_redirect);
+  2. step 2: expect a response to the redirect uri with a code.
+  3. step 3: post back with code and secret
+  4. fb will respond one more time with the access token as a string
+
+
+ -->
+<apex:form >
+Authorization is complete for &nbsp;<apex:outputLink value="/{!recordID}" id="theLink"> {!appName}</apex:outputLink>. 
+Time to have some fun with Facebook!
+
+</apex:form>
+</apex:page>

@@ -1,0 +1,9 @@
+<apex:component controller="FacebookSocialController">
+<apex:attribute name="style" description="Style for component" type="String" required="false" 
+				default="border:none; width:450px; height:80px" />
+
+  <iframe src="{!likeUrl}?href={!siteUrl}"
+        scrolling="no" frameborder="0"
+        style=""></iframe>
+        
+</apex:component>

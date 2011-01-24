@@ -1,0 +1,14 @@
+<apex:component >
+	<apex:attribute name="likes" type="FacebookPage[]" required="true"  description="Page Object List"/>
+	<apex:attribute name="title" type="String" required="true"  description="Page Block title"/>
+	
+	<apex:pageBlock title="{!title}">
+		<apex:pageBlockTable value="{!likes}" var="page">
+	       	<apex:column value="{!page.picture}" headerValue="Picture"/>
+	       	<apex:column value="{!page.id}" headerValue="Id"/> 
+	        <apex:column value="{!page.name}" headerValue="Name"/>
+	        <apex:column value="{!page.category}" headerValue="Category"/>
+	        <apex:column value="{!page.fan_count}" headerValue="Fan Count"/>
+		</apex:pageBlockTable>
+	</apex:pageBlock>
+</apex:component>

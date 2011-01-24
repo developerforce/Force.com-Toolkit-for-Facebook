@@ -1,0 +1,9 @@
+<apex:component controller="FacebookSocialController" >
+<apex:attribute name="width" description="This is the width for the component." type="String" required="false" default="300" />
+<apex:attribute name="height" description="This is the height for the component." type="String" required="false" default="300" />
+<apex:attribute name="header" description="Show header" type="String" required="false" default="true" />
+<apex:attribute name="style" description="Style for component" type="String" required="false" default="border:none; overflow:hidden; width:300px; height:300px;" />
+
+<iframe src="{!recommendationsUrl}?site={!siteUrl}&amp;width={!width}&amp;height={!height}&amp;header={!header}&amp;colorscheme=light&amp;font&amp;border_color" scrolling="no" frameborder="0" style="{!style}" allowTransparency="true"></iframe>
+
+</apex:component>
