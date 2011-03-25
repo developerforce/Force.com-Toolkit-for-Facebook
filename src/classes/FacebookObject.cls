@@ -131,6 +131,38 @@ public abstract class FacebookObject {
 		this.processResult();
 	}
 	
+  /**
+   * This methods makes a POST to write to graph
+   * Jeff Douglas (jeff@appirio.com)
+   */
+  public void doAPIPost(String method, Map<String, String> params) {
+  	
+    Http h = new Http();
+    HttpRequest req = new HttpRequest();
+    req.setMethod('POST');
+    if (params != null)
+      req.setBody(this.postBodyStringFromMap(params)); 
+   
+    if(testmode == true) {
+    	teststubresponse = 'Status=OK, StatusCode=200';
+    } else {  
+   
+		  if(this.isAuthenticated()){
+
+        req.setEndpoint('https://graph.facebook.com/'+method+'?access_token='+this.accesstoken);
+		    HttpResponse res = h.send(req);
+		    
+				if(res.getStatusCode() != 200) {
+				  System.debug('Error POSTing to Graph: '+res);
+				  System.debug('Request: '+req);
+				  System.debug('Body: ' + req.getBody());
+				}
+		    
+		  }
+	  
+    }
+    
+  }	
 	
 	/**
 	 * This methods constructs the param string from a param Map.
@@ -150,6 +182,21 @@ public abstract class FacebookObject {
 		}
 		return returned;
 	} 
+	
+  /**
+   * This methods constructs the param string for a post from a param Map.
+   * Jeff Douglas (jeff@appirio.com)
+   */
+  public String postBodyStringFromMap(Map<String,String> params){
+    String returned = '';
+    for(String key : params.keySet()) {
+      if(returned != '')
+        returned += '&';
+      returned += key+'='+EncodingUtil.urlEncode(params.get(key), 'UTF-8');  
+    }    
+      
+    return returned;
+  }
 	
 	/**
 	 * This method will check if the api returned any error , and if so log it in the system debug.

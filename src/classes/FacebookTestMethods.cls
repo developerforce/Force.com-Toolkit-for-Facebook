@@ -183,4 +183,43 @@ public class FacebookTestMethods {
 		Test.stopTest();
 	}
 	
+  /**
+   * Test methods for publishing
+   * Jeff Douglas (jeff@appirio.com)
+   */	
+	public static testmethod void TestPublish() {
+	 
+    FacebookPublish fp = new FacebookPublish('me');	
+	 
+		Map<String,String> params = new Map<String,String>();
+		params.put('test','test');
+		
+		Test.startTest();
+		fp.testmode = true;
+		
+		fp.postToWall(params);
+		System.assertEquals(fp.teststubresponse,'Status=OK, StatusCode=200');
+		
+		fp.postEvent(params);
+		System.assertEquals(fp.teststubresponse,'Status=OK, StatusCode=200');
+		
+    fp.postCheckin(params);
+    System.assertEquals(fp.teststubresponse,'Status=OK, StatusCode=200');
+    
+    fp.postLink(params);
+    System.assertEquals(fp.teststubresponse,'Status=OK, StatusCode=200');
+    
+    fp.postNote(params);
+    System.assertEquals(fp.teststubresponse,'Status=OK, StatusCode=200');
+    
+    fp.postLike('someid');
+    System.assertEquals(fp.teststubresponse,'Status=OK, StatusCode=200');
+    
+    fp.postComment('someid', params);
+    System.assertEquals(fp.teststubresponse,'Status=OK, StatusCode=200');
+		
+		Test.stopTest();
+		
+	}	
+	
 }
