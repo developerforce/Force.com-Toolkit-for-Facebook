@@ -8,8 +8,8 @@ public class FacebookPhoto extends FacebookObject{
 	public String name { get;set; }
 	public String picture { get;set; }
 	public String source { get;set; }
-	public Integer height { get;set; }
-	public Integer width { get;set; }
+	public String height { get;set; }
+	public String width { get;set; }
 	public String link { get;set; }
 	public String icon { get;set; }
 	public String created_time {get;set;}
@@ -50,8 +50,8 @@ public class FacebookPhoto extends FacebookObject{
 		this.source = this.result.data.getString('source');
 		this.created_time = this.result.data.getString('created_time');
 		this.updated_time = this.result.data.getString('updated_time');
-		this.height = this.result.data.getValue('height').num;
-		this.width = this.result.data.getValue('width').num;
+		this.height = this.result.data.getString('height');
+		this.width = this.result.data.getString('width');
 		
 		JSONObject.value fromv = this.result.data.getValue('from');
 		if(fromv != null) {	

@@ -4,7 +4,11 @@
  * @author Gastón Esmela - gesmela@salesforce.com
  */
 
-public with sharing class FacebookTestUserController {
+public with sharing class FacebookTestUserController extends FacebookLoginController {
+	public override String getAppId() {
+        return '261178973894638';
+    }
+
 	public string uid {get;set;}
 	public string action {get;set;}
 	
@@ -13,7 +17,6 @@ public with sharing class FacebookTestUserController {
 	public void getUserData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		user.getData();
 		
 		this.action = 'getData';
@@ -22,7 +25,6 @@ public with sharing class FacebookTestUserController {
 	public void getFriendsData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		
 		Map<String,String> params = new Map<string,string>();
 		params.put('fields','id,name,hometown,gender,link');
@@ -35,7 +37,6 @@ public with sharing class FacebookTestUserController {
 	public void getHomeData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		user.getHomeData();
 		
 		this.action = 'getHome';
@@ -44,7 +45,6 @@ public with sharing class FacebookTestUserController {
 	public void getPhotoData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		user.getPhotoData();
 		
 		this.action = 'getPhotos';
@@ -53,7 +53,6 @@ public with sharing class FacebookTestUserController {
 	public void getAlbumsData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		user.getAlbumData();
 		
 		this.action = 'getAlbums';
@@ -62,7 +61,6 @@ public with sharing class FacebookTestUserController {
 	public void getFeedData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		user.getFeedData();
 		
 		this.action = 'getFeed';
@@ -71,7 +69,6 @@ public with sharing class FacebookTestUserController {
 	public void getPostsData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		user.getPostData();
 		
 		this.action = 'getPosts';
@@ -80,7 +77,6 @@ public with sharing class FacebookTestUserController {
 	public void getTaggedData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		user.getTaggedData();
 		
 		this.action = 'getTagged';
@@ -89,7 +85,6 @@ public with sharing class FacebookTestUserController {
 	public void getLikesData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		user.getLikeData();
 		
 		this.action = 'getLikes';
@@ -98,7 +93,6 @@ public with sharing class FacebookTestUserController {
 	public void getActivitiesData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		user.getActivityData();
 		
 		this.action = 'getActivities';
@@ -107,7 +101,6 @@ public with sharing class FacebookTestUserController {
 	public void getMoviesData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		user.getMovieData();
 		
 		this.action = 'getMovies';
@@ -116,7 +109,6 @@ public with sharing class FacebookTestUserController {
 	public void getBooksData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		user.getBookData();
 		
 		this.action = 'getBooks';
@@ -125,7 +117,6 @@ public with sharing class FacebookTestUserController {
 	public void getInterestsData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		user.getInterestData();
 		
 		this.action = 'getInterests';
@@ -134,7 +125,6 @@ public with sharing class FacebookTestUserController {
 	public void getTelevisionData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		user.getTelevisionData();
 		
 		this.action = 'getTelevision';
@@ -143,7 +133,6 @@ public with sharing class FacebookTestUserController {
 	public void getMusicData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		user.getMusicData();
 		
 		this.action = 'getMusic';
@@ -152,7 +141,6 @@ public with sharing class FacebookTestUserController {
 	public void getGroupsData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		user.getGroupData();
 		
 		this.action = 'getGroups';
@@ -161,7 +149,6 @@ public with sharing class FacebookTestUserController {
 	public void getStatusesData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		user.getStatusData();
 		
 		this.action = 'getStatuses';
@@ -170,7 +157,6 @@ public with sharing class FacebookTestUserController {
 	public void getEventsData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		user.getEventData();
 		
 		this.action = 'getEvents';
@@ -179,7 +165,6 @@ public with sharing class FacebookTestUserController {
 	public void getNotesData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		user.getNoteData();
 		
 		this.action = 'getNotes';
@@ -188,7 +173,6 @@ public with sharing class FacebookTestUserController {
 	public void getLinksData(){
 		
 		this.user = new FacebookUser(this.uid);
-		user.clientId = '136520473033312';
 		user.getLinkData();
 		
 		this.action = 'getLinks';

@@ -1,12 +1,9 @@
-<apex:page controller="FacebookTestUserController">
-	
-	
+<apex:page controller="FacebookTestUserController" action="{!login}">
 	<!-- A simple Form that calls methods in the Controller, the USER ID is used to call the connections of the user object in the graph api.  -->
-	
 	<apex:pageBlock title="Facebook Toolkit - User Object Tests">
 		<apex:form >
 			<label>User Id to query&nbsp;</label>
-			<apex:inputText value="{!uid}"/><br/>
+			<apex:inputText value="{!uid}" required="true"/><br/>
 			
 			<br/><br/><h1>These are the connections of the User Object , listed per returned Object type.</h1><br/><br/>
 			

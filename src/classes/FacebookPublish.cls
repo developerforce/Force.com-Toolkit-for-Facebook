@@ -17,7 +17,7 @@ public class FacebookPublish extends FacebookObject {
   * Applicable arguments: message, picture, link, name, caption, description and source.
   */
   public void postToWall(Map<String,String> params) {  
-    this.doAPIPost(this.id+'/feed', params);
+    doAPIPost(this.id+'/feed', params);
   }
   
   /**
@@ -25,7 +25,7 @@ public class FacebookPublish extends FacebookObject {
   * Method is 'OBJECT_ID/comments'. Applicable arguments: message.
   */
   public void postComment(String objectId, Map<String,String> params) {
-  	this.doAPIPost(objectId+'/comments', params);
+    doAPIPost(objectId+'/comments', params);
   }
   
   /**
@@ -41,7 +41,7 @@ public class FacebookPublish extends FacebookObject {
   * Method is 'PROFILE_ID/notes'. Applicable arguments: message, subject.
   */
   public void postNote(Map<String,String> params) {
-    this.doAPIPost(this.id+'/notes',params);
+    doAPIPost(this.id+'/notes',params);
   }
   
   /**
@@ -50,7 +50,7 @@ public class FacebookPublish extends FacebookObject {
   * arguments: link, message, picture, name, caption, description.
   */
   public void postLink(Map<String,String> params) {
-    this.doAPIPost(this.id+'/links',params);
+    doAPIPost(this.id+'/links',params);
   }
   
   /**
@@ -60,7 +60,7 @@ public class FacebookPublish extends FacebookObject {
   * !! Requires the publish_checkins permission.
   */
   public void postCheckin(Map<String,String> params) {
-    this.doAPIPost(this.id+'/checkins',params);
+    doAPIPost(this.id+'/checkins',params);
   }
   
   /**
@@ -68,7 +68,7 @@ public class FacebookPublish extends FacebookObject {
   * Applicable arguments: name, start_time, end_time.
   */
   public void postEvent(Map<String,String> params) {
-    this.doAPIPost(this.id+'/events',params);
+    doAPIPost(this.id+'/events',params);
   }
 
 }

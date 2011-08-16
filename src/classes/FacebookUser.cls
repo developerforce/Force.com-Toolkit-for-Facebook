@@ -57,14 +57,14 @@ public class FacebookUser extends FacebookObject {
 	public List<FacebookStatusMessage> statuses {get;set;}
 	
 	public class educationInfo{
-		public long schoolId {get;set;}
+		public String schoolId {get;set;}
 		public String schoolName {get;set;}
 		
 		public List<concentrationInfo> concentrations {get;set;}
 		
 		public educationInfo (JSONObject data){
 			if(data.getValue('school') != null){
-				this.schoolId = data.getValue('school').obj.getValue('id').dnum.longValue();
+				this.schoolId = data.getValue('school').obj.getString('id');
 				this.schoolName = data.getValue('school').obj.getString('name');
 			}
 			
@@ -73,7 +73,7 @@ public class FacebookUser extends FacebookObject {
 				this.concentrations = new List<concentrationInfo>();
 				for(Integer i = 0; i < concentrationV.values.size(); i++){
 					concentrationInfo c = new concentrationInfo();
-					c.id = concentrationV.values[i].obj.getValue('id').dnum.longValue();
+					c.id = concentrationV.values[i].obj.getString('id');
 					c.name = concentrationV.values[i].obj.getString('name');
 					
 					this.concentrations.add(c);
@@ -83,7 +83,7 @@ public class FacebookUser extends FacebookObject {
 	}
 	
 	public class concentrationInfo{
-		public long id {get;set;}
+		public String id {get;set;}
 		public String name {get;set;}
 	}
 	
@@ -133,7 +133,6 @@ public class FacebookUser extends FacebookObject {
 		return this.result.data.getValue('data').values[0].obj.getString('url');
 		
 	}
-	
 	
 	/**
 	 * Gets a user profile info.
@@ -370,6 +369,8 @@ public class FacebookUser extends FacebookObject {
 	 * JSON Parsing.
 	 */
 	public void parseUser(){
+		// We want to overwrite 'me' with the actual user id...
+		this.id = this.result.data.getString('id');
 		this.name = this.result.data.getString('name');
 		this.first_name = this.result.data.getString('first_name');
 		this.last_name = this.result.data.getString('last_name');
@@ -395,12 +396,12 @@ public class FacebookUser extends FacebookObject {
 		}
 		
 		if(this.result.data.getValue('hometown') != null){
-			this.hometown_id = ''+this.result.data.getValue('hometown').obj.getValue('id').dnum.longValue();
+			this.hometown_id = ''+this.result.data.getValue('hometown').obj.getString('id');
 			this.hometown_name = this.result.data.getValue('hometown').obj.getString('name');
 		}
 		
 		if(this.result.data.getValue('location') != null){
-			this.location_id = ''+this.result.data.getValue('location').obj.getValue('id').dnum.longValue();
+			this.location_id = ''+this.result.data.getValue('location').obj.getString('id');
 			this.location_name = this.result.data.getValue('location').obj.getString('name');
 		}
 		

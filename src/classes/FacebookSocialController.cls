@@ -4,9 +4,9 @@
 */
 public class FacebookSocialController {
 
-	public static String FB_ACTIVITY_URL = 'http://www.facebook.com/plugins/activity.php';
-	public static String FB_LIKE_URL = 'http://www.facebook.com/widgets/like.php';
-	public static String FB_RECOMMENDATIONS_URL = 'http://www.facebook.com/plugins/recommendations.php';
+	public static String FB_ACTIVITY_URL = 'https://www.facebook.com/plugins/activity.php';
+	public static String FB_LIKE_URL = 'https://www.facebook.com/widgets/like.php';
+	public static String FB_RECOMMENDATIONS_URL = 'https://www.facebook.com/plugins/recommendations.php';
 	
  	public String getSiteUrl()
     {

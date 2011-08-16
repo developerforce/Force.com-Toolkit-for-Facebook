@@ -33,69 +33,42 @@
         <type>Default</type>
     </actionOverrides>
     <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
     <fields>
-        <fullName>AppKey__c</fullName>
-        <label>App Key</label>
-        <length>50</length>
+        <fullName>clientID__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Also know as the Application ID</inlineHelpText>
+        <label>clientID</label>
+        <length>255</length>
+        <required>true</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
-        <fullName>AppSecret__c</fullName>
-        <label>App Secret</label>
-        <length>50</length>
+        <fullName>clientSecret__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Also known as Application Secret</inlineHelpText>
+        <label>clientSecret</label>
+        <length>255</length>
+        <required>true</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
-        <fullName>FBEmail__c</fullName>
-        <label>Facebook Email</label>
-        <type>Email</type>
-    </fields>
-    <fields>
-        <fullName>FBUserId__c</fullName>
-        <label>FBUserId</label>
-        <length>50</length>
+        <fullName>extendedPermissions__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>When a Facebook user authorizes your application, your application gets access to the user. By default, your application can access all public data in a user&apos;s profile. If you need to access other parts of the profile you must request extended permissions</inlineHelpText>
+        <label>Extended Permissions</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
-    </fields>
-    <fields>
-        <fullName>SessionKey__c</fullName>
-        <label>SessionKey</label>
-        <length>50</length>
-        <type>Text</type>
-    </fields>
-    <fields>
-        <fullName>UserType__c</fullName>
-        <label>UserType</label>
-        <picklist>
-            <picklistValues>
-                <fullName>Standard</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>PowerPartner</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>PowerCustomerSuccess</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>CustomerSuccess</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Guest</fullName>
-                <default>false</default>
-            </picklistValues>
-            <sorted>false</sorted>
-        </picklist>
-        <type>Picklist</type>
-    </fields>
-    <fields>
-        <fullName>User__c</fullName>
-        <label>User</label>
-        <referenceTo>User</referenceTo>
-        <relationshipName>FacebookApp</relationshipName>
-        <type>Lookup</type>
+        <unique>false</unique>
     </fields>
     <label>Facebook App</label>
     <listViews>
@@ -104,10 +77,21 @@
         <label>All</label>
     </listViews>
     <nameField>
-        <label>App Name</label>
+        <label>FacebookApp Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
     </nameField>
     <pluralLabel>Facebook Apps</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>Authorize</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>url</linkType>
+        <masterLabel>Authorize</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>/apex/FacebookLogin?id={!FacebookApp__c.Id}</url>
+    </webLinks>
 </CustomObject>

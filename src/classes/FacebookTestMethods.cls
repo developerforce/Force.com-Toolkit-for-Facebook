@@ -127,15 +127,6 @@ public class FacebookTestMethods {
 		System.assertEquals(a.interests[0].category,'Interest','Incorrect value retrieved from test stub data.');
 	}
 	
-	public static testmethod void TestProfileImage() {
-		FacebookStandardController fsc = new FacebookStandardController();
-		fsc.fbID = '717838202';
-		fsc.clientID = '136520473033312'; 
-		String url = fsc.getProfileImageUrl();
-		
-		System.assert(url.startsWith('http'));
-		
-	}
 	public static testmethod void TestSocialController() {
 		FacebookSocialController fsc = new FacebookSocialController();
 		fsc.getSiteUrl();
@@ -186,40 +177,38 @@ public class FacebookTestMethods {
   /**
    * Test methods for publishing
    * Jeff Douglas (jeff@appirio.com)
-   */	
-	public static testmethod void TestPublish() {
-	 
-    FacebookPublish fp = new FacebookPublish('me');	
-	 
-		Map<String,String> params = new Map<String,String>();
-		params.put('test','test');
-		
-		Test.startTest();
-		fp.testmode = true;
-		
-		fp.postToWall(params);
-		System.assertEquals(fp.teststubresponse,'Status=OK, StatusCode=200');
-		
-		fp.postEvent(params);
-		System.assertEquals(fp.teststubresponse,'Status=OK, StatusCode=200');
-		
-    fp.postCheckin(params);
-    System.assertEquals(fp.teststubresponse,'Status=OK, StatusCode=200');
-    
-    fp.postLink(params);
-    System.assertEquals(fp.teststubresponse,'Status=OK, StatusCode=200');
-    
-    fp.postNote(params);
-    System.assertEquals(fp.teststubresponse,'Status=OK, StatusCode=200');
-    
-    fp.postLike('someid');
-    System.assertEquals(fp.teststubresponse,'Status=OK, StatusCode=200');
-    
-    fp.postComment('someid', params);
-    System.assertEquals(fp.teststubresponse,'Status=OK, StatusCode=200');
-		
-		Test.stopTest();
-		
-	}	
-	
+   */   
+    public static testmethod void TestPublish() {
+     
+        FacebookPublish fp = new FacebookPublish('me'); 
+     
+        Map<String,String> params = new Map<String,String>();
+        params.put('test','test');
+        
+        Test.startTest();
+        FacebookObject.testmode = true;
+        
+        fp.postToWall(params);
+        System.assertEquals(FacebookObject.teststubresponse,'Status=OK, StatusCode=200');
+        
+        fp.postEvent(params);
+        System.assertEquals(FacebookObject.teststubresponse,'Status=OK, StatusCode=200');
+        
+	    fp.postCheckin(params);
+	    System.assertEquals(FacebookObject.teststubresponse,'Status=OK, StatusCode=200');
+	    
+	    fp.postLink(params);
+	    System.assertEquals(FacebookObject.teststubresponse,'Status=OK, StatusCode=200');
+	    
+	    fp.postNote(params);
+	    System.assertEquals(FacebookObject.teststubresponse,'Status=OK, StatusCode=200');
+	    
+	    fp.postLike('someid');
+	    System.assertEquals(FacebookObject.teststubresponse,'Status=OK, StatusCode=200');
+	    
+	    fp.postComment('someid', params);
+	    System.assertEquals(FacebookObject.teststubresponse,'Status=OK, StatusCode=200');
+        
+        Test.stopTest();
+    }   
 }

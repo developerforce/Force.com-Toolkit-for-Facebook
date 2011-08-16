@@ -4,6 +4,7 @@
 
   <iframe src="{!likeUrl}?href={!siteUrl}"
         scrolling="no" frameborder="0"
+        width="300" height="62"
         style=""></iframe>
         
 </apex:component>
