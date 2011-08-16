@@ -1,4 +1,19 @@
-THis is the beta version of the Force.com toolkit for Facebook
+NOTE - THIS IS VERSION 3 OF THE FORCE.COM TOOLKIT FOR FACEBOOK - MUCH HAS 
+CHANGED!!!
+
+In particular, there is a new custom object to associate the Facebook access
+token with a session cookie.
+
+There is currently (8/16/11) no documentation for the changes, but you might
+be able to figure stuff out from the Visualforce pages. I will update docs etc
+post-Dreamforce (sometime in September 2011).
+
+Pat
+https://github.com/metadaddy-sfdc
+http://twitter.com/metadaddy
+-----
+
+This is the beta version of the Force.com toolkit for Facebook
 For usage instructions, please check out the getting started guide.
 
 http://wiki.developerforce.com/index.php/Getting_Started_with_the_new_Facebook_Toolkit

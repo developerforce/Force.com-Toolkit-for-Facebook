@@ -18,7 +18,19 @@
     </types>
     <types>
         <members>*</members>
+        <name>CustomApplication</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>CustomTab</name>
+    </types>
+    <types>
+        <members>*</members>
         <name>StaticResource</name>
     </types>
-    <version>19.0</version>
+    <version>22.0</version>
 </Package>
