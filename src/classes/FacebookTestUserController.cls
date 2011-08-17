@@ -5,10 +5,6 @@
  */
 
 public with sharing class FacebookTestUserController extends FacebookLoginController {
-	public override String getAppId() {
-        return '261178973894638';
-    }
-
 	public string uid {get;set;}
 	public string action {get;set;}
 	

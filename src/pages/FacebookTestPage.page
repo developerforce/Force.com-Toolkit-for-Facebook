@@ -1,0 +1,6 @@
+<apex:page controller="FacebookSampleController" action="{!login}">
+<h1>Salesforce Facebook Test Page</h1>
+<br/>
+<c:FacebookProfilePicture fbid="667905711" width="60" height="60" />
+<c:FacebookProfilePicture fbid="717838202" width="60" height="60" />
+</apex:page>
