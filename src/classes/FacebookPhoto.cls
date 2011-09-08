@@ -26,12 +26,12 @@ public class FacebookPhoto extends FacebookObject{
 	/**
 	 * Constructor
 	 */
-	public FacebookPhoto(String id){	
-		super();
+	public FacebookPhoto(String accessToken, String id){	
+		super(accessToken);
 		this.id = id;
 	}
-	public FacebookPhoto(JSONObject data){	
-		super();
+	public FacebookPhoto(String accessToken, JSONObject data){	
+		super(accessToken);
 		this.result.data = data;
 		this.id = data.getString('id');
 		this.parsePhoto();
@@ -67,7 +67,7 @@ public class FacebookPhoto extends FacebookObject{
 			if(commentsValue.obj.getValue('data') != null){
 				JSONObject.value[] vals = commentsValue.obj.getValue('data').values;
 				for(Integer i = 0; i < vals.size(); i++){
-					this.comments.add(new FacebookComment(vals[i].obj));
+					this.comments.add(new FacebookComment(accessToken, vals[i].obj));
 				}
 			}
 		}

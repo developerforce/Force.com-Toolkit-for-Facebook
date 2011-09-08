@@ -22,12 +22,12 @@ public class FacebookAlbum extends FacebookObject{
 	/**
 	 * Constructor
 	 */
-	public FacebookAlbum(String id){	
-		super();
+	public FacebookAlbum(String accessToken, String id){	
+		super(accessToken);
 		this.id = id;
 	}
-	public FacebookAlbum(JSONObject data){	
-		super();
+	public FacebookAlbum(String accessToken, JSONObject data){	
+		super(accessToken);
 		this.result.data = data;
 		this.id = data.getString('id');
 		this.parseAlbum();
@@ -62,7 +62,7 @@ public class FacebookAlbum extends FacebookObject{
 			if(commentsValue.obj.getValue('data') != null){
 				JSONObject.value[] vals = commentsValue.obj.getValue('data').values;
 				for(Integer i = 0; i < vals.size(); i++){
-					this.comments.add(new FacebookComment(vals[i].obj));
+					this.comments.add(new FacebookComment(accessToken, vals[i].obj));
 				}
 			}
 		}

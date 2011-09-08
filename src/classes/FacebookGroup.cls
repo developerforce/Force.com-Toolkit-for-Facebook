@@ -22,12 +22,12 @@ public class FacebookGroup extends FacebookObject {
 	/**
 	 * Constructor
 	 */
-	public FacebookGroup(String id){	
-		super();
+	public FacebookGroup(String accessToken, String id){	
+		super(accessToken);
 		this.id = id;
 	}
-	public FacebookGroup(JSONObject data){	
-		super();
+	public FacebookGroup(String accessToken, JSONObject data){	
+		super(accessToken);
 		this.result.data = data;
 		this.id = data.getString('id');
 		this.parseGroup();

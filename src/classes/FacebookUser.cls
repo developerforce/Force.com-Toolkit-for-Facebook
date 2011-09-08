@@ -55,7 +55,7 @@ public class FacebookUser extends FacebookObject {
 	public List<FacebookGroup> groups {get;set;}
 	public List<FacebookNote> notes {get;set;}
 	public List<FacebookStatusMessage> statuses {get;set;}
-	
+
 	public class educationInfo{
 		public String schoolId {get;set;}
 		public String schoolName {get;set;}
@@ -113,12 +113,12 @@ public class FacebookUser extends FacebookObject {
 	/**
 	 * Constructor - Sets id to be used in calls for USER Object. 
 	 */
-	public FacebookUser(String id){	
-		super();
+	public FacebookUser(String accessToken, String id){	
+		super(accessToken);
 		this.id = id;
 	}
-	public FacebookUser(JSONObject data){	
-		super();
+	public FacebookUser(String accessToken, JSONObject data){	
+		super(accessToken);
 		this.result.data = data;
 		this.id = data.getString('id');
 		this.parseUser();
@@ -446,7 +446,7 @@ public class FacebookUser extends FacebookObject {
 		
 		JSONObject.value[] vals =  this.result.data.getValue('data').values;
 		for(Integer i = 0; i < vals.size(); i++) {
-			FacebookUser friend = new FacebookUser(vals[i].obj);
+			FacebookUser friend = new FacebookUser(accessToken, vals[i].obj);
 			friends.add(friend);
 		}
 		
@@ -458,7 +458,7 @@ public class FacebookUser extends FacebookObject {
 		
 		JSONObject.value[] vals =  this.result.data.getValue('data').values;
 		for(Integer i = 0; i < vals.size(); i++) {
-			FacebookPage page = new FacebookPage(vals[i].obj);
+			FacebookPage page = new FacebookPage(accessToken, vals[i].obj);
 			pages.add(page);
 		}
 		
@@ -470,7 +470,7 @@ public class FacebookUser extends FacebookObject {
 		
 		JSONObject.value[] vals =  this.result.data.getValue('data').values;
 		for(Integer i = 0; i < vals.size(); i++) {
-			FacebookPost post = new FacebookPost(vals[i].obj);
+			FacebookPost post = new FacebookPost(accessToken, vals[i].obj);
 			posts.add(post);
 		}
 		
@@ -482,7 +482,7 @@ public class FacebookUser extends FacebookObject {
 		
 		JSONObject.value[] vals =  this.result.data.getValue('data').values;
 		for(Integer i = 0; i < vals.size(); i++) {
-			FacebookPhoto photo = new FacebookPhoto(vals[i].obj);
+			FacebookPhoto photo = new FacebookPhoto(accessToken, vals[i].obj);
 			photos.add(photo);
 		}
 		
@@ -494,7 +494,7 @@ public class FacebookUser extends FacebookObject {
 		
 		JSONObject.value[] vals =  this.result.data.getValue('data').values;
 		for(Integer i = 0; i < vals.size(); i++) {
-			FacebookAlbum album = new FacebookAlbum(vals[i].obj);
+			FacebookAlbum album = new FacebookAlbum(accessToken, vals[i].obj);
 			albums.add(album);
 		}
 		
@@ -506,7 +506,7 @@ public class FacebookUser extends FacebookObject {
 		
 		JSONObject.value[] vals =  this.result.data.getValue('data').values;
 		for(Integer i = 0; i < vals.size(); i++) {
-			FacebookVideo vid = new FacebookVideo(vals[i].obj);
+			FacebookVideo vid = new FacebookVideo(accessToken, vals[i].obj);
 			videos.add(vid);
 		}
 		
@@ -518,7 +518,7 @@ public class FacebookUser extends FacebookObject {
 		
 		JSONObject.value[] vals =  this.result.data.getValue('data').values;
 		for(Integer i = 0; i < vals.size(); i++) {
-			FacebookGroup obj = new FacebookGroup(vals[i].obj);
+			FacebookGroup obj = new FacebookGroup(accessToken, vals[i].obj);
 			rlist.add(obj);
 		}
 		
@@ -530,7 +530,7 @@ public class FacebookUser extends FacebookObject {
 		
 		JSONObject.value[] vals =  this.result.data.getValue('data').values;
 		for(Integer i = 0; i < vals.size(); i++) {
-			FacebookEvent obj = new FacebookEvent(vals[i].obj);
+			FacebookEvent obj = new FacebookEvent(accessToken, vals[i].obj);
 			rlist.add(obj);
 		}
 		
@@ -542,7 +542,7 @@ public class FacebookUser extends FacebookObject {
 		
 		JSONObject.value[] vals =  this.result.data.getValue('data').values;
 		for(Integer i = 0; i < vals.size(); i++) {
-			FacebookNote obj = new FacebookNote(vals[i].obj);
+			FacebookNote obj = new FacebookNote(accessToken, vals[i].obj);
 			rlist.add(obj);
 		}
 		
@@ -554,7 +554,7 @@ public class FacebookUser extends FacebookObject {
 		
 		JSONObject.value[] vals =  this.result.data.getValue('data').values;
 		for(Integer i = 0; i < vals.size(); i++) {
-			FacebookLink obj = new FacebookLink(vals[i].obj);
+			FacebookLink obj = new FacebookLink(accessToken, vals[i].obj);
 			rlist.add(obj);
 		}
 		
@@ -566,7 +566,7 @@ public class FacebookUser extends FacebookObject {
 		
 		JSONObject.value[] vals =  this.result.data.getValue('data').values;
 		for(Integer i = 0; i < vals.size(); i++) {
-			FacebookStatusMessage obj = new FacebookStatusMessage(vals[i].obj);
+			FacebookStatusMessage obj = new FacebookStatusMessage(accessToken, vals[i].obj);
 			rlist.add(obj);
 		}
 		

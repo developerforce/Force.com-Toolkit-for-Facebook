@@ -14,12 +14,12 @@ public class FacebookPage extends FacebookObject {
 	/**
 	 * Constructor
 	 */
-	public FacebookPage(String id){	
-		super();
+	public FacebookPage(String accessToken, String id){	
+		super(accessToken);
 		this.id = id;
 	}
-	public FacebookPage(JSONObject data){	
-		super();
+	public FacebookPage(String accessToken, JSONObject data){	
+		super(accessToken);
 		this.result.data = data;
 		this.id = data.getString('id');
 		this.parsePage();

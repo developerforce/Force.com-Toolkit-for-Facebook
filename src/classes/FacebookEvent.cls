@@ -24,12 +24,12 @@ public class FacebookEvent extends FacebookObject {
 	/**
 	 * Constructor
 	 */
-	public FacebookEvent(String id){	
-		super();
+	public FacebookEvent(String accessToken, String id){	
+		super(accessToken);
 		this.id = id;
 	}
-	public FacebookEvent(JSONObject data){	
-		super();
+	public FacebookEvent(String accessToken, JSONObject data){	
+		super(accessToken);
 		this.result.data = data;
 		this.id = data.getString('id');
 		this.parseEvent();

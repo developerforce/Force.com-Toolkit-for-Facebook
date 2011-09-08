@@ -7,8 +7,8 @@ public class FacebookPublish extends FacebookObject {
   
   public String id {get;set;}
   
-  public FacebookPublish(String id) {
-    super();
+  public FacebookPublish(String accessToken, String id) {
+    super(accessToken);
     this.id = id;
   } 
   

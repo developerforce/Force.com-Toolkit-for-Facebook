@@ -1,10 +1,14 @@
 <apex:page controller="FacebookSampleController" action="{!login}" cache="false">
     <script src="{!$Resource.jquery}"></script>
+    <script src="{!$Resource.html_sanitizer}"></script>
 	<h1>Salesforce Facebook Sample Page</h1>
 	<p>This page contains samples of using the facebook toolkit.</p>
 
-	<p>Your user record:</p>
+	<p>Your user record (via action method):</p>
 	<p id="user"></p>
+	
+	<p>10 of your friends (via JS remoting):</p>
+	<p id="friends"><img src="{!$Resource.ajax}" width="16" height="11"/></p>	
 
 	<p>Profile pic tag: (set fbid to a user's facebook id)</p>
 	<c:FacebookProfilePicture fbid="717838202" width="60" height="60" />
@@ -26,6 +30,21 @@
 	    $j(document).ready(function(){
 	        var user = {!facebookUser};
 	        $j("#user").html('<pre>'+JSON.stringify(user, null, '    ')+'</pre>');
+	        
+	        // The remote method can't get the access token via the cookie, so we
+	        // get it from an action method and pass it here
+        	FacebookSampleController.getFriends('{!accessToken}', function(result, event) {
+	            if (event.status) {
+	            	// result comes back escaped - use Caja to unescape it
+	            	var json = html.unescapeEntities(result);
+	            	var friends = JSON.parse(json);
+	            	// Truncate the array to a maximum of 10 friends
+	            	friends.data.length = Math.min(10, friends.data.length);
+	            	$j("#friends").html('<pre>'+JSON.stringify(friends, null, '    ')+'</pre>');
+	            } else {
+	            	debug(event.message + '\n' + JSON.stringify(event));
+	            }
+            });
 	    });
 	</script>
 </apex:page>

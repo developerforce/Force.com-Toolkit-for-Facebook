@@ -76,6 +76,9 @@
 
 
 public class FacebookHome extends FacebookObject{
+	public FacebookHome(String accessToken) {
+		super(accessToken);
+	}
 	/*
 	JSONObject data = new JSONObject();
 	public List<FacebookPost> allHome = new List<FacebookPost>();

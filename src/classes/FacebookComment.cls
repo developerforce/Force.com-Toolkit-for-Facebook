@@ -12,8 +12,8 @@ public class FacebookComment extends FacebookObject{
 	public String fromName {get;set;}
 	public String fromCategory {get;set;}
 	
-	public FacebookComment(JSONObject data){	
-		super();
+	public FacebookComment(String accessToken, JSONObject data){	
+		super(accessToken);
 		this.result.data = data;
 		this.id = data.getString('id');
 		this.parseComment();

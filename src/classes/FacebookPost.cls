@@ -35,12 +35,12 @@ public class FacebookPost extends FacebookObject {
 	/**
 	 * Constructor
 	 */
-	public FacebookPost(String id){	
-		super();
+	public FacebookPost(String accessToken, String id){	
+		super(accessToken);
 		this.id = id;
 	}
-	public FacebookPost(JSONObject data){	
-		super();
+	public FacebookPost(String accessToken, JSONObject data){	
+		super(accessToken);
 		this.result.data = data;
 		this.id = data.getString('id');
 		this.parsePost();
@@ -106,7 +106,7 @@ public class FacebookPost extends FacebookObject {
 			if(commentsValue.obj.getValue('data') != null){
 				JSONObject.value[] vals = commentsValue.obj.getValue('data').values;
 				for(Integer i = 0; i < vals.size(); i++){
-					this.comments.add(new FacebookComment(vals[i].obj));
+					this.comments.add(new FacebookComment(accessToken, vals[i].obj));
 				}
 			}
 		}

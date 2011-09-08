@@ -4,123 +4,22 @@
  * @author Gastón Esmela - gesmela@salesforce.com
  * @author Pat Patterson - ppatterson@salesforce.com
  */
-public abstract class FacebookObject { 
+public virtual class FacebookObject { 
 	public static String graphuri = 'https://graph.facebook.com/';
 	public static String cookieName = 'fbsession';
 	public static boolean testmode { get; set; }
 	public static String teststubresponse;
+	public String accessToken;
 	
 	public Result result {get;set;}
 	
-	public FacebookObject(){
+	// We have to take an accessToken in the constructor
+	// as cookies are not always accessible - e.g. if we're
+	// running in a remoting context
+	public FacebookObject(String accessToken){
 		this.result = new Result();
+		this.accessToken = accessToken;
 	}
-	
-	/**
-	 * Get the access token for the current user
-	 */
-	public static String getAccessToken(){
-		if (testmode != null && testmode == true){
-			return '';
-		} else {
-			if (ApexPages.currentPage() == null) {
-				throw new FacebookException('ApexPages.currentPage() is null - Facebook API not supported');
-			}
-			if (ApexPages.currentPage().getCookies().get(cookieName) == null) {
-                return null;
-			}
-			String sessionid = ApexPages.currentPage().getCookies().get(cookieName).getValue();
-			
-            List<FacebookSession__c> sessions = [SELECT SessionId__c, AccessToken__c 
-                FROM FacebookSession__c 
-                WHERE SessionId__c = :sessionid];
-            
-			System.debug('sessionid='+sessionid);
-			System.debug('sessions='+sessions.size());
-			
-			if(sessions.size() == 0 || sessions[0].AccessToken__c == null) {
-				return null;
-			}
-			
-            return sessions[0].AccessToken__c;
-		}
-	}
-	
-	public static void setAccessToken(String response) {
-        //response in format of access_token=XXXXX&expires=YYYY
-        String accessToken = '';
-        Integer expires = 3600;
-        Integer acc = response.indexOf('access_token');
-        if ( acc == -1 ) {
-            throw new FacebookException('No access token in Facebook response: '+response);
-        }
-        Integer amp = response.indexOf('&');
-        if ( amp == -1 ) {
-            accessToken = response.substring(acc + 13, response.length());
-        } else {
-            accessToken = response.substring(acc + 13, amp);
-        }
-        Integer exp = response.indexOf('expires');
-        if ( exp != -1 ) {
-            amp = response.indexOf('&', exp);
-            if ( amp == -1 ) {
-                expires = Integer.valueOf(response.substring(exp + 8, response.length()));
-            } else {
-                expires = Integer.valueOf(response.substring(exp + 8, amp));
-            }
-        }
-        
-        System.debug('Access token: '+accesstoken+' expires: '+expires);
-
-        // Generate 128 bit random session ID
-        String sessionId = Crypto.getRandomLong().format() + Crypto.getRandomLong().format();
-        System.debug('new sessionid='+sessionId);
-        if (ApexPages.currentPage() == null) {
-            throw new FacebookException('ApexPages.currentPage() is null - Facebook API not supported');
-        }
-        ApexPages.currentPage().setCookies(new Cookie[]{new Cookie(cookieName,sessionId,null,-1,false)});
-
-        insert new FacebookSession__c(AccessToken__c = accessToken, SessionId__c = sessionId, Expiry__c = DateTime.now().addSeconds(expires));
-	}
-	
-	public static void deleteAccessToken() {
-        if (ApexPages.currentPage() == null) {
-            throw new FacebookException('ApexPages.currentPage() is null - Facebook API not supported');
-        }
-        if (ApexPages.currentPage().getCookies().get(cookieName) == null) {
-            return;
-        }
-        String sessionid = ApexPages.currentPage().getCookies().get(cookieName).getValue();
-        
-        List<FacebookSession__c> sessions = [SELECT SessionId__c, AccessToken__c 
-            FROM FacebookSession__c 
-            WHERE SessionId__c = :sessionid];
-        
-        System.debug('sessionid='+sessionid);
-        System.debug('sessions='+sessions.size());
-        
-        if(sessions.size() > 0) {
-           delete sessions[0];
-        }
-	}
-	
-	
-	/**
-	 * Facebook provides access tokens for a period of 2hours before expiring them
-	 */
-	private boolean hasTokenExpired(Datetime lastmod) {
-		if(lastmod.addHours(2) < DateTime.now())
-		{
-			System.debug(LoggingLevel.INFO, 'FACEBOOK ACCESS TOKEN IS OK');
-			return true;
-		}
-		else
-		{
-			System.debug(LoggingLevel.INFO, 'FACEBOOK ACCESS TOKEN HAS EXPIRED');
-			return false;
-		}
-	}
-	
 	
 	/**
 	 * Set this to allow us to write test methods
@@ -136,7 +35,6 @@ public abstract class FacebookObject {
 	 */
 	public void doAPICall(String id, String connection, map<string,string> params) {
 		if(id != null && id != ''){	
-			String accessToken = getAccessToken();
 			if (accessToken != null){
 				// Call params
 			    if (params == null) {
@@ -144,16 +42,15 @@ public abstract class FacebookObject {
 			    }
 			    
 			    // Add the access token (required)
-			    params.put('access_token', accesstoken);
+			    params.put('access_token', accessToken);
 			    
 			    // Preppend slash to connection
-	    	    connection = (connection != null && connection != '') ? ('/'+connection) : '';
+	    	    		connection = (connection != null && connection != '') ? ('/'+connection) : '';
 			    
 			   	String endpoint = graphuri+id+connection+paramStringFromMap(params);
 			   	
 			   	this.doAPICall(endpoint);
-			}
-			else {
+			} else {
 				this.result.hasError = true;
 				this.result.errorType = 'AuthenticationError';
 				this.result.errorMessage = 'Access token is missing.';
@@ -173,7 +70,7 @@ public abstract class FacebookObject {
 		processResult();
 	}
 	
-    public static String doAPICallRaw(String id, String connection, map<string,string> params) {
+    public String doAPICallRaw(String id, String connection, map<string,string> params) {
         if(id != null && id != ''){ 
 	        // Call params
 	        if (params == null) {
@@ -181,7 +78,7 @@ public abstract class FacebookObject {
 	        }
 	        
 	        // Add the access token (required)
-	        params.put('access_token', getAccessToken());
+	        params.put('access_token', accessToken);
 	        
 	        // Prepend slash to connection
 	        connection = (connection != null && connection != '') ? ('/'+connection) : '';
@@ -196,7 +93,7 @@ public abstract class FacebookObject {
     }
     
     public static String doAPICallRaw(String url) {
-    	String response;
+    		String response;
     	
         if(testmode == true) {
             System.debug('TEST API RESP: '+teststubresponse);
@@ -244,7 +141,7 @@ public abstract class FacebookObject {
         if(testmode == true) {
             teststubresponse = 'Status=OK, StatusCode=200';
         } else {  
-            req.setEndpoint('https://graph.facebook.com/'+method+'?access_token='+getAccessToken());
+            req.setEndpoint('https://graph.facebook.com/'+method+'?access_token='+accessToken);
             
             HttpResponse res = h.send(req);
             

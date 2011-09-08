@@ -26,7 +26,7 @@ public class FacebookStandardController
 	
 	public String getProfileImageUrl()
 	{
-		FacebookUser u = new FacebookUser(fbID);
+		FacebookUser u = new FacebookUser(FacebookToken.getAccessToken(), fbID);
 		return u.getProfilePicture();
 	}
 }

@@ -17,13 +17,13 @@ public class FacebookStatusMessage extends FacebookObject {
 	/**
 	 * Constructor
 	 */
-	public FacebookStatusMessage(String id){	
-		super();
+	public FacebookStatusMessage(String accessToken, String id){	
+		super(accessToken);
 		this.id = id;
 	}
 	
-	public FacebookStatusMessage(JSONObject data){	
-		super();
+	public FacebookStatusMessage(String accessToken, JSONObject data){	
+		super(accessToken);
 		this.result.data = data;
 		this.id = data.getString('id');
 		this.parseStatusMessage();
@@ -54,7 +54,7 @@ public class FacebookStatusMessage extends FacebookObject {
 			if(commentsValue.obj.getValue('data') != null){
 				JSONObject.value[] vals = commentsValue.obj.getValue('data').values;
 				for(Integer i = 0; i < vals.size(); i++){
-					this.comments.add(new FacebookComment(vals[i].obj));
+					this.comments.add(new FacebookComment(accessToken, vals[i].obj));
 				}
 			}
 		}	

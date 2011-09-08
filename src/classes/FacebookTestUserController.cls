@@ -10,9 +10,8 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public FacebookUser user {get;set;}
 	
-	public void getUserData(){
-		
-		this.user = new FacebookUser(this.uid);
+	public void getUserData(){		
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		user.getData();
 		
 		this.action = 'getData';
@@ -20,7 +19,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getFriendsData(){
 		
-		this.user = new FacebookUser(this.uid);
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		
 		Map<String,String> params = new Map<string,string>();
 		params.put('fields','id,name,hometown,gender,link');
@@ -32,7 +31,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getHomeData(){
 		
-		this.user = new FacebookUser(this.uid);
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		user.getHomeData();
 		
 		this.action = 'getHome';
@@ -40,7 +39,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getPhotoData(){
 		
-		this.user = new FacebookUser(this.uid);
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		user.getPhotoData();
 		
 		this.action = 'getPhotos';
@@ -48,7 +47,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getAlbumsData(){
 		
-		this.user = new FacebookUser(this.uid);
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		user.getAlbumData();
 		
 		this.action = 'getAlbums';
@@ -56,7 +55,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getFeedData(){
 		
-		this.user = new FacebookUser(this.uid);
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		user.getFeedData();
 		
 		this.action = 'getFeed';
@@ -64,7 +63,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getPostsData(){
 		
-		this.user = new FacebookUser(this.uid);
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		user.getPostData();
 		
 		this.action = 'getPosts';
@@ -72,7 +71,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getTaggedData(){
 		
-		this.user = new FacebookUser(this.uid);
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		user.getTaggedData();
 		
 		this.action = 'getTagged';
@@ -80,7 +79,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getLikesData(){
 		
-		this.user = new FacebookUser(this.uid);
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		user.getLikeData();
 		
 		this.action = 'getLikes';
@@ -88,7 +87,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getActivitiesData(){
 		
-		this.user = new FacebookUser(this.uid);
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		user.getActivityData();
 		
 		this.action = 'getActivities';
@@ -96,7 +95,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getMoviesData(){
 		
-		this.user = new FacebookUser(this.uid);
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		user.getMovieData();
 		
 		this.action = 'getMovies';
@@ -104,7 +103,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getBooksData(){
 		
-		this.user = new FacebookUser(this.uid);
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		user.getBookData();
 		
 		this.action = 'getBooks';
@@ -112,7 +111,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getInterestsData(){
 		
-		this.user = new FacebookUser(this.uid);
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		user.getInterestData();
 		
 		this.action = 'getInterests';
@@ -120,7 +119,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getTelevisionData(){
 		
-		this.user = new FacebookUser(this.uid);
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		user.getTelevisionData();
 		
 		this.action = 'getTelevision';
@@ -128,7 +127,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getMusicData(){
 		
-		this.user = new FacebookUser(this.uid);
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		user.getMusicData();
 		
 		this.action = 'getMusic';
@@ -136,7 +135,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getGroupsData(){
 		
-		this.user = new FacebookUser(this.uid);
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		user.getGroupData();
 		
 		this.action = 'getGroups';
@@ -144,7 +143,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getStatusesData(){
 		
-		this.user = new FacebookUser(this.uid);
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		user.getStatusData();
 		
 		this.action = 'getStatuses';
@@ -152,7 +151,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getEventsData(){
 		
-		this.user = new FacebookUser(this.uid);
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		user.getEventData();
 		
 		this.action = 'getEvents';
@@ -160,7 +159,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getNotesData(){
 		
-		this.user = new FacebookUser(this.uid);
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		user.getNoteData();
 		
 		this.action = 'getNotes';
@@ -168,7 +167,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getLinksData(){
 		
-		this.user = new FacebookUser(this.uid);
+		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
 		user.getLinkData();
 		
 		this.action = 'getLinks';

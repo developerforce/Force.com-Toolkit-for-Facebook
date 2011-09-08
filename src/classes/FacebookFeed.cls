@@ -3,6 +3,9 @@
  * August 2010 
  */
 public class FacebookFeed extends FacebookObject{
+	public FacebookFeed(String accessToken) {
+		super(accessToken);
+	}
 	/*
 	JSONObject data = new JSONObject();
 	public List<FacebookPost> allFeed = new List<FacebookPost>();
