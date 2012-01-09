@@ -34,6 +34,7 @@
     </actionOverrides>
     <deploymentStatus>Deployed</deploymentStatus>
     <enableActivities>false</enableActivities>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
     <enableFeeds>true</enableFeeds>
     <enableHistory>false</enableHistory>
     <enableReports>false</enableReports>
@@ -41,7 +42,7 @@
         <fullName>clientID__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Also know as the Application ID</inlineHelpText>
-        <label>clientID</label>
+        <label>App ID</label>
         <length>255</length>
         <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
@@ -52,7 +53,7 @@
         <fullName>clientSecret__c</fullName>
         <externalId>false</externalId>
         <inlineHelpText>Also known as Application Secret</inlineHelpText>
-        <label>clientSecret</label>
+        <label>App Secret</label>
         <length>255</length>
         <required>true</required>
         <trackFeedHistory>false</trackFeedHistory>
