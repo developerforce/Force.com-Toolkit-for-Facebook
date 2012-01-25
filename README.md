@@ -3,7 +3,7 @@ Major changes in Version 3
 
 * There is a new custom object to associate the Facebook access
 token with a session cookie.
-* TODO - The toolkit uses the new native JSON implementation.
+* The toolkit uses the new native JSON implementation.
 
 Instructions
 ============
@@ -27,4 +27,4 @@ Now you have the sample page working, you have a starting point for a Facebook a
 
 For more information, see the getting started guide.
 
-http://wiki.developerforce.com/index.php/Getting_Started_with_the_new_Facebook_Toolkit
+http://wiki.developerforce.com/index.php/Getting_Started_with_the_new_Facebook_Toolkit (NOTE - as of the current date, this has yet to be updated)
