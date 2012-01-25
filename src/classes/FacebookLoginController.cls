@@ -2,7 +2,7 @@
  * @author Pat Patterson - ppatterson@salesforce.com
  */
 
-public abstract class FacebookLoginController {
+public virtual class FacebookLoginController {
     // Return a default - the first FB app we find - this will be fine for 
     // many cases but can be overridden in subclasses if there are multiple 
     // FB apps in the org 
@@ -37,12 +37,11 @@ public abstract class FacebookLoginController {
         System.debug('rediruri is:'+rediruri);
         
         String sessionId = FacebookToken.getAccessToken();
+        
         if (sessionId != null) {
             // Check that we can access FB
             try {
-    				FacebookObject fbo = new FacebookObject(sessionId);
-    		
-                fbo.doAPICallRaw('me', null, null);
+                FacebookUtil.get(sessionId, 'me', new Map<String, String>{'fields' => 'id'});
             } catch (FacebookException e) {
                 System.Debug('Expired access token? '+e.getMessage());
                 FacebookToken.deleteAccessToken();
@@ -86,9 +85,14 @@ public abstract class FacebookLoginController {
             req.setTimeout(60*1000);
         
             Http h = new Http();
-            HttpResponse res = h.send(req);
+            String resp;
+            if (code.equals('TEST')) {
+            	resp = 'access_token=TEST&expires=3600';
+            } else {
+				HttpResponse res = h.send(req);
+				resp = res.getBody();
+            }
     
-            String resp = res.getBody();
             System.debug('FINAL RESP IS:'+resp); 
             
             FacebookToken.setAccessToken(resp);
@@ -107,5 +111,32 @@ public abstract class FacebookLoginController {
         }
         
         return pageRef;
+    }
+    
+    static testMethod void testController() {
+    	PageReference pageRef = Page.FacebookSamplePage;
+    	
+    	// We'll need the URL later to check we're being redirected to 
+    	// the right place
+    	String url = pageRef.getUrl().split('\\?')[0];
+    	
+    	Test.setCurrentPage(pageRef);
+    	
+    	FacebookLoginController controller = new FacebookLoginController();
+    	
+    	PageReference nextPageRef = controller.login();
+    	
+    	// Did we get redirected to FB?
+    	System.assert(nextPageRef.getUrl().startsWith('https://graph.facebook.com/oauth/authorize'));
+    	
+    	Test.setCurrentPage(pageRef);
+    	
+    	pageRef.getParameters().put('code', 'TEST');
+  
+  		nextPageRef = controller.login();
+    	
+    	// Did we get redirected back to the page?
+    	System.assertEquals(nextPageRef.getUrl(), url+'?a=b');
+    	System.assert(nextPageRef.getRedirect());
     }
 }

@@ -1,0 +1,11 @@
+<apex:component >
+	<apex:attribute name="refs" type="FacebookRef[]" required="true"  description="Page Object List"/>
+	<apex:attribute name="title" type="String" required="true"  description="Page Block title"/>
+	
+	<apex:pageBlock title="{!title}">
+		<apex:pageBlockTable value="{!refs}" var="ref">
+	       	<apex:column value="{!ref.id}" headerValue="Id"/> 
+	        <apex:column value="{!ref.name}" headerValue="Name"/>
+		</apex:pageBlockTable>
+	</apex:pageBlock>
+</apex:component>

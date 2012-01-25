@@ -2,5 +2,6 @@
 <apex:attribute name="fbid" type="String" required="true"  description="Facebook User ID" />
 <apex:attribute name="width" type="String" required="false" default="60" description="Width of Image" />
 <apex:attribute name="height" type="String" required="false" default="60" description="Height of Image" />
-<apex:image value="https://graph.facebook.com/{!fbid}/picture" width="{!width}" height="{!height}" />
+<apex:attribute name="type" type="String" required="false" default="normal" description="Image Type" />
+<apex:image value="https://graph.facebook.com/{!fbid}/picture?type={!type}" width="{!width}" height="{!height}" />
 </apex:component>

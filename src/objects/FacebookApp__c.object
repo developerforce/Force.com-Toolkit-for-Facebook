@@ -65,11 +65,10 @@
         <externalId>false</externalId>
         <inlineHelpText>When a Facebook user authorizes your application, your application gets access to the user. By default, your application can access all public data in a user&apos;s profile. If you need to access other parts of the profile you must request extended permissions</inlineHelpText>
         <label>Extended Permissions</label>
-        <length>255</length>
-        <required>false</required>
+        <length>1000</length>
         <trackFeedHistory>false</trackFeedHistory>
-        <type>Text</type>
-        <unique>false</unique>
+        <type>LongTextArea</type>
+        <visibleLines>2</visibleLines>
     </fields>
     <label>Facebook App</label>
     <listViews>

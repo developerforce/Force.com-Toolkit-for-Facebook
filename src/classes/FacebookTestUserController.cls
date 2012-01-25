@@ -5,175 +5,304 @@
  */
 
 public with sharing class FacebookTestUserController extends FacebookLoginController {
-	public string uid {get;set;}
-	public string action {get;set;}
+	transient public string uid {get;set;}
+	transient public string action {get;set;}
+	transient public string errorMessage {get;set;}
 	
-	public FacebookUser user {get;set;}
-	
-	public void getUserData(){		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		user.getData();
-		
-		this.action = 'getData';
+	transient public FacebookUser user {get;set;}
+	transient public FacebookPhotos photos {get;set;}
+	transient public FacebookAlbums albums {get;set;}
+	transient public FacebookPosts posts {get;set;}
+	transient public FacebookLikes likes {get;set;}
+	transient public FacebookRefs refs {get;set;}
+	transient public FacebookGroups groups {get;set;}
+	transient public FacebookStatusMessages statuses {get;set;}
+	transient public FacebookEvents events {get;set;}
+	transient public FacebookNotes notes {get;set;}
+	transient public FacebookLinks links {get;set;}
+	transient public FacebookUsers users {get;set;}
+	transient public FacebookPages pages_z {get;set;}
+	transient public FacebookPlaces places {get;set;}
+	transient public FacebookCheckins checkins {get;set;}
+
+	public void getUserData(){
+		try {
+			user = new FacebookUser(FacebookToken.getAccessToken(), uid);
+			action = 'getData';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public void getFriendsData(){
-		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		
-		Map<String,String> params = new Map<string,string>();
-		params.put('fields','id,name,hometown,gender,link');
-		
-		user.getFriendData(params);
-		
-		this.action = 'getFriends';
+		try {
+			Map<String,String> params = new Map<string,string>{'fields' => 'id,name,hometown,gender,link'};
+			
+			refs = FacebookRefs.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/friends', params));
+			action = 'getFriends';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public void getHomeData(){
-		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		user.getHomeData();
-		
-		this.action = 'getHome';
+		try {
+			posts = FacebookPosts.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/home'));			
+			action = 'getHome';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public void getPhotoData(){
-		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		user.getPhotoData();
-		
-		this.action = 'getPhotos';
+		try {
+			photos = FacebookPhotos.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/photos'));
+			action = 'getPhotos';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public void getAlbumsData(){
-		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		user.getAlbumData();
-		
-		this.action = 'getAlbums';
+		try {
+			albums = FacebookAlbums.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/albums'));			
+			action = 'getAlbums';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public void getFeedData(){
-		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		user.getFeedData();
-		
-		this.action = 'getFeed';
+		try {
+			posts = FacebookPosts.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/feed'));			
+			action = 'getFeed';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public void getPostsData(){
-		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		user.getPostData();
-		
-		this.action = 'getPosts';
+		try {
+			posts = FacebookPosts.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/posts'));		
+			action = 'getPosts';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public void getTaggedData(){
-		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		user.getTaggedData();
-		
-		this.action = 'getTagged';
+		try {
+			posts = FacebookPosts.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/tagged'));		
+			action = 'getTagged';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public void getLikesData(){
-		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		user.getLikeData();
-		
-		this.action = 'getLikes';
+		try {
+			likes = FacebookLikes.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/likes'));
+			action = 'getLikes';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public void getActivitiesData(){
-		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		user.getActivityData();
-		
-		this.action = 'getActivities';
+		try {
+			refs = FacebookRefs.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/activities'));
+			action = 'getActivities';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public void getMoviesData(){
-		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		user.getMovieData();
-		
-		this.action = 'getMovies';
+		try {
+			refs = FacebookRefs.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/movies'));
+			action = 'getMovies';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public void getBooksData(){
-		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		user.getBookData();
-		
-		this.action = 'getBooks';
+		try {
+			refs = FacebookRefs.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/books'));
+			action = 'getBooks';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public void getInterestsData(){
-		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		user.getInterestData();
-		
-		this.action = 'getInterests';
+		try {
+			refs = FacebookRefs.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/interests'));		
+			action = 'getInterests';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public void getTelevisionData(){
-		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		user.getTelevisionData();
-		
-		this.action = 'getTelevision';
+		try {
+			refs = FacebookRefs.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/television'));
+			action = 'getTelevision';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public void getMusicData(){
-		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		user.getMusicData();
-		
-		this.action = 'getMusic';
+		try {
+			refs = FacebookRefs.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/music'));
+			action = 'getMusic';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public void getGroupsData(){
-		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		user.getGroupData();
-		
-		this.action = 'getGroups';
+		try {
+			groups = FacebookGroups.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/groups'));
+			action = 'getGroups';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public void getStatusesData(){
-		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		user.getStatusData();
-		
-		this.action = 'getStatuses';
+		try {
+			statuses = FacebookStatusMessages.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/statuses'));
+			action = 'getStatuses';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public void getEventsData(){
-		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		user.getEventData();
-		
-		this.action = 'getEvents';
+		try {
+			events = FacebookEvents.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/events'));		
+			action = 'getEvents';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public void getNotesData(){
-		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		user.getNoteData();
-		
-		this.action = 'getNotes';
+		try {
+			notes = FacebookNotes.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/notes'));		
+			action = 'getNotes';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public void getLinksData(){
-		
-		this.user = new FacebookUser(FacebookToken.getAccessToken(), this.uid);
-		user.getLinkData();
-		
-		this.action = 'getLinks';
+		try {
+			links = FacebookLinks.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/links'));
+			action = 'getLinks';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
+	}
+	
+	public void searchPosts(){
+		try {
+			posts = FacebookPosts.search(FacebookToken.getAccessToken(), uid);
+			action = 'getPosts';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
+	}
+	
+	public void searchUsers(){
+		try {
+			users = FacebookUsers.search(FacebookToken.getAccessToken(), uid);
+			action = 'getUsers';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
+	}
+	
+	public void searchPages(){
+		try {
+			pages_z = FacebookPages.search(FacebookToken.getAccessToken(), uid);
+			action = 'getPages';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
+	}
+	
+	public void searchEvents(){
+		try {
+			events = FacebookEvents.search(FacebookToken.getAccessToken(), uid);
+			action = 'getEvents';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
+	}
+	
+	public void searchGroups(){
+		try {
+			groups = FacebookGroups.search(FacebookToken.getAccessToken(), uid);
+			action = 'getGroups';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
+	}
+	
+	public void searchPlaces(){
+		try {
+			// Arbitrary center and distance for place search
+			// Coordinates are for Mission Dolores Park, San Francisco
+			Map<String, String> params = new Map<String, String>{ 'center' => '37.76,-122.427', 'distance' => '1000' };
+
+			places = FacebookPlaces.search(FacebookToken.getAccessToken(), uid, params);
+			action = 'getPlaces';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
+	}
+	
+	public void searchCheckins(){
+		try {
+			// Checkins doesn't support search on a query
+			checkins = FacebookCheckins.search(FacebookToken.getAccessToken());
+			action = 'getCheckins';
+		} catch (Exception e) {
+			errorMessage = e.getMessage();
+			action = 'error';
+		} 
 	}
 	
 	public static testmethod void codeCoverage(){
-		FacebookTestUserController a = new FacebookTestUserController();	
+		// TODO	
 	}
 }

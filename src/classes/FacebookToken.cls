@@ -15,6 +15,13 @@ public with sharing class FacebookToken {
 			if (ApexPages.currentPage().getCookies().get(cookieName) == null) {
                 return null;
 			}
+			if (ApexPages.currentPage().getParameters().containsKey('code')) {
+				// We're still doing the login flow with Facebook - we've set 
+				// the access token, but we need to let the redirect complete
+				// to avoid the "You have uncommitted work pending. Please 
+				// commit or rollback before calling out" error
+				return null;
+			}
 			String sessionid = ApexPages.currentPage().getCookies().get(cookieName).getValue();
 			
             List<FacebookSession__c> sessions = [SELECT SessionId__c, AccessToken__c 
