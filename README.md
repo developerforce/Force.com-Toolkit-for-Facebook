@@ -4,6 +4,7 @@ Major changes in Version 3
 * There is a new custom object to associate the Facebook access
 token with a session cookie.
 * The toolkit uses the new native JSON implementation.
+* TODO - add code to use Spring '12 Facebook Authentication Provider
 
 Instructions
 ============
