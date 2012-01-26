@@ -15,24 +15,25 @@ public class FacebookStatusMessage {
 		while (parser.nextToken() != JSONToken.END_OBJECT) {
 			if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
 				String text = parser.getText();
-				parser.nextToken();
-				if (text == 'id') {
-					id = parser.getText();
-				} else if (text == 'from') {
-					from_z = new FacebookRef(parser);
-				} else if (text == 'message') {
-					message = parser.getText();
-				} else if (text == 'updated_time') {
-					updated_time = parser.getText();
-				} else if (text == 'likes') {
-					likes = new FacebookLikes(parser);
-				} else if (text == 'comments') {
-					comments = new FacebookComments(parser);
-				} else if (text == 'type') {
-					type = parser.getText();
-				} else {
-					System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
-					FacebookUtil.consumeObject(parser);
+				if (parser.nextToken() != JSONToken.VALUE_NULL) {
+					if (text == 'id') {
+						id = parser.getText();
+					} else if (text == 'from') {
+						from_z = new FacebookRef(parser);
+					} else if (text == 'message') {
+						message = parser.getText();
+					} else if (text == 'updated_time') {
+						updated_time = parser.getText();
+					} else if (text == 'likes') {
+						likes = new FacebookLikes(parser);
+					} else if (text == 'comments') {
+						comments = new FacebookComments(parser);
+					} else if (text == 'type') {
+						type = parser.getText();
+					} else {
+						System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
+						FacebookUtil.consumeObject(parser);
+					}
 				}
 			}
 		}

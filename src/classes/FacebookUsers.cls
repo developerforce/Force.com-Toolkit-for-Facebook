@@ -6,17 +6,18 @@ public class FacebookUsers {
 		while (parser.nextToken() != JSONToken.END_OBJECT) {
 			if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
 				String text = parser.getText();
-				parser.nextToken();
-				if (text == 'data') {
-					data = new List<FacebookUser>();
-					while (parser.nextToken() != JSONToken.END_ARRAY) {
-						data.add(new FacebookUser(parser));
+				if (parser.nextToken() != JSONToken.VALUE_NULL) {
+					if (text == 'data') {
+						data = new List<FacebookUser>();
+						while (parser.nextToken() != JSONToken.END_ARRAY) {
+							data.add(new FacebookUser(parser));
+						}
+					} else if (text == 'paging') {
+						paging = new FacebookPaging(parser);
+					} else {
+						System.debug(LoggingLevel.WARN, 'FacebookUsers consuming unrecognized property: '+text);
+						FacebookUtil.consumeObject(parser);
 					}
-				} else if (text == 'paging') {
-					paging = new FacebookPaging(parser);
-				} else {
-					System.debug(LoggingLevel.WARN, 'FacebookUsers consuming unrecognized property: '+text);
-					FacebookUtil.consumeObject(parser);
 				}
 			}
 		}

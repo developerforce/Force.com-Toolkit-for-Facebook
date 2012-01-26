@@ -10,22 +10,23 @@ public class FacebookRef {
 		while (parser.nextToken() != JSONToken.END_OBJECT) {
 			if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
 				String text = parser.getText();
-				parser.nextToken();
-				if (text == 'name') {
-					name = parser.getText();
-				} else if (text == 'id') {
-					id = parser.getText();
-				} else if (text == 'category') {
-					category = parser.getText();
-				} else if (text == 'canvas_name') {
-					canvas_name = parser.getText();
-				} else if (text == 'namespace') {
-					namespace = parser.getText();
-				} else if (text == 'created_time') {
-					namespace = parser.getText();
-				} else {
-					System.debug(LoggingLevel.WARN, 'From_Y consuming unrecognized property: '+text);
-					FacebookUtil.consumeObject(parser);
+				if (parser.nextToken() != JSONToken.VALUE_NULL) {
+					if (text == 'name') {
+						name = parser.getText();
+					} else if (text == 'id') {
+						id = parser.getText();
+					} else if (text == 'category') {
+						category = parser.getText();
+					} else if (text == 'canvas_name') {
+						canvas_name = parser.getText();
+					} else if (text == 'namespace') {
+						namespace = parser.getText();
+					} else if (text == 'created_time') {
+						namespace = parser.getText();
+					} else {
+						System.debug(LoggingLevel.WARN, 'FacebookRef consuming unrecognized property: '+text);
+						FacebookUtil.consumeObject(parser);
+					}
 				}
 			}
 		}

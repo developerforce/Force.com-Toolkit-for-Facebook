@@ -21,36 +21,37 @@ public class FacebookAlbum {
 		while (parser.nextToken() != JSONToken.END_OBJECT) {
 			if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
 				String text = parser.getText();
-				parser.nextToken();
-				if (text == 'id') {
-					id = parser.getText();
-				} else if (text == 'from') {
-					from_z = new FacebookRef(parser);
-				} else if (text == 'name') {
-					name = parser.getText();
-				} else if (text == 'description') {
-					description = parser.getText();
-				} else if (text == 'link') {
-					link = parser.getText();
-				} else if (text == 'cover_photo') {
-					cover_photo = parser.getText();
-				} else if (text == 'count') {
-					count = parser.getIntegerValue();
-				} else if (text == 'type') {
-					type = parser.getText();
-				} else if (text == 'created_time') {
-					created_time = parser.getText();
-				} else if (text == 'updated_time') {
-					updated_time = parser.getText();
-				} else if (text == 'can_upload') {
-					can_upload = parser.getBooleanValue();
-				} else if (text == 'likes') {
-					likes = new Likes(parser);
-				} else if (text == 'comments') {
-					comments = new FacebookComments(parser);
-				} else {
-					System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
-					FacebookUtil.consumeObject(parser);
+				if (parser.nextToken() != JSONToken.VALUE_NULL) {
+					if (text == 'id') {
+						id = parser.getText();
+					} else if (text == 'from') {
+						from_z = new FacebookRef(parser);
+					} else if (text == 'name') {
+						name = parser.getText();
+					} else if (text == 'description') {
+						description = parser.getText();
+					} else if (text == 'link') {
+						link = parser.getText();
+					} else if (text == 'cover_photo') {
+						cover_photo = parser.getText();
+					} else if (text == 'count') {
+						count = parser.getIntegerValue();
+					} else if (text == 'type') {
+						type = parser.getText();
+					} else if (text == 'created_time') {
+						created_time = parser.getText();
+					} else if (text == 'updated_time') {
+						updated_time = parser.getText();
+					} else if (text == 'can_upload') {
+						can_upload = parser.getBooleanValue();
+					} else if (text == 'likes') {
+						likes = new Likes(parser);
+					} else if (text == 'comments') {
+						comments = new FacebookComments(parser);
+					} else {
+						System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
+						FacebookUtil.consumeObject(parser);
+					}
 				}
 			}
 		}

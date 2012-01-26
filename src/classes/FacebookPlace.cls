@@ -12,24 +12,25 @@ public class FacebookPlace {
 			while (parser.nextToken() != JSONToken.END_OBJECT) {
 				if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
 					String text = parser.getText();
-					parser.nextToken();
-					if (text == 'street') {
-						street = parser.getText();
-					} else if (text == 'city') {
-						city = parser.getText();
-					} else if (text == 'state') {
-						state = parser.getText();
-					} else if (text == 'country') {
-						country = parser.getText();
-					} else if (text == 'zip') {
-						zip = parser.getText();
-					} else if (text == 'latitude') {
-						latitude = parser.getDoubleValue();
-					} else if (text == 'longitude') {
-						longitude = parser.getDoubleValue();
-					} else {
-						System.debug(LoggingLevel.WARN, 'Location consuming unrecognized property: '+text);
-						FacebookUtil.consumeObject(parser);
+					if (parser.nextToken() != JSONToken.VALUE_NULL) {
+						if (text == 'street') {
+							street = parser.getText();
+						} else if (text == 'city') {
+							city = parser.getText();
+						} else if (text == 'state') {
+							state = parser.getText();
+						} else if (text == 'country') {
+							country = parser.getText();
+						} else if (text == 'zip') {
+							zip = parser.getText();
+						} else if (text == 'latitude') {
+							latitude = parser.getDoubleValue();
+						} else if (text == 'longitude') {
+							longitude = parser.getDoubleValue();
+						} else {
+							System.debug(LoggingLevel.WARN, 'Location consuming unrecognized property: '+text);
+							FacebookUtil.consumeObject(parser);
+						}
 					}
 				}
 			}
@@ -45,18 +46,19 @@ public class FacebookPlace {
 		while (parser.nextToken() != JSONToken.END_OBJECT) {
 			if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
 				String text = parser.getText();
-				parser.nextToken();
-				if (text == 'name') {
-					name = parser.getText();
-				} else if (text == 'category') {
-					category = parser.getText();
-				} else if (text == 'location') {
-					location = new Location(parser);
-				} else if (text == 'id') {
-					id = parser.getText();
-				} else {
-					System.debug(LoggingLevel.WARN, 'FacebookPlace consuming unrecognized property: '+text);
-					FacebookUtil.consumeObject(parser);
+				if (parser.nextToken() != JSONToken.VALUE_NULL) {
+					if (text == 'name') {
+						name = parser.getText();
+					} else if (text == 'category') {
+						category = parser.getText();
+					} else if (text == 'location') {
+						location = new Location(parser);
+					} else if (text == 'id') {
+						id = parser.getText();
+					} else {
+						System.debug(LoggingLevel.WARN, 'FacebookPlace consuming unrecognized property: '+text);
+						FacebookUtil.consumeObject(parser);
+					}
 				}
 			}
 		}

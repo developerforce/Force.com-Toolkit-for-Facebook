@@ -15,25 +15,26 @@ public class FacebookUser {
 			while (parser.nextToken() != JSONToken.END_OBJECT) {
 				if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
 					String text = parser.getText();
-					parser.nextToken();
-					if (text == 'id') {
-						id = parser.getText();
-					} else if (text == 'name') {
-						name = parser.getText();
-					} else if (text == 'with') {
-						with = new List<FacebookRef>();
-						while (parser.nextToken() != JSONToken.END_ARRAY) {
-							with.add(new FacebookRef(parser));
+					if (parser.nextToken() != JSONToken.VALUE_NULL) {
+						if (text == 'id') {
+							id = parser.getText();
+						} else if (text == 'name') {
+							name = parser.getText();
+						} else if (text == 'with') {
+							with = new List<FacebookRef>();
+							while (parser.nextToken() != JSONToken.END_ARRAY) {
+								with.add(new FacebookRef(parser));
+							}
+						} else if (text == 'description') {
+							description = parser.getText();
+						} else if (text == 'start_date') {
+							start_date = parser.getText();
+						} else if (text == 'end_date') {
+							end_date = parser.getText();
+						} else {
+							System.debug(LoggingLevel.WARN, 'Projects consuming unrecognized property: '+text);
+							FacebookUtil.consumeObject(parser);
 						}
-					} else if (text == 'description') {
-						description = parser.getText();
-					} else if (text == 'start_date') {
-						start_date = parser.getText();
-					} else if (text == 'end_date') {
-						end_date = parser.getText();
-					} else {
-						System.debug(LoggingLevel.WARN, 'Projects consuming unrecognized property: '+text);
-						FacebookUtil.consumeObject(parser);
 					}
 				}
 			}
@@ -52,28 +53,29 @@ public class FacebookUser {
 			while (parser.nextToken() != JSONToken.END_OBJECT) {
 				if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
 					String text = parser.getText();
-					parser.nextToken();
-					if (text == 'school') {
-						school = new FacebookRef(parser);
-					} else if (text == 'year') {
-						year = new FacebookRef(parser);
-					} else if (text == 'type') {
-						type = parser.getText();
-					} else if (text == 'concentration') {
-						concentration = new List<FacebookRef>();
-						while (parser.nextToken() != JSONToken.END_ARRAY) {
-							concentration.add(new FacebookRef(parser));
+					if (parser.nextToken() != JSONToken.VALUE_NULL) {
+						if (text == 'school') {
+							school = new FacebookRef(parser);
+						} else if (text == 'year') {
+							year = new FacebookRef(parser);
+						} else if (text == 'type') {
+							type = parser.getText();
+						} else if (text == 'concentration') {
+							concentration = new List<FacebookRef>();
+							while (parser.nextToken() != JSONToken.END_ARRAY) {
+								concentration.add(new FacebookRef(parser));
+							}
+						} else if (text == 'degree') {
+							degree = new FacebookRef(parser);
+						} else if (text == 'classes') {
+							classes = new List<Classes>();
+							while (parser.nextToken() != JSONToken.END_ARRAY) {
+								classes.add(new Classes(parser));
+							}
+						} else {
+							System.debug(LoggingLevel.WARN, 'Education consuming unrecognized property: '+text);
+							FacebookUtil.consumeObject(parser);
 						}
-					} else if (text == 'degree') {
-						degree = new FacebookRef(parser);
-					} else if (text == 'classes') {
-						classes = new List<Classes>();
-						while (parser.nextToken() != JSONToken.END_ARRAY) {
-							classes.add(new Classes(parser));
-						}
-					} else {
-						System.debug(LoggingLevel.WARN, 'Education consuming unrecognized property: '+text);
-						FacebookUtil.consumeObject(parser);
 					}
 				}
 			}
@@ -90,21 +92,22 @@ public class FacebookUser {
 			while (parser.nextToken() != JSONToken.END_OBJECT) {
 				if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
 					String text = parser.getText();
-					parser.nextToken();
-					if (text == 'id') {
-						id = parser.getText();
-					} else if (text == 'name') {
-						name = parser.getText();
-					} else if (text == 'with') {
-						with = new List<FacebookRef>();
-						while (parser.nextToken() != JSONToken.END_ARRAY) {
-							with.add(new FacebookRef(parser));
+					if (parser.nextToken() != JSONToken.VALUE_NULL) {
+						if (text == 'id') {
+							id = parser.getText();
+						} else if (text == 'name') {
+							name = parser.getText();
+						} else if (text == 'with') {
+							with = new List<FacebookRef>();
+							while (parser.nextToken() != JSONToken.END_ARRAY) {
+								with.add(new FacebookRef(parser));
+							}
+						} else if (text == 'description') {
+							description = parser.getText();
+						} else {
+							System.debug(LoggingLevel.WARN, 'Classes consuming unrecognized property: '+text);
+							FacebookUtil.consumeObject(parser);
 						}
-					} else if (text == 'description') {
-						description = parser.getText();
-					} else {
-						System.debug(LoggingLevel.WARN, 'Classes consuming unrecognized property: '+text);
-						FacebookUtil.consumeObject(parser);
 					}
 				}
 			}
@@ -119,14 +122,15 @@ public class FacebookUser {
 			while (parser.nextToken() != JSONToken.END_OBJECT) {
 				if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
 					String text = parser.getText();
-					parser.nextToken();
-					if (text == 'length') {
-						length = parser.getIntegerValue();
-					} else if (text == 'size') {
-						size = parser.getIntegerValue();
-					} else {
-						System.debug(LoggingLevel.WARN, 'Video_upload_limits consuming unrecognized property: '+text);
-						FacebookUtil.consumeObject(parser);
+					if (parser.nextToken() != JSONToken.VALUE_NULL) {
+						if (text == 'length') {
+							length = parser.getIntegerValue();
+						} else if (text == 'size') {
+							size = parser.getIntegerValue();
+						} else {
+							System.debug(LoggingLevel.WARN, 'Video_upload_limits consuming unrecognized property: '+text);
+							FacebookUtil.consumeObject(parser);
+						}
 					}
 				}
 			}
@@ -170,92 +174,93 @@ public class FacebookUser {
 		while (parser.nextToken() != JSONToken.END_OBJECT) {
 			if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
 				String text = parser.getText();
-				parser.nextToken();
-				if (text == 'id') {
-					id = parser.getText();
-				} else if (text == 'name') {
-					name = parser.getText();
-				} else if (text == 'first_name') {
-					first_name = parser.getText();
-				} else if (text == 'middle_name') {
-					middle_name = parser.getText();
-				} else if (text == 'last_name') {
-					last_name = parser.getText();
-				} else if (text == 'link') {
-					link = parser.getText();
-				} else if (text == 'username') {
-					username = parser.getText();
-				} else if (text == 'third_party_id') {
-					third_party_id = parser.getText();
-				} else if (text == 'birthday') {
-					birthday = parser.getText();
-				} else if (text == 'hometown') {
-					hometown = new FacebookRef(parser);
-				} else if (text == 'interested_in') {
-					interested_in = new List<String>();
-					while (parser.nextToken() != JSONToken.END_ARRAY) {
-						interested_in.add(parser.getText());
+				if (parser.nextToken() != JSONToken.VALUE_NULL) {
+					if (text == 'id') {
+						id = parser.getText();
+					} else if (text == 'name') {
+						name = parser.getText();
+					} else if (text == 'first_name') {
+						first_name = parser.getText();
+					} else if (text == 'middle_name') {
+						middle_name = parser.getText();
+					} else if (text == 'last_name') {
+						last_name = parser.getText();
+					} else if (text == 'link') {
+						link = parser.getText();
+					} else if (text == 'username') {
+						username = parser.getText();
+					} else if (text == 'third_party_id') {
+						third_party_id = parser.getText();
+					} else if (text == 'birthday') {
+						birthday = parser.getText();
+					} else if (text == 'hometown') {
+						hometown = new FacebookRef(parser);
+					} else if (text == 'interested_in') {
+						interested_in = new List<String>();
+						while (parser.nextToken() != JSONToken.END_ARRAY) {
+							interested_in.add(parser.getText());
+						}
+					} else if (text == 'location') {
+						location = new FacebookRef(parser);
+					} else if (text == 'bio') {
+						bio = parser.getText();
+					} else if (text == 'quotes') {
+						quotes = parser.getText();
+					} else if (text == 'work') {
+						work = new List<Work>();
+						while (parser.nextToken() != JSONToken.END_ARRAY) {
+							work.add(new Work(parser));
+						}
+					} else if (text == 'education') {
+						education = new List<Education>();
+						while (parser.nextToken() != JSONToken.END_ARRAY) {
+							education.add(new Education(parser));
+						}
+					} else if (text == 'email') {
+						email = parser.getText();
+					} else if (text == 'gender') {
+						gender = parser.getText();
+					} else if (text == 'relationship_status') {
+						relationship_status = parser.getText();
+					} else if (text == 'significant_other') {
+						significant_other = new FacebookRef(parser);
+					} else if (text == 'religion') {
+						religion = parser.getText();
+					} else if (text == 'political') {
+						political = parser.getText();
+					} else if (text == 'favorite_athletes') {
+						favorite_athletes = new List<FacebookRef>();
+						while (parser.nextToken() != JSONToken.END_ARRAY) {
+							favorite_athletes.add(new FacebookRef(parser));
+						}
+					} else if (text == 'favorite_teams') {
+						favorite_teams = new List<FacebookRef>();
+						while (parser.nextToken() != JSONToken.END_ARRAY) {
+							favorite_teams.add(new FacebookRef(parser));
+						}
+					} else if (text == 'website') {
+						website = parser.getText();
+					} else if (text == 'timezone') {
+						timezone = parser.getIntegerValue();
+					} else if (text == 'locale') {
+						locale = parser.getText();
+					} else if (text == 'languages') {
+						languages = new List<FacebookRef>();
+						while (parser.nextToken() != JSONToken.END_ARRAY) {
+							languages.add(new FacebookRef(parser));
+						}
+					} else if (text == 'verified') {
+						verified = parser.getBooleanValue();
+					} else if (text == 'updated_time') {
+						updated_time = parser.getText();
+					} else if (text == 'video_upload_limits') {
+						video_upload_limits = new VideoUploadLimits(parser);
+					} else if (text == 'type') {
+						type = parser.getText();
+					} else {
+						System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
+						FacebookUtil.consumeObject(parser);
 					}
-				} else if (text == 'location') {
-					location = new FacebookRef(parser);
-				} else if (text == 'bio') {
-					bio = parser.getText();
-				} else if (text == 'quotes') {
-					quotes = parser.getText();
-				} else if (text == 'work') {
-					work = new List<Work>();
-					while (parser.nextToken() != JSONToken.END_ARRAY) {
-						work.add(new Work(parser));
-					}
-				} else if (text == 'education') {
-					education = new List<Education>();
-					while (parser.nextToken() != JSONToken.END_ARRAY) {
-						education.add(new Education(parser));
-					}
-				} else if (text == 'email') {
-					email = parser.getText();
-				} else if (text == 'gender') {
-					gender = parser.getText();
-				} else if (text == 'relationship_status') {
-					relationship_status = parser.getText();
-				} else if (text == 'significant_other') {
-					significant_other = new FacebookRef(parser);
-				} else if (text == 'religion') {
-					religion = parser.getText();
-				} else if (text == 'political') {
-					political = parser.getText();
-				} else if (text == 'favorite_athletes') {
-					favorite_athletes = new List<FacebookRef>();
-					while (parser.nextToken() != JSONToken.END_ARRAY) {
-						favorite_athletes.add(new FacebookRef(parser));
-					}
-				} else if (text == 'favorite_teams') {
-					favorite_teams = new List<FacebookRef>();
-					while (parser.nextToken() != JSONToken.END_ARRAY) {
-						favorite_teams.add(new FacebookRef(parser));
-					}
-				} else if (text == 'website') {
-					website = parser.getText();
-				} else if (text == 'timezone') {
-					timezone = parser.getIntegerValue();
-				} else if (text == 'locale') {
-					locale = parser.getText();
-				} else if (text == 'languages') {
-					languages = new List<FacebookRef>();
-					while (parser.nextToken() != JSONToken.END_ARRAY) {
-						languages.add(new FacebookRef(parser));
-					}
-				} else if (text == 'verified') {
-					verified = parser.getBooleanValue();
-				} else if (text == 'updated_time') {
-					updated_time = parser.getText();
-				} else if (text == 'video_upload_limits') {
-					video_upload_limits = new VideoUploadLimits(parser);
-				} else if (text == 'type') {
-					type = parser.getText();
-				} else {
-					System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
-					FacebookUtil.consumeObject(parser);
 				}
 			}
 		}
@@ -281,25 +286,26 @@ public class FacebookUser {
 			while (parser.nextToken() != JSONToken.END_OBJECT) {
 				if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
 					String text = parser.getText();
-					parser.nextToken();
-					if (text == 'employer') {
-						employer = new FacebookRef(parser);
-					} else if (text == 'location') {
-						location = new FacebookRef(parser);
-					} else if (text == 'position') {
-						position = new FacebookRef(parser);
-					} else if (text == 'start_date') {
-						start_date = parser.getText();
-					} else if (text == 'end_date') {
-						end_date = parser.getText();
-					} else if (text == 'projects') {
-						projects = new List<Projects>();
-						while (parser.nextToken() != JSONToken.END_ARRAY) {
-							projects.add(new Projects(parser));
+					if (parser.nextToken() != JSONToken.VALUE_NULL) {
+						if (text == 'employer') {
+							employer = new FacebookRef(parser);
+						} else if (text == 'location') {
+							location = new FacebookRef(parser);
+						} else if (text == 'position') {
+							position = new FacebookRef(parser);
+						} else if (text == 'start_date') {
+							start_date = parser.getText();
+						} else if (text == 'end_date') {
+							end_date = parser.getText();
+						} else if (text == 'projects') {
+							projects = new List<Projects>();
+							while (parser.nextToken() != JSONToken.END_ARRAY) {
+								projects.add(new Projects(parser));
+							}
+						} else {
+							System.debug(LoggingLevel.WARN, 'Work consuming unrecognized property: '+text);
+							FacebookUtil.consumeObject(parser);
 						}
-					} else {
-						System.debug(LoggingLevel.WARN, 'Work consuming unrecognized property: '+text);
-						FacebookUtil.consumeObject(parser);
 					}
 				}
 			}

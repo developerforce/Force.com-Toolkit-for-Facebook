@@ -10,17 +10,18 @@ public class FacebookVideos {
 		while (parser.nextToken() != JSONToken.END_OBJECT) {
 			if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
 				String text = parser.getText();
-				parser.nextToken();
-				if (text == 'data') {
-					data = new List<FacebookVideo>();
-					while (parser.nextToken() != JSONToken.END_ARRAY) {
-						data.add(new FacebookVideo(parser));
+				if (parser.nextToken() != JSONToken.VALUE_NULL) {
+					if (text == 'data') {
+						data = new List<FacebookVideo>();
+						while (parser.nextToken() != JSONToken.END_ARRAY) {
+							data.add(new FacebookVideo(parser));
+						}
+					} else if (text == 'paging') {
+						paging = new FacebookPaging(parser);
+					} else {
+						System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
+						FacebookUtil.consumeObject(parser);
 					}
-				} else if (text == 'paging') {
-					paging = new FacebookPaging(parser);
-				} else {
-					System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
-					FacebookUtil.consumeObject(parser);
 				}
 			}
 		}

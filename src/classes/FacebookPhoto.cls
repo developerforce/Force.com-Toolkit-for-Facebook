@@ -24,45 +24,46 @@ public class FacebookPhoto {
 		while (parser.nextToken() != JSONToken.END_OBJECT) {
 			if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
 				String text = parser.getText();
-				parser.nextToken();
-				if (text == 'id') {
-					id = parser.getText();
-				} else if (text == 'from') {
-					from_z = new FacebookRef(parser);
-				} else if (text == 'name') {
-					name = parser.getText();
-				} else if (text == 'picture') {
-					picture = parser.getText();
-				} else if (text == 'source') {
-					source = parser.getText();
-				} else if (text == 'height') {
-					height = parser.getIntegerValue();
-				} else if (text == 'width') {
-					width = parser.getIntegerValue();
-				} else if (text == 'images') {
-					images = new List<Images>();
-					while (parser.nextToken() != JSONToken.END_ARRAY) {
-						images.add(new Images(parser));
+				if (parser.nextToken() != JSONToken.VALUE_NULL) {
+					if (text == 'id') {
+						id = parser.getText();
+					} else if (text == 'from') {
+						from_z = new FacebookRef(parser);
+					} else if (text == 'name') {
+						name = parser.getText();
+					} else if (text == 'picture') {
+						picture = parser.getText();
+					} else if (text == 'source') {
+						source = parser.getText();
+					} else if (text == 'height') {
+						height = parser.getIntegerValue();
+					} else if (text == 'width') {
+						width = parser.getIntegerValue();
+					} else if (text == 'images') {
+						images = new List<Images>();
+						while (parser.nextToken() != JSONToken.END_ARRAY) {
+							images.add(new Images(parser));
+						}
+					} else if (text == 'link') {
+						link = parser.getText();
+					} else if (text == 'icon') {
+						icon = parser.getText();
+					} else if (text == 'created_time') {
+						created_time = parser.getText();
+					} else if (text == 'position') {
+						position = parser.getIntegerValue();
+					} else if (text == 'updated_time') {
+						updated_time = parser.getText();
+					} else if (text == 'comments') {
+						comments = new FacebookComments(parser);
+					} else if (text == 'likes') {
+						likes = new FacebookLikes(parser);
+					} else if (text == 'type') {
+						type = parser.getText();
+					} else {
+						System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
+						FacebookUtil.consumeObject(parser);
 					}
-				} else if (text == 'link') {
-					link = parser.getText();
-				} else if (text == 'icon') {
-					icon = parser.getText();
-				} else if (text == 'created_time') {
-					created_time = parser.getText();
-				} else if (text == 'position') {
-					position = parser.getIntegerValue();
-				} else if (text == 'updated_time') {
-					updated_time = parser.getText();
-				} else if (text == 'comments') {
-					comments = new FacebookComments(parser);
-				} else if (text == 'likes') {
-					likes = new FacebookLikes(parser);
-				} else if (text == 'type') {
-					type = parser.getText();
-				} else {
-					System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
-					FacebookUtil.consumeObject(parser);
 				}
 			}
 		}
@@ -77,16 +78,17 @@ public class FacebookPhoto {
 			while (parser.nextToken() != JSONToken.END_OBJECT) {
 				if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
 					String text = parser.getText();
-					parser.nextToken();
-					if (text == 'width') {
-						width = parser.getIntegerValue();
-					} else if (text == 'height') {
-						height = parser.getIntegerValue();
-					} else if (text == 'source') {
-						source = parser.getText();
-					} else {
-						System.debug(LoggingLevel.WARN, 'Images consuming unrecognized property: '+text);
-						FacebookUtil.consumeObject(parser);
+					if (parser.nextToken() != JSONToken.VALUE_NULL) {
+						if (text == 'width') {
+							width = parser.getIntegerValue();
+						} else if (text == 'height') {
+							height = parser.getIntegerValue();
+						} else if (text == 'source') {
+							source = parser.getText();
+						} else {
+							System.debug(LoggingLevel.WARN, 'Images consuming unrecognized property: '+text);
+							FacebookUtil.consumeObject(parser);
+						}
 					}
 				}
 			}

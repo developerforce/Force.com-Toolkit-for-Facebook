@@ -26,44 +26,45 @@ public class FacebookPage {
 		while (parser.nextToken() != JSONToken.END_OBJECT) {
 			if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
 				String text = parser.getText();
-				parser.nextToken();
-				if (text == 'id') {
-					id = parser.getText();
-				} else if (text == 'name') {
-					name = parser.getText();
-				} else if (text == 'picture') {
-					picture = parser.getText();
-				} else if (text == 'link') {
-					link = parser.getText();
-				} else if (text == 'likes') {
-					likes = parser.getIntegerValue();
-				} else if (text == 'phone') {
-					phone = parser.getText();
-				} else if (text == 'checkins') {
-					checkins = parser.getIntegerValue();
-				} else if (text == 'category') {
-					category = parser.getText();
-				} else if (text == 'website') {
-					website = parser.getText();
-				} else if (text == 'username') {
-					username = parser.getText();
-				} else if (text == 'founded') {
-					founded = parser.getText();
-				} else if (text == 'company_overview') {
-					company_overview = parser.getText();
-				} else if (text == 'mission') {
-					mission = parser.getText();
-				} else if (text == 'about') {
-					about = parser.getText();
-				} else if (text == 'talking_about_count') {
-					talking_about_count = parser.getIntegerValue();
-				} else if (text == 'access_token') {
-					access_token = parser.getText();
-				} else if (text == 'type') {
-					type = parser.getText();
-				} else {
-					System.debug(LoggingLevel.WARN, 'FacebookPage consuming unrecognized property: '+text);
-					FacebookUtil.consumeObject(parser);
+				if (parser.nextToken() != JSONToken.VALUE_NULL) {
+					if (text == 'id') {
+						id = parser.getText();
+					} else if (text == 'name') {
+						name = parser.getText();
+					} else if (text == 'picture') {
+						picture = parser.getText();
+					} else if (text == 'link') {
+						link = parser.getText();
+					} else if (text == 'likes') {
+						likes = parser.getIntegerValue();
+					} else if (text == 'phone') {
+						phone = parser.getText();
+					} else if (text == 'checkins') {
+						checkins = parser.getIntegerValue();
+					} else if (text == 'category') {
+						category = parser.getText();
+					} else if (text == 'website') {
+						website = parser.getText();
+					} else if (text == 'username') {
+						username = parser.getText();
+					} else if (text == 'founded') {
+						founded = parser.getText();
+					} else if (text == 'company_overview') {
+						company_overview = parser.getText();
+					} else if (text == 'mission') {
+						mission = parser.getText();
+					} else if (text == 'about') {
+						about = parser.getText();
+					} else if (text == 'talking_about_count') {
+						talking_about_count = parser.getIntegerValue();
+					} else if (text == 'access_token') {
+						access_token = parser.getText();
+					} else if (text == 'type') {
+						type = parser.getText();
+					} else {
+						System.debug(LoggingLevel.WARN, 'FacebookPage consuming unrecognized property: '+text);
+						FacebookUtil.consumeObject(parser);
+					}
 				}
 			}
 		}

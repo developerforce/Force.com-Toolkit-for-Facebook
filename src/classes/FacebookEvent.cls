@@ -13,18 +13,19 @@ public class FacebookEvent {
 			while (parser.nextToken() != JSONToken.END_OBJECT) {
 				if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
 					String text = parser.getText();
-					parser.nextToken();
-					if (text == 'street') {
-						street = parser.getText();
-					} else if (text == 'city') {
-						city = parser.getText();
-					} else if (text == 'state') {
-						state = parser.getText();
-					} else if (text == 'country') {
-						country = parser.getText();
-					} else {
-						System.debug(LoggingLevel.WARN, 'Venue consuming unrecognized property: '+text);
-						FacebookUtil.consumeObject(parser);
+					if (parser.nextToken() != JSONToken.VALUE_NULL) {
+						if (text == 'street') {
+							street = parser.getText();
+						} else if (text == 'city') {
+							city = parser.getText();
+						} else if (text == 'state') {
+							state = parser.getText();
+						} else if (text == 'country') {
+							country = parser.getText();
+						} else {
+							System.debug(LoggingLevel.WARN, 'Venue consuming unrecognized property: '+text);
+							FacebookUtil.consumeObject(parser);
+						}
 					}
 				}
 			}
@@ -48,34 +49,35 @@ public class FacebookEvent {
 		while (parser.nextToken() != JSONToken.END_OBJECT) {
 			if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
 				String text = parser.getText();
-				parser.nextToken();
-				if (text == 'id') {
-					id = parser.getText();
-				} else if (text == 'owner') {
-					owner = new FacebookRef(parser);
-				} else if (text == 'name') {
-					name = parser.getText();
-				} else if (text == 'description') {
-					description = parser.getText();
-				} else if (text == 'start_time') {
-					start_time = parser.getText();
-				} else if (text == 'end_time') {
-					end_time = parser.getText();
-				} else if (text == 'location') {
-					location = parser.getText();
-				} else if (text == 'venue') {
-					venue = new Venue(parser);
-				} else if (text == 'privacy') {
-					privacy = parser.getText();
-				} else if (text == 'updated_time') {
-					updated_time = parser.getText();
-				} else if (text == 'type') {
-					type = parser.getText();
-				} else if (text == 'rsvp_status') {
-					rsvp_status = parser.getText();
-				} else {
-					System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
-					FacebookUtil.consumeObject(parser);
+				if (parser.nextToken() != JSONToken.VALUE_NULL) {
+					if (text == 'id') {
+						id = parser.getText();
+					} else if (text == 'owner') {
+						owner = new FacebookRef(parser);
+					} else if (text == 'name') {
+						name = parser.getText();
+					} else if (text == 'description') {
+						description = parser.getText();
+					} else if (text == 'start_time') {
+						start_time = parser.getText();
+					} else if (text == 'end_time') {
+						end_time = parser.getText();
+					} else if (text == 'location') {
+						location = parser.getText();
+					} else if (text == 'venue') {
+						venue = new Venue(parser);
+					} else if (text == 'privacy') {
+						privacy = parser.getText();
+					} else if (text == 'updated_time') {
+						updated_time = parser.getText();
+					} else if (text == 'type') {
+						type = parser.getText();
+					} else if (text == 'rsvp_status') {
+						rsvp_status = parser.getText();
+					} else {
+						System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
+						FacebookUtil.consumeObject(parser);
+					}
 				}
 			}
 		}

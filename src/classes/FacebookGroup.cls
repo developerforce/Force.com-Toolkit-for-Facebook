@@ -22,38 +22,39 @@ public class FacebookGroup {
 		while (parser.nextToken() != JSONToken.END_OBJECT) {
 			if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
 				String text = parser.getText();
-				parser.nextToken();
-				if (text == 'id') {
-					id = parser.getText();
-				} else if (text == 'version') {
-					version = parser.getIntegerValue();
-				} else if (text == 'owner') {
-					owner = new FacebookRef(parser);
-				} else if (text == 'name') {
-					name = parser.getText();
-				} else if (text == 'description') {
-					description = parser.getText();
-				} else if (text == 'link') {
-					link = parser.getText();
-				} else if (text == 'privacy') {
-					privacy = parser.getText();
-				} else if (text == 'icon') {
-					icon = parser.getText();
-				} else if (text == 'updated_time') {
-					updated_time = parser.getText();
-				} else if (text == 'email') {
-					email = parser.getText();
-				} else if (text == 'type') {
-					type = parser.getText();
-				} else if (text == 'bookmark_order') {
-					bookmark_order = parser.getIntegerValue();
-				} else if (text == 'unread') {
-					unread = parser.getIntegerValue();
-				} else if (text == 'administrator') {
-					administrator = parser.getBooleanValue();
-				} else {
-					System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
-					FacebookUtil.consumeObject(parser);
+				if (parser.nextToken() != JSONToken.VALUE_NULL) {
+					if (text == 'id') {
+						id = parser.getText();
+					} else if (text == 'version') {
+						version = parser.getIntegerValue();
+					} else if (text == 'owner') {
+						owner = new FacebookRef(parser);
+					} else if (text == 'name') {
+						name = parser.getText();
+					} else if (text == 'description') {
+						description = parser.getText();
+					} else if (text == 'link') {
+						link = parser.getText();
+					} else if (text == 'privacy') {
+						privacy = parser.getText();
+					} else if (text == 'icon') {
+						icon = parser.getText();
+					} else if (text == 'updated_time') {
+						updated_time = parser.getText();
+					} else if (text == 'email') {
+						email = parser.getText();
+					} else if (text == 'type') {
+						type = parser.getText();
+					} else if (text == 'bookmark_order') {
+						bookmark_order = parser.getIntegerValue();
+					} else if (text == 'unread') {
+						unread = parser.getIntegerValue();
+					} else if (text == 'administrator') {
+						administrator = parser.getBooleanValue();
+					} else {
+						System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
+						FacebookUtil.consumeObject(parser);
+					}
 				}
 			}
 		}
