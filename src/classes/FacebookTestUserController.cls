@@ -24,6 +24,10 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	transient public FacebookPages pages_z {get;set;}
 	transient public FacebookPlaces places {get;set;}
 	transient public FacebookCheckins checkins {get;set;}
+	
+	public FacebookTestUserController() {
+		uid = 'me';
+	}
 
 	public void getUserData(){
 		try {
