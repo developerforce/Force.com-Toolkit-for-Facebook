@@ -57,7 +57,7 @@ public virtual class FacebookLoginController {
         
         // No session
         String exPerms = (fapps[0].extendedPermissions__c != null && fapps[0].extendedPermissions__c != '') ?
-            ('&scope='+fapps[0].extendedPermissions__c) : '';
+            ('&scope='+fapps[0].extendedPermissions__c.replaceAll('\\s', '')) : '';
         PageReference pageRef;
         
         if (! ApexPages.currentPage().getParameters().containsKey('code')) {
