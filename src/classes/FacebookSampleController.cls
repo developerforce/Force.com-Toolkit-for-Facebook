@@ -37,7 +37,7 @@ global with sharing class FacebookSampleController extends FacebookLoginControll
 			String accessToken = getAccessToken();
 			
 			if (accessToken != null) {
-				myPosts = FacebookPosts.parse(FacebookUtil.get(accessToken, 'me/feed', null));
+				myPosts = new FacebookPosts(accessToken, 'me/feed', null);
 			}				
 			
 			return myPosts;

@@ -54,7 +54,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	public void getHomeData(){
 		try {
 			// TODO - add (access_token, id, params ) constructors for FacebookPosts etc
-			posts = FacebookPosts.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/home'));			
+			posts = new FacebookPosts(FacebookToken.getAccessToken(), uid+'/home');			
 			action = 'getHome';
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
@@ -64,7 +64,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getPhotoData(){
 		try {
-			photos = FacebookPhotos.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/photos'));
+			photos = new FacebookPhotos(FacebookToken.getAccessToken(), uid+'/photos');
 			action = 'getPhotos';
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
@@ -74,7 +74,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getAlbumsData(){
 		try {
-			albums = FacebookAlbums.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/albums'));			
+			albums = new FacebookAlbums(FacebookToken.getAccessToken(), uid+'/albums');			
 			action = 'getAlbums';
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
@@ -84,7 +84,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getFeedData(){
 		try {
-			posts = FacebookPosts.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/feed'));			
+			posts = new FacebookPosts(FacebookToken.getAccessToken(), uid+'/feed');			
 			action = 'getFeed';
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
@@ -94,7 +94,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getPostsData(){
 		try {
-			posts = FacebookPosts.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/posts'));		
+			posts = new FacebookPosts(FacebookToken.getAccessToken(), uid+'/posts');		
 			action = 'getPosts';
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
@@ -104,7 +104,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getTaggedData(){
 		try {
-			posts = FacebookPosts.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/tagged'));		
+			posts = new FacebookPosts(FacebookToken.getAccessToken(), uid+'/tagged');		
 			action = 'getTagged';
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
@@ -114,7 +114,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getLikesData(){
 		try {
-			likes = FacebookLikes.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/likes'));
+			likes = new FacebookLikes(FacebookToken.getAccessToken(), uid+'/likes');
 			action = 'getLikes';
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
@@ -124,7 +124,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getActivitiesData(){
 		try {
-			refs = FacebookRefs.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/activities'));
+			refs = new FacebookRefs(FacebookToken.getAccessToken(), uid+'/activities');
 			action = 'getActivities';
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
@@ -134,7 +134,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getMoviesData(){
 		try {
-			refs = FacebookRefs.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/movies'));
+			refs = new FacebookRefs(FacebookToken.getAccessToken(), uid+'/movies');
 			action = 'getMovies';
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
@@ -144,7 +144,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getBooksData(){
 		try {
-			refs = FacebookRefs.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/books'));
+			refs = new FacebookRefs(FacebookToken.getAccessToken(), uid+'/books');
 			action = 'getBooks';
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
@@ -154,7 +154,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getInterestsData(){
 		try {
-			refs = FacebookRefs.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/interests'));		
+			refs = new FacebookRefs(FacebookToken.getAccessToken(), uid+'/interests');		
 			action = 'getInterests';
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
@@ -164,7 +164,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getTelevisionData(){
 		try {
-			refs = FacebookRefs.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/television'));
+			refs = new FacebookRefs(FacebookToken.getAccessToken(), uid+'/television');
 			action = 'getTelevision';
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
@@ -174,7 +174,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getMusicData(){
 		try {
-			refs = FacebookRefs.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/music'));
+			refs = new FacebookRefs(FacebookToken.getAccessToken(), uid+'/music');
 			action = 'getMusic';
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
@@ -184,7 +184,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getGroupsData(){
 		try {
-			groups = FacebookGroups.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/groups'));
+			groups = new FacebookGroups(FacebookToken.getAccessToken(), uid+'/groups');
 			action = 'getGroups';
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
@@ -194,7 +194,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getStatusesData(){
 		try {
-			statuses = FacebookStatusMessages.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/statuses'));
+			statuses = new FacebookStatusMessages(FacebookToken.getAccessToken(), uid+'/statuses');
 			action = 'getStatuses';
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
@@ -204,7 +204,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getEventsData(){
 		try {
-			events = FacebookEvents.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/events'));		
+			events = new FacebookEvents(FacebookToken.getAccessToken(), uid+'/events');		
 			action = 'getEvents';
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
@@ -214,7 +214,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getNotesData(){
 		try {
-			notes = FacebookNotes.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/notes'));		
+			notes = new FacebookNotes(FacebookToken.getAccessToken(), uid+'/notes');		
 			action = 'getNotes';
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
@@ -224,7 +224,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getLinksData(){
 		try {
-			links = FacebookLinks.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/links'));
+			links = new FacebookLinks(FacebookToken.getAccessToken(), uid+'/links');
 			action = 'getLinks';
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
