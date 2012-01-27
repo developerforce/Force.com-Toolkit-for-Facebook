@@ -36,8 +36,11 @@ public class FacebookNote {
 						comments = new FacebookComments(parser);
 					} else if (text == 'type') {
 						type = parser.getText();
+						if (!type.equals('note')) {
+							throw new FacebookException('FacebookNote found object type '+type+' - expected note');
+						}
 					} else {
-						System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
+						System.debug(LoggingLevel.WARN, 'FacebookNote consuming unrecognized property: '+text);
 						FacebookUtil.consumeObject(parser);
 					}
 				}
@@ -45,6 +48,13 @@ public class FacebookNote {
 		}
 	}
 	
+	public FacebookNote(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookNote(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
 	
 	public static FacebookNote parse(String json) {
 		return new FacebookNote(System.JSON.createParser(json));
@@ -94,6 +104,37 @@ public class FacebookNote {
 		'}';
 		FacebookNote r = parse(json);
 		System.assert(r != null);
+		System.assert(r.id != null);
+		System.assert(r.from_z != null);
+		System.assert(r.subject != null);
+		System.assert(r.message != null);
+		System.assert(r.icon != null);
+		System.assert(r.created_time != null);
+		System.assert(r.updated_time != null);
+		System.assert(r.comments != null);
+		System.assert(r.type != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookNote('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.id != null);
+		System.assert(r.from_z != null);
+		System.assert(r.subject != null);
+		System.assert(r.message != null);
+		System.assert(r.icon != null);
+		System.assert(r.created_time != null);
+		System.assert(r.updated_time != null);
+		System.assert(r.comments != null);
+		System.assert(r.type != null);
+
+		json = '{\"type\": \"test\" }';
+		try {
+			FacebookNote objRoot = new FacebookNote(System.JSON.createParser(json));
+			System.assert(false);
+		} catch (FacebookException fbe) {
+			System.assertEquals(fbe.getMessage(), 'FacebookNote found object type test - expected note');
+		}
 
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
 		FacebookNote objRoot = new FacebookNote(System.JSON.createParser(json));

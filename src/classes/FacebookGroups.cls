@@ -28,6 +28,14 @@ public class FacebookGroups {
 	}
 	
 	
+	public FacebookGroups(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookGroups(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
+	
 	public static FacebookGroups parse(String json) {
 		return new FacebookGroups(System.JSON.createParser(json));
 	}
@@ -75,6 +83,11 @@ public class FacebookGroups {
 
 		FacebookUtil.testmode = true;
 		FacebookUtil.teststubresponse = json;
+		r = new FacebookGroups('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.data != null);
+		System.assert(r.paging != null);
+
 		r = search('TEST', 'TEST');
 		System.assert(r != null);
 		System.assert(r.data != null);

@@ -27,7 +27,14 @@ public class FacebookAlbums {
 		}
 	}
 	
+	public FacebookAlbums(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
 	
+	public FacebookAlbums(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
+		
 	public static FacebookAlbums parse(String json) {
 		return new FacebookAlbums(System.JSON.createParser(json));
 	}
@@ -76,6 +83,15 @@ public class FacebookAlbums {
 		'}';
 		FacebookAlbums r = parse(json);
 		System.assert(r != null);
+		System.assert(r.data != null);
+		System.assert(r.paging != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookAlbums('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.data != null);
+		System.assert(r.paging != null);
 
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
 		FacebookAlbums objRoot = new FacebookAlbums(System.JSON.createParser(json));

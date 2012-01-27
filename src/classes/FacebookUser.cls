@@ -257,6 +257,9 @@ public class FacebookUser {
 						video_upload_limits = new VideoUploadLimits(parser);
 					} else if (text == 'type') {
 						type = parser.getText();
+						if (!type.equals('user')) {
+							throw new FacebookException('FacebookUser found object type '+type+' - expected user');
+						}
 					} else {
 						System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
 						FacebookUtil.consumeObject(parser);
@@ -501,7 +504,7 @@ public class FacebookUser {
 		
 		FacebookUtil.testmode = true;
 		FacebookUtil.teststubresponse = json;
-		r = new FacebookUser('TEST', 'me');
+		r = new FacebookUser('TEST', 'TEST');
 		System.assert(r != null);
 		System.assert(r.id != null);
 		System.assert(r.name != null);
@@ -532,6 +535,14 @@ public class FacebookUser {
 		System.assert(r.verified != null);
 		System.assert(r.updated_time != null);
 		System.assert(r.type != null);
+
+		json = '{\"type\": \"test\" }';
+		try {
+			FacebookUser objRoot = new FacebookUser(System.JSON.createParser(json));
+			System.assert(false);
+		} catch (FacebookException fbe) {
+			System.assertEquals(fbe.getMessage(), 'FacebookUser found object type test - expected user');
+		}
 
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
 		Projects objProjects = new Projects(System.JSON.createParser(json));

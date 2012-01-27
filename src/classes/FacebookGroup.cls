@@ -45,6 +45,9 @@ public class FacebookGroup {
 						email = parser.getText();
 					} else if (text == 'type') {
 						type = parser.getText();
+						if (!type.equals('group')) {
+							throw new FacebookException('FacebookGroup found object type '+type+' - expected group');
+						}
 					} else if (text == 'bookmark_order') {
 						bookmark_order = parser.getIntegerValue();
 					} else if (text == 'unread') {
@@ -60,6 +63,13 @@ public class FacebookGroup {
 		}
 	}
 	
+	public FacebookGroup(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookGroup(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
 	
 	public static FacebookGroup parse(String json) {
 		return new FacebookGroup(System.JSON.createParser(json));
@@ -88,6 +98,47 @@ public class FacebookGroup {
 		'}';
 		FacebookGroup r = parse(json);
 		System.assert(r != null);
+		System.assert(r.id != null);
+		System.assert(r.version != null);
+		System.assert(r.owner != null);
+		System.assert(r.name != null);
+		System.assert(r.description != null);
+		System.assert(r.link != null);
+		System.assert(r.privacy != null);
+		System.assert(r.icon != null);
+		System.assert(r.updated_time != null);
+		System.assert(r.email != null);
+		System.assert(r.type != null);
+		System.assert(r.bookmark_order != null);
+		System.assert(r.unread != null);
+		System.assert(r.administrator != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookGroup('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.id != null);
+		System.assert(r.version != null);
+		System.assert(r.owner != null);
+		System.assert(r.name != null);
+		System.assert(r.description != null);
+		System.assert(r.link != null);
+		System.assert(r.privacy != null);
+		System.assert(r.icon != null);
+		System.assert(r.updated_time != null);
+		System.assert(r.email != null);
+		System.assert(r.type != null);
+		System.assert(r.bookmark_order != null);
+		System.assert(r.unread != null);
+		System.assert(r.administrator != null);
+
+		json = '{\"type\": \"test\" }';
+		try {
+			FacebookGroup objRoot = new FacebookGroup(System.JSON.createParser(json));
+			System.assert(false);
+		} catch (FacebookException fbe) {
+			System.assertEquals(fbe.getMessage(), 'FacebookGroup found object type test - expected group');
+		}
 
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
 		FacebookGroup objRoot = new FacebookGroup(System.JSON.createParser(json));

@@ -60,8 +60,11 @@ public class FacebookPhoto {
 						likes = new FacebookLikes(parser);
 					} else if (text == 'type') {
 						type = parser.getText();
+						if (!type.equals('photo')) {
+							throw new FacebookException('FacebookPhoto found object type '+type+' - expected photo');
+						}
 					} else {
-						System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
+						System.debug(LoggingLevel.WARN, 'FacebookPhoto consuming unrecognized property: '+text);
 						FacebookUtil.consumeObject(parser);
 					}
 				}
@@ -95,6 +98,13 @@ public class FacebookPhoto {
 		}
 	}
 	
+	public FacebookPhoto(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookPhoto(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
 	
 	public static FacebookPhoto parse(String json) {
 		return new FacebookPhoto(System.JSON.createParser(json));
@@ -201,6 +211,34 @@ public class FacebookPhoto {
 		System.assert(r.comments != null);
 		System.assert(r.likes != null);
 		System.assert(r.type != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookPhoto('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.id != null);
+		System.assert(r.from_z != null);
+		System.assert(r.picture != null);
+		System.assert(r.source != null);
+		System.assert(r.height != null);
+		System.assert(r.width != null);
+		System.assert(r.images != null);
+		System.assert(r.link != null);
+		System.assert(r.icon != null);
+		System.assert(r.created_time != null);
+		System.assert(r.position != null);
+		System.assert(r.updated_time != null);
+		System.assert(r.comments != null);
+		System.assert(r.likes != null);
+		System.assert(r.type != null);
+
+		json = '{\"type\": \"test\" }';
+		try {
+			FacebookPhoto objRoot = new FacebookPhoto(System.JSON.createParser(json));
+			System.assert(false);
+		} catch (FacebookException fbe) {
+			System.assertEquals(fbe.getMessage(), 'FacebookPhoto found object type test - expected photo');
+		}
 
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
 		FacebookPhoto objRoot = new FacebookPhoto(System.JSON.createParser(json));

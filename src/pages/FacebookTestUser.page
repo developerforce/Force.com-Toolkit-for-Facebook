@@ -156,9 +156,10 @@
             
             <!-- This is the result of /userid/friends call. -->
             <apex:pageBlock rendered="{!IF(action=='getFriends',true,false)}" title="User Friends">
-                <apex:pageBlockTable value="{!refs.data}" var="friend">
+                <apex:pageBlockTable value="{!users.data}" var="friend">
                     <apex:column value="{!friend.id}" headerValue="Id"/> 
                     <apex:column value="{!friend.name}" headerValue="Name"/>
+                    <apex:column value="{!friend.hometown.name}" headerValue="Hometown"/>
                 </apex:pageBlockTable>
             </apex:pageBlock>
             

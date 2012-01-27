@@ -23,6 +23,14 @@ public class FacebookEvents {
 		}
 	}
 	
+	public FacebookEvents(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookEvents(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
+	
 	public static FacebookEvents parse(String json) {
 		return new FacebookEvents(System.JSON.createParser(json));
 	}
@@ -74,6 +82,20 @@ public class FacebookEvents {
 		'}';
 		FacebookEvents r = parse(json);
 		System.assert(r != null);
+		System.assert(r.data != null);
+		System.assert(r.paging != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookEvents('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.data != null);
+		System.assert(r.paging != null);
+
+		r = search('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.data != null);
+		System.assert(r.paging != null);
 
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
 		FacebookEvents objRoot = new FacebookEvents(System.JSON.createParser(json));

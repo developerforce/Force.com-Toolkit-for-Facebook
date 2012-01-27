@@ -72,10 +72,13 @@ public class FacebookEvent {
 						updated_time = parser.getText();
 					} else if (text == 'type') {
 						type = parser.getText();
+						if (!type.equals('event')) {
+							throw new FacebookException('FacebookEvent found object type '+type+' - expected event');
+						}
 					} else if (text == 'rsvp_status') {
 						rsvp_status = parser.getText();
 					} else {
-						System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
+						System.debug(LoggingLevel.WARN, 'FacebookEvent consuming unrecognized property: '+text);
 						FacebookUtil.consumeObject(parser);
 					}
 				}
@@ -83,6 +86,13 @@ public class FacebookEvent {
 		}
 	}
 	
+	public FacebookEvent(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookEvent(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
 	
 	public static FacebookEvent parse(String json) {
 		return new FacebookEvent(System.JSON.createParser(json));
@@ -114,6 +124,41 @@ public class FacebookEvent {
 		'}';
 		FacebookEvent r = parse(json);
 		System.assert(r != null);
+		System.assert(r.id != null);
+		System.assert(r.owner != null);
+		System.assert(r.name != null);
+		System.assert(r.description != null);
+		System.assert(r.start_time != null);
+		System.assert(r.end_time != null);
+		System.assert(r.location != null);
+		System.assert(r.venue != null);
+		System.assert(r.privacy != null);
+		System.assert(r.updated_time != null);
+		System.assert(r.type != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookEvent('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.id != null);
+		System.assert(r.owner != null);
+		System.assert(r.name != null);
+		System.assert(r.description != null);
+		System.assert(r.start_time != null);
+		System.assert(r.end_time != null);
+		System.assert(r.location != null);
+		System.assert(r.venue != null);
+		System.assert(r.privacy != null);
+		System.assert(r.updated_time != null);
+		System.assert(r.type != null);
+
+		json = '{\"type\": \"test\" }';
+		try {
+			FacebookEvent objRoot = new FacebookEvent(System.JSON.createParser(json));
+			System.assert(false);
+		} catch (FacebookException fbe) {
+			System.assertEquals(fbe.getMessage(), 'FacebookEvent found object type test - expected event');
+		}
 
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
 		Venue objVenue = new Venue(System.JSON.createParser(json));

@@ -26,6 +26,14 @@ public class FacebookComments {
 		}
 	}
 	
+	public FacebookComments(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookComments(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
+	
 	public static FacebookComments parse(String json) {
 		return new FacebookComments(System.JSON.createParser(json));
 	}
@@ -61,6 +69,17 @@ public class FacebookComments {
 		'}';
 		FacebookComments r = parse(json);
 		System.assert(r != null);
+		System.assert(r.data != null);
+		System.assert(r.paging != null);
+		System.assert(r.count != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookComments('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.data != null);
+		System.assert(r.paging != null);
+		System.assert(r.count != null);
 
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
 		FacebookComments objRoot = new FacebookComments(System.JSON.createParser(json));

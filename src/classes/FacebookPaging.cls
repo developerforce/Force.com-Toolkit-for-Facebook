@@ -20,6 +20,14 @@ public class FacebookPaging {
 		}
 	}
 	
+	public FacebookPaging(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookPaging(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
+	
 	public static FacebookPaging parse(String json) {
 		return new FacebookPaging(System.JSON.createParser(json));
 	}
@@ -32,6 +40,15 @@ public class FacebookPaging {
 		'}';
 		FacebookPaging r = parse(json);
 		System.assert(r != null);
+		System.assert(r.previous != null);
+		System.assert(r.next != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookPaging('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.previous != null);
+		System.assert(r.next != null);
 
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
 		FacebookPaging objPaging = new FacebookPaging(System.JSON.createParser(json));

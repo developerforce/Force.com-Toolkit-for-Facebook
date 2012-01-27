@@ -55,11 +55,11 @@ Your controller code can now retrieve the current user's token with `FacebookTok
 
 ### Map Facebook Accounts to Salesforce Users
 
-Alternatively, from Spring '12 onwards, you can implement your app within a Salesforce org or portal. In this case, each Facebook account is mapped to a unique user within your Salesforce org. [Social Single Sign-On – Authentication Providers in Spring ’12](http://blogs.developerforce.com/developer-relations/2012/01/social-single-sign-on-authentication-providers-in-spring-12.html) gives an overview of configuring Facebook as an *Authentication Provider* and linking existing salesforce.com users' accounts to their Facebook accounts, or creating new accounts for users arriving from Facebook.
+Alternatively, from Spring ''12 onwards, you can implement your app within a Salesforce org or portal. In this case, each Facebook account is mapped to a unique user within your Salesforce org. [Social Single Sign-On – Authentication Providers in Spring ’12](http://blogs.developerforce.com/developer-relations/2012/01/social-single-sign-on-authentication-providers-in-spring-12.html) gives an overview of configuring Facebook as an *Authentication Provider* and linking existing salesforce.com users' accounts to their Facebook accounts, or creating new accounts for users arriving from Facebook.
 
 If you are using the Facebook Authentication Provider, you need not use `FacebookLoginController`; the platform will manage interaction with Facebook for you. Your Apex code can retrieve the current user's token with `Auth.AuthToken.getAccessToken(`*AuthProviderID*`,` *AuthProviderName*`);`.
 
-Note that, in the Spring '12 release, the Facebook Authentication Provider requests only the `email` permission, limiting the amount of data you can retrieve via the Graph API to the user's email address, user id, name, profile picture, gender, age range, locale, networks, user ID, list of friends, and any other information they have made public. It is expected that developers will be able to set a custom set of requested permissions in a future release.
+Note that, in the Spring ''12 release, the Facebook Authentication Provider requests only the `email` permission, limiting the amount of data you can retrieve via the Graph API to the user's email address, user id, name, profile picture, gender, age range, locale, networks, list of friends, and any other information they have made public. It is expected that developers will be able to set a custom set of requested permissions in a future release.
 
 ### Accessing the Graph API
 

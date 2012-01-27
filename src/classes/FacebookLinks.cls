@@ -23,6 +23,14 @@ public class FacebookLinks {
 		}
 	}
 	
+	public FacebookLinks(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookLinks(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
+	
 	public static FacebookLinks parse(String json) {
 		return new FacebookLinks(System.JSON.createParser(json));
 	}
@@ -100,6 +108,15 @@ public class FacebookLinks {
 		'}';
 		FacebookLinks r = parse(json);
 		System.assert(r != null);
+		System.assert(r.data != null);
+		System.assert(r.paging != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookLinks('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.data != null);
+		System.assert(r.paging != null);
 
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
 		FacebookLinks objRoot = new FacebookLinks(System.JSON.createParser(json));

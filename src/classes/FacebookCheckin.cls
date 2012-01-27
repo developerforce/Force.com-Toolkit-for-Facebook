@@ -38,6 +38,14 @@ public class FacebookCheckin {
 		}
 	}
 
+	public FacebookCheckin(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookCheckin(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
+	
 	public static FacebookCheckin parse(String json) {
 		return new FacebookCheckin(System.JSON.createParser(json));
 	}
@@ -94,6 +102,19 @@ public class FacebookCheckin {
 		'  }'+
 		'}';
 		FacebookCheckin r = parse(json);
+		System.assert(r != null);
+		System.assert(r.id != null);
+		System.assert(r.from_z != null);
+		System.assert(r.tags != null);
+		System.assert(r.place != null);
+		System.assert(r.application != null);
+		System.assert(r.created_time != null);
+		System.assert(r.likes != null);
+		System.assert(r.message != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookCheckin('TEST', 'TEST');
 		System.assert(r != null);
 		System.assert(r.id != null);
 		System.assert(r.from_z != null);

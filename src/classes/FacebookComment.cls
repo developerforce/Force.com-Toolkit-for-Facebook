@@ -27,6 +27,9 @@ public class FacebookComment {
 						user_likes = parser.getText();
 					} else if (text == 'type') {
 						type = parser.getText();
+						if (!type.equals('comment')) {
+							throw new FacebookException('FacebookComment found object type '+type+' - expected comment');
+						}
 					} else {
 						System.debug(LoggingLevel.WARN, 'FacebookComment consuming unrecognized property: '+text);
 						FacebookUtil.consumeObject(parser);
@@ -34,6 +37,14 @@ public class FacebookComment {
 				} 
 			}
 		}
+	}
+	
+	public FacebookComment(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookComment(String accessToken, String id) {
+		this(accessToken, id, null);
 	}
 	
 	public static FacebookComment parse(String json) {
@@ -56,6 +67,33 @@ public class FacebookComment {
 		'}';
 		FacebookComment r = parse(json);
 		System.assert(r != null);
+		System.assert(r.id != null);
+		System.assert(r.from_z != null);
+		System.assert(r.message != null);
+		System.assert(r.created_time != null);
+		System.assert(r.likes != null);
+		System.assert(r.user_likes != null);
+		System.assert(r.type != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookComment('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.id != null);
+		System.assert(r.from_z != null);
+		System.assert(r.message != null);
+		System.assert(r.created_time != null);
+		System.assert(r.likes != null);
+		System.assert(r.user_likes != null);
+		System.assert(r.type != null);
+
+		json = '{\"type\": \"test\" }';
+		try {
+			FacebookComment objRoot = new FacebookComment(System.JSON.createParser(json));
+			System.assert(false);
+		} catch (FacebookException fbe) {
+			System.assertEquals(fbe.getMessage(), 'FacebookComment found object type test - expected comment');
+		}
 
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
 		FacebookComment objRoot = new FacebookComment(System.JSON.createParser(json));

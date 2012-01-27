@@ -43,7 +43,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 		try {
 			Map<String,String> params = new Map<string,string>{'fields' => 'id,name,hometown,gender,link'};
 			
-			refs = FacebookRefs.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/friends', params));
+			users = new FacebookUsers(FacebookToken.getAccessToken(), uid+'/friends', params);
 			action = 'getFriends';
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
@@ -53,6 +53,7 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 	
 	public void getHomeData(){
 		try {
+			// TODO - add (access_token, id, params ) constructors for FacebookPosts etc
 			posts = FacebookPosts.parse(FacebookUtil.get(FacebookToken.getAccessToken(), uid+'/home'));			
 			action = 'getHome';
 		} catch (Exception e) {

@@ -27,6 +27,13 @@ public class FacebookPages {
 		}
 	}
 	
+	public FacebookPages(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookPages(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
 	
 	public static FacebookPages parse(String json) {
 		return new FacebookPages(System.JSON.createParser(json));
@@ -72,6 +79,11 @@ public class FacebookPages {
 
 		FacebookUtil.testmode = true;
 		FacebookUtil.teststubresponse = json;
+		r = new FacebookPages('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.data != null);
+		System.assert(r.paging != null);
+
 		r = search('TEST', 'TEST');
 		System.assert(r != null);
 		System.assert(r.data != null);

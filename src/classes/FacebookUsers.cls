@@ -23,6 +23,14 @@ public class FacebookUsers {
 		}
 	}
 	
+	public FacebookUsers(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookUsers(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
+	
 	public static FacebookUsers parse(String json) {
 		return new FacebookUsers(System.JSON.createParser(json));
 	}
@@ -59,6 +67,13 @@ public class FacebookUsers {
 		'   }'+
 		'}';
 		FacebookUsers r = parse(json);
+		System.assert(r != null);
+		System.assert(r.data != null);
+		System.assert(r.paging != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookUsers('TEST', 'TEST');
 		System.assert(r != null);
 		System.assert(r.data != null);
 		System.assert(r.paging != null);

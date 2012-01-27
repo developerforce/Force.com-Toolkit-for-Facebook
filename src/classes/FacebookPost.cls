@@ -26,6 +26,8 @@ public class FacebookPost {
 		}
 	}
 	
+	public static Set<String> types = new Set<String>{'status', 'link', 'photo', 'video'};
+	
 	public String id {get;set;}
 	public FacebookRef from_z {get;set;}
 	public To to {get;set;}
@@ -91,6 +93,9 @@ public class FacebookPost {
 						}
 					} else if (text == 'type') {
 						type = parser.getText();
+						if (!types.contains(type)) {
+							throw new FacebookException('FacebookPost found object type '+type+' - expected one of '+types);
+						}
 					} else if (text == 'application') {
 						application = new FacebookRef(parser);
 					} else if (text == 'created_time') {
@@ -106,12 +111,20 @@ public class FacebookPost {
 					} else if (text == 'object_id') {
 						object_id = parser.getText();
 					} else {
-						System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
+						System.debug(LoggingLevel.WARN, 'FacebookPost consuming unrecognized property: '+text);
 						FacebookUtil.consumeObject(parser);
 					}
 				}
 			}
 		}
+	}
+	
+	public FacebookPost(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookPost(String accessToken, String id) {
+		this(accessToken, id, null);
 	}
 	
 	public class Action {
@@ -290,6 +303,40 @@ public class FacebookPost {
 		System.assert(r.story != null);
 		System.assert(r.comments != null);
 		System.assert(r.object_id != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookPost('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.id != null);
+		System.assert(r.from_z != null);
+		System.assert(r.to != null);
+		System.assert(r.message != null);
+		System.assert(r.picture != null);
+		System.assert(r.link != null);
+		System.assert(r.name != null);
+		System.assert(r.caption != null);
+		System.assert(r.description != null);
+		System.assert(r.source != null);
+		System.assert(r.properties != null);
+		System.assert(r.icon != null);
+		System.assert(r.actions != null);
+		System.assert(r.type != null);
+		System.assert(r.application != null);
+		System.assert(r.created_time != null);
+		System.assert(r.updated_time != null);
+		System.assert(r.likes != null);
+		System.assert(r.story != null);
+		System.assert(r.comments != null);
+		System.assert(r.object_id != null);
+
+		json = '{\"type\": \"test\" }';
+		try {
+			FacebookPost objRoot = new FacebookPost(System.JSON.createParser(json));
+			System.assert(false);
+		} catch (FacebookException fbe) {
+			System.assertEquals(fbe.getMessage(), 'FacebookPost found object type test - expected one of '+types);
+		}
 
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
 		FacebookPost objRoot = new FacebookPost(System.JSON.createParser(json));

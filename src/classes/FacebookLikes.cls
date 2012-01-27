@@ -26,7 +26,14 @@ public class FacebookLikes {
 		}
 	}
 
-
+	public FacebookLikes(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookLikes(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
+	
 	public static FacebookLikes parse(String json) {
 		return new FacebookLikes(System.JSON.createParser(json));
 	}
@@ -50,7 +57,18 @@ public class FacebookLikes {
 		'}';
 		FacebookLikes r = parse(json);
 		System.assert(r != null);
+		System.assert(r.data != null);
+		System.assert(r.paging != null);
+		System.assert(r.paging != null);
 		
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookLikes('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.data != null);
+		System.assert(r.paging != null);
+		System.assert(r.paging != null);
+
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
 		FacebookLikes objLikes = new FacebookLikes(System.JSON.createParser(json));
 		System.assert(objLikes != null);

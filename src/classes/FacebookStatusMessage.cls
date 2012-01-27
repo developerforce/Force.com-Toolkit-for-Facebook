@@ -30,8 +30,11 @@ public class FacebookStatusMessage {
 						comments = new FacebookComments(parser);
 					} else if (text == 'type') {
 						type = parser.getText();
+						if (!type.equals('status')) {
+							throw new FacebookException('FacebookStatusMessage found object type '+type+' - expected status');
+						}
 					} else {
-						System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
+						System.debug(LoggingLevel.WARN, 'FacebookStatusMessage consuming unrecognized property: '+text);
 						FacebookUtil.consumeObject(parser);
 					}
 				}
@@ -39,6 +42,13 @@ public class FacebookStatusMessage {
 		}
 	}
 		
+	public FacebookStatusMessage(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookStatusMessage(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
 	
 	public static FacebookStatusMessage parse(String json) {
 		return new FacebookStatusMessage(System.JSON.createParser(json));
@@ -101,6 +111,33 @@ public class FacebookStatusMessage {
 		'}';
 		FacebookStatusMessage r = parse(json);
 		System.assert(r != null);
+		System.assert(r.id != null);
+		System.assert(r.from_z != null);
+		System.assert(r.message != null);
+		System.assert(r.updated_time != null);
+		System.assert(r.likes != null);
+		System.assert(r.comments != null);
+		System.assert(r.type != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookStatusMessage('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.id != null);
+		System.assert(r.from_z != null);
+		System.assert(r.message != null);
+		System.assert(r.updated_time != null);
+		System.assert(r.likes != null);
+		System.assert(r.comments != null);
+		System.assert(r.type != null);
+
+		json = '{\"type\": \"test\" }';
+		try {
+			FacebookStatusMessage objRoot = new FacebookStatusMessage(System.JSON.createParser(json));
+			System.assert(false);
+		} catch (FacebookException fbe) {
+			System.assertEquals(fbe.getMessage(), 'FacebookStatusMessage found object type test - expected status');
+		}
 
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
 		FacebookStatusMessage objRoot = new FacebookStatusMessage(System.JSON.createParser(json));

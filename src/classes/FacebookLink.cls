@@ -42,8 +42,11 @@ public class FacebookLink {
 						comments = new FacebookComments(parser);
 					} else if (text == 'type') {
 						type = parser.getText();
+						if (!type.equals('link')) {
+							throw new FacebookException('FacebookLink found object type '+type+' - expected link');
+						}
 					} else {
-						System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
+						System.debug(LoggingLevel.WARN, 'FacebookLink consuming unrecognized property: '+text);
 						FacebookUtil.consumeObject(parser);
 					}
 				}
@@ -51,6 +54,13 @@ public class FacebookLink {
 		}
 	}
 	
+	public FacebookLink(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookLink(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
 	
 	public static FacebookLink parse(String json) {
 		return new FacebookLink(System.JSON.createParser(json));
@@ -109,6 +119,41 @@ public class FacebookLink {
 		'}';
 		FacebookLink r = parse(json);
 		System.assert(r != null);
+		System.assert(r.id != null);
+		System.assert(r.from_z != null);
+		System.assert(r.message != null);
+		System.assert(r.picture != null);
+		System.assert(r.link != null);
+		System.assert(r.name != null);
+		System.assert(r.description != null);
+		System.assert(r.icon != null);
+		System.assert(r.created_time != null);
+		System.assert(r.comments != null);
+		System.assert(r.type != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookLink('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.id != null);
+		System.assert(r.from_z != null);
+		System.assert(r.message != null);
+		System.assert(r.picture != null);
+		System.assert(r.link != null);
+		System.assert(r.name != null);
+		System.assert(r.description != null);
+		System.assert(r.icon != null);
+		System.assert(r.created_time != null);
+		System.assert(r.comments != null);
+		System.assert(r.type != null);
+
+		json = '{\"type\": \"test\" }';
+		try {
+			FacebookLink objRoot = new FacebookLink(System.JSON.createParser(json));
+			System.assert(false);
+		} catch (FacebookException fbe) {
+			System.assertEquals(fbe.getMessage(), 'FacebookLink found object type test - expected link');
+		}
 
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
 		FacebookLink objRoot = new FacebookLink(System.JSON.createParser(json));

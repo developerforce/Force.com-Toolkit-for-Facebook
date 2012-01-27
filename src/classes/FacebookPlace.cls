@@ -64,6 +64,14 @@ public class FacebookPlace {
 		}
 	}
 	
+	public FacebookPlace(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookPlace(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
+	
 	public static FacebookPlace parse(String json) {
 		return new FacebookPlace(System.JSON.createParser(json));
 	}
@@ -85,6 +93,15 @@ public class FacebookPlace {
 		'  \"id\": \"151116474914629\"'+
 		'}';
 		FacebookPlace r = parse(json);
+		System.assert(r != null);
+		System.assert(r.name != null);
+		System.assert(r.category != null);
+		System.assert(r.location != null);
+		System.assert(r.id != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookPlace('TEST', 'TEST');
 		System.assert(r != null);
 		System.assert(r.name != null);
 		System.assert(r.category != null);

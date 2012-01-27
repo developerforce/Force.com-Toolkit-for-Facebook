@@ -27,6 +27,13 @@ public class FacebookVideos {
 		}
 	}
 	
+	public FacebookVideos(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookVideos(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
 	
 	public static FacebookVideos parse(String json) {
 		return new FacebookVideos(System.JSON.createParser(json));
@@ -178,6 +185,15 @@ public class FacebookVideos {
 		'}';
 		FacebookVideos r = parse(json);
 		System.assert(r != null);
+		System.assert(r.data != null);
+		System.assert(r.paging != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookVideos('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.data != null);
+		System.assert(r.paging != null);
 
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
 		FacebookVideos objRoot = new FacebookVideos(System.JSON.createParser(json));

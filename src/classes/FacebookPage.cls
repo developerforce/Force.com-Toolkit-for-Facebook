@@ -61,6 +61,9 @@ public class FacebookPage {
 						access_token = parser.getText();
 					} else if (text == 'type') {
 						type = parser.getText();
+						if (!type.equals('page')) {
+							throw new FacebookException('FacebookPage found object type '+type+' - expected page');
+						}
 					} else {
 						System.debug(LoggingLevel.WARN, 'FacebookPage consuming unrecognized property: '+text);
 						FacebookUtil.consumeObject(parser);
@@ -70,6 +73,13 @@ public class FacebookPage {
 		}
 	}
 	
+	public FacebookPage(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookPage(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
 	
 	public static FacebookPage parse(String json) {
 		return new FacebookPage(System.JSON.createParser(json));
@@ -98,6 +108,53 @@ public class FacebookPage {
 		'}';
 		FacebookPage r = parse(json);
 		System.assert(r != null);
+		System.assert(r.id != null);
+		System.assert(r.name != null);
+		System.assert(r.picture != null);
+		System.assert(r.link != null);
+		System.assert(r.likes != null);
+		System.assert(r.phone != null);
+		System.assert(r.checkins != null);
+		System.assert(r.category != null);
+		System.assert(r.website != null);
+		System.assert(r.username != null);
+		System.assert(r.founded != null);
+		System.assert(r.company_overview != null);
+		System.assert(r.mission != null);
+		System.assert(r.about != null);
+		System.assert(r.talking_about_count != null);
+		System.assert(r.access_token != null);
+		System.assert(r.type != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookPage('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.id != null);
+		System.assert(r.name != null);
+		System.assert(r.picture != null);
+		System.assert(r.link != null);
+		System.assert(r.likes != null);
+		System.assert(r.phone != null);
+		System.assert(r.checkins != null);
+		System.assert(r.category != null);
+		System.assert(r.website != null);
+		System.assert(r.username != null);
+		System.assert(r.founded != null);
+		System.assert(r.company_overview != null);
+		System.assert(r.mission != null);
+		System.assert(r.about != null);
+		System.assert(r.talking_about_count != null);
+		System.assert(r.access_token != null);
+		System.assert(r.type != null);
+
+		json = '{\"type\": \"test\" }';
+		try {
+			FacebookPage objRoot = new FacebookPage(System.JSON.createParser(json));
+			System.assert(false);
+		} catch (FacebookException fbe) {
+			System.assertEquals(fbe.getMessage(), 'FacebookPage found object type test - expected page');
+		}
 
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
 		FacebookPage objRoot = new FacebookPage(System.JSON.createParser(json));

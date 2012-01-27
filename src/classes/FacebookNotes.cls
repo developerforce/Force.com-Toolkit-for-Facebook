@@ -23,6 +23,14 @@ public class FacebookNotes {
 		}
 	}
 	
+	public FacebookNotes(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookNotes(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
+	
 	public static FacebookNotes parse(String json) {
 		return new FacebookNotes(System.JSON.createParser(json));
 	}
@@ -117,6 +125,15 @@ public class FacebookNotes {
 		'}';
 		FacebookNotes r = parse(json);
 		System.assert(r != null);
+		System.assert(r.data != null);
+		System.assert(r.paging != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookNotes('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.data != null);
+		System.assert(r.paging != null);
 
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
 		FacebookNotes objRoot = new FacebookNotes(System.JSON.createParser(json));

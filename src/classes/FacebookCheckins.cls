@@ -27,7 +27,14 @@ public class FacebookCheckins {
 		}
 	}
 	
+	public FacebookCheckins(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
 	
+	public FacebookCheckins(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
+		
 	public static FacebookCheckins parse(String json) {
 		return new FacebookCheckins(System.JSON.createParser(json));
 	}
@@ -145,6 +152,9 @@ public class FacebookCheckins {
 
 		FacebookUtil.testmode = true;
 		FacebookUtil.teststubresponse = json;
+		r = new FacebookCheckins('TEST', 'TEST');
+		System.assert(r != null);
+
 		r = search('TEST');
 		System.assert(r != null);
 		System.assert(r.data != null);

@@ -89,6 +89,9 @@ public class FacebookVideo {
 						comments = new FacebookComments(parser);
 					} else if (text == 'type') {
 						type = parser.getText();
+						if (!type.equals('video')) {
+							throw new FacebookException('FacebookVideo found object type '+type+' - expected video');
+						}
 					} else {
 						System.debug(LoggingLevel.WARN, 'Root consuming unrecognized property: '+text);
 						FacebookUtil.consumeObject(parser);
@@ -98,6 +101,13 @@ public class FacebookVideo {
 		}
 	}
 	
+	public FacebookVideo(String accessToken, String id, Map<String, String> params) {
+		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+	}
+	
+	public FacebookVideo(String accessToken, String id) {
+		this(accessToken, id, null);
+	}
 	
 	public static FacebookVideo parse(String json) {
 		return new FacebookVideo(System.JSON.createParser(json));
@@ -167,6 +177,45 @@ public class FacebookVideo {
 		'}';
 		FacebookVideo r = parse(json);
 		System.assert(r != null);
+		System.assert(r.id != null);
+		System.assert(r.from_z != null);
+		System.assert(r.name != null);
+		System.assert(r.description != null);
+		System.assert(r.picture != null);
+		System.assert(r.embed_html != null);
+		System.assert(r.icon != null);
+		System.assert(r.source != null);
+		System.assert(r.created_time != null);
+		System.assert(r.updated_time != null);
+		System.assert(r.format != null);
+		System.assert(r.comments != null);
+		System.assert(r.type != null);
+
+		FacebookUtil.testmode = true;
+		FacebookUtil.teststubresponse = json;
+		r = new FacebookVideo('TEST', 'TEST');
+		System.assert(r != null);
+		System.assert(r.id != null);
+		System.assert(r.from_z != null);
+		System.assert(r.name != null);
+		System.assert(r.description != null);
+		System.assert(r.picture != null);
+		System.assert(r.embed_html != null);
+		System.assert(r.icon != null);
+		System.assert(r.source != null);
+		System.assert(r.created_time != null);
+		System.assert(r.updated_time != null);
+		System.assert(r.format != null);
+		System.assert(r.comments != null);
+		System.assert(r.type != null);
+
+		json = '{\"type\": \"test\" }';
+		try {
+			FacebookVideo objRoot = new FacebookVideo(System.JSON.createParser(json));
+			System.assert(false);
+		} catch (FacebookException fbe) {
+			System.assertEquals(fbe.getMessage(), 'FacebookVideo found object type test - expected video');
+		}
 
 		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
 		Format objFormat = new Format(System.JSON.createParser(json));
