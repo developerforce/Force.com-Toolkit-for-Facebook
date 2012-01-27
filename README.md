@@ -6,8 +6,7 @@ The Force.com Toolkit for Facebook allows your Force.com apps to manipulate the 
 Major changes in Version 3
 --------------------------
 
-* There is a new custom object to associate the Facebook access
-token with a session cookie. This allows a Force.com Site to authenticate users via Facebook.
+* There is a new custom object to associate the Facebook access token with a session cookie. This allows a Force.com Site to authenticate users via Facebook.
 * The toolkit uses the new native JSON implementation, mitigating issues in earlier versions where JSON was parsed in Apex, which severely limited the amount of data that could be parsed.
 * TODO - add code to use Spring '12 Facebook Authentication Provider
 
@@ -55,11 +54,14 @@ Your controller code can now retrieve the current user's token with `FacebookTok
 
 ### Map Facebook Accounts to Salesforce Users
 
-Alternatively, from Spring ''12 onwards, you can implement your app within a Salesforce org or portal. In this case, each Facebook account is mapped to a unique user within your Salesforce org. [Social Single Sign-On – Authentication Providers in Spring ’12](http://blogs.developerforce.com/developer-relations/2012/01/social-single-sign-on-authentication-providers-in-spring-12.html) gives an overview of configuring Facebook as an *Authentication Provider* and linking existing salesforce.com users' accounts to their Facebook accounts, or creating new accounts for users arriving from Facebook.
+Alternatively, from Spring ''12 onwards, you can implement your app within a Salesforce org or portal. In this case, each Facebook account is mapped to a unique user within your Salesforce org. [Social Single Sign-On – Authentication Providers in Spring ’12](http://blogs.developerforce.com/developer-relations/2012/01/social-single-sign-on-authentication-providers-in-spring-12.html) gives an overview of configuring Facebook as an *Authentication Provider* and linking existing salesforce.com users'' accounts to their Facebook accounts, or creating new accounts for users arriving from Facebook.
 
-If you are using the Facebook Authentication Provider, you need not use `FacebookLoginController`; the platform will manage interaction with Facebook for you. Your Apex code can retrieve the current user's token with `Auth.AuthToken.getAccessToken(`*AuthProviderID*`,` *AuthProviderName*`);`.
+If you are using the Facebook Authentication Provider, you need not use `FacebookLoginController`; the platform will manage interaction with Facebook for you. Your Apex code can retrieve the current user''s token with `Auth.AuthToken.getAccessToken(AuthProviderID, AuthProviderType);`.
 
-Note that, in the Spring ''12 release, the Facebook Authentication Provider requests only the `email` permission, limiting the amount of data you can retrieve via the Graph API to the user's email address, user id, name, profile picture, gender, age range, locale, networks, list of friends, and any other information they have made public. It is expected that developers will be able to set a custom set of requested permissions in a future release.
+Since the main intent of this first, Spring ''12, release of Authentication Provider functionality is to provide single sign-on and account linking, there are some limitations in using the FB access token with the Graph API: 
+
+* The Facebook Authentication Provider requests only the `email` permission, limiting the amount of data you can retrieve via the Graph API to the user's email address, user id, name, profile picture, gender, age range, locale, networks, list of friends, and any other information they have made public. It is expected that developers will be able to set a custom set of requested permissions in a future release.
+* The Facebook access token will expire after two hours. There is currently no mechanism for obtaining a fresh access token. One possible strategy for handling this issue would be to detect token expiry and offer to redirect the user to the Authentication Provider SSO link to reauthenticate to Salesforce.
 
 ### Accessing the Graph API
 
