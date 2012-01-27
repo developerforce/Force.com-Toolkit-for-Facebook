@@ -2,7 +2,7 @@
 
 The Force.com Toolkit for Facebook allows your Force.com apps to manipulate the Facebook [Graph API](https://developers.facebook.com/docs/reference/api/). The toolkit provides a set of Apex classes, such as `FacebookUser` and `FacebookPost`, that model Facebook Graph API Objects such as `User` and `Post`.
 
-There is a sample deployment of the toolkit at https://fbtest-developer-edition.na14.force.com/ - you can visit this Force.com Site, login via Facebook, and see the toolkit in action. All the code behind the sample site is included in the toolkit.
+There is a sample deployment of the toolkit at https://testfbtk3-developer-edition.na14.force.com/ - you can visit this Force.com Site, login via Facebook, and see the toolkit in action. All the code behind the sample site is included in the toolkit.
 
 ## Major changes in Version 3
 
