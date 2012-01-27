@@ -36,6 +36,7 @@
     <br/>
     <h2>Sample Page</h2>&nbsp;&nbsp;<apex:outputLink value="FacebookTestUser">Test User Connections</apex:outputLink>
     <p>This page shows you how to use the Force.com Toolkit for Facebook.</p>
+    <p>Your access token: {!accessToken}</p>    
     
     <h2>{!me.name}</h2>
     <br/>
