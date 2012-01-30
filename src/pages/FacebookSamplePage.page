@@ -63,10 +63,9 @@
                     {!post.message}<br/>
                     {!post.story}<br/>
                     {!post.created_time}<br/>
-                    {!post.likes.count}
+                    {!post.likes.count}&nbsp;{!IF(ISBLANK(post.likes), "", IF((post.likes.count == 1), "Like", "Likes"))}
                     <!-- DELETE appears to be broken in the Graph API - see https://developers.facebook.com/bugs/263966423671341
-                    &nbsp;&nbsp;{!IF(ISBLANK(post.likes), "", IF((post.likes.count == 1), " Like ", " Likes "))}
-                    <apex:commandLink value="Delete" action="{!deletePost}" rerender="posts">
+                    &nbsp;&nbsp;<apex:commandLink value="Delete" action="{!deletePost}" rerender="posts">
                         <apex:param name="postId" value="{!post.id}" assignTo="{!postId}"/>
                     </apex:commandLink>
                      -->
