@@ -16,7 +16,7 @@ public virtual class FacebookLoginController {
     }
 
     public PageReference login() {
-        List<FacebookApp__c> fapps = [SELECT clientID__c, clientSecret__c, extendedPermissions__c 
+        List<FacebookApp__c> fapps = [SELECT clientID__c, clientSecret__c, permissions__c 
             FROM FacebookApp__c 
             WHERE clientID__c = :getAppId()];
 
@@ -56,8 +56,8 @@ public virtual class FacebookLoginController {
         }
         
         // No session
-        String exPerms = (fapps[0].extendedPermissions__c != null && fapps[0].extendedPermissions__c != '') ?
-            ('&scope='+fapps[0].extendedPermissions__c.replaceAll('\\s', '')) : '';
+        String exPerms = (fapps[0].permissions__c != null && fapps[0].permissions__c != '') ?
+            ('&scope='+fapps[0].permissions__c.replace(';', ',')) : '';
         PageReference pageRef;
         
         if (! ApexPages.currentPage().getParameters().containsKey('code')) {
@@ -87,10 +87,10 @@ public virtual class FacebookLoginController {
             Http h = new Http();
             String resp;
             if (code.equals('TEST')) {
-            	resp = 'access_token=TEST&expires=3600';
+                resp = 'access_token=TEST&expires=3600';
             } else {
-				HttpResponse res = h.send(req);
-				resp = res.getBody();
+                HttpResponse res = h.send(req);
+                resp = res.getBody();
             }
     
             System.debug('FINAL RESP IS:'+resp); 
@@ -114,29 +114,29 @@ public virtual class FacebookLoginController {
     }
     
     static testMethod void testController() {
-    	PageReference pageRef = Page.FacebookSamplePage;
-    	
-    	// We'll need the URL later to check we're being redirected to 
-    	// the right place
-    	String url = pageRef.getUrl().split('\\?')[0];
-    	
-    	Test.setCurrentPage(pageRef);
-    	
-    	FacebookLoginController controller = new FacebookLoginController();
-    	
-    	PageReference nextPageRef = controller.login();
-    	
-    	// Did we get redirected to FB?
-    	System.assert(nextPageRef.getUrl().startsWith('https://graph.facebook.com/oauth/authorize'));
-    	
-    	Test.setCurrentPage(pageRef);
-    	
-    	pageRef.getParameters().put('code', 'TEST');
+        PageReference pageRef = Page.FacebookSamplePage;
+        
+        // We'll need the URL later to check we're being redirected to 
+        // the right place
+        String url = pageRef.getUrl().split('\\?')[0];
+        
+        Test.setCurrentPage(pageRef);
+        
+        FacebookLoginController controller = new FacebookLoginController();
+        
+        PageReference nextPageRef = controller.login();
+        
+        // Did we get redirected to FB?
+        System.assert(nextPageRef.getUrl().startsWith('https://graph.facebook.com/oauth/authorize'));
+        
+        Test.setCurrentPage(pageRef);
+        
+        pageRef.getParameters().put('code', 'TEST');
   
-  		nextPageRef = controller.login();
-    	
-    	// Did we get redirected back to the page?
-    	System.assertEquals(nextPageRef.getUrl(), url+'?a=b');
-    	System.assert(nextPageRef.getRedirect());
+        nextPageRef = controller.login();
+        
+        // Did we get redirected back to the page?
+        System.assertEquals(nextPageRef.getUrl(), url+'?a=b');
+        System.assert(nextPageRef.getRedirect());
     }
 }
