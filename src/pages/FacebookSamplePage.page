@@ -54,6 +54,7 @@
     <apex:form >
         <h2>Your Feed</h2>&nbsp;&nbsp;<apex:commandButton value="Refresh" rerender="posts"/>
         <apex:outputPanel id="posts">
+    		<br/><apex:outputText value="{!error}" />
             <apex:dataTable value="{!myPosts.data}" var="post" cellpadding="5">
                 <apex:column style="vertical-align:top;">
                     <c:FacebookProfilePicture fbid="{!post.from_z.id}" width="60" height="60" />
@@ -63,12 +64,10 @@
                     {!post.message}<br/>
                     {!post.story}<br/>
                     {!post.created_time}<br/>
-                    {!post.likes.count}&nbsp;{!IF(ISBLANK(post.likes), "", IF((post.likes.count == 1), "Like", "Likes"))}
-                    <!-- DELETE appears to be broken in the Graph API - see https://developers.facebook.com/bugs/263966423671341
-                    &nbsp;&nbsp;<apex:commandLink value="Delete" action="{!deletePost}" rerender="posts">
+                    {!post.likes.count}{!IF(ISBLANK(post.likes), "", IF((post.likes.count == 1), " Like ", " Likes "))}
+                    <apex:commandLink value="Delete" action="{!deletePost}" rerender="posts">
                         <apex:param name="postId" value="{!post.id}" assignTo="{!postId}"/>
                     </apex:commandLink>
-                     -->
                     <apex:dataTable value="{!post.comments.data}" var="comment" cellpadding="5">
                         <apex:column style="vertical-align:top;">
                             <c:FacebookProfilePicture fbid="{!comment.from_z.id}" width="40" height="40"  type="small"/>
