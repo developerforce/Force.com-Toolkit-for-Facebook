@@ -1,0 +1,364 @@
+<apex:page controller="FacebookTestUserController" action="{!login}" 
+  cache="false" sidebar="false" showHeader="false" 
+  title="Force.com Toolkit for Facebook - User Object Test Page">
+    <apex:stylesheet value="{!URLFOR($Resource.style)}"/>
+    <script src="{!$Resource.jquery}"></script>
+    <script src="{!$Resource.html_sanitizer}"></script>
+    <script>
+        var $j = jQuery.noConflict();
+        
+        function showThrobber() {
+            $j("#throbber").html('<img src="{!$Resource.ajax}" width="16" height="11"/>');
+        }
+    </script>
+    <h1>Force.com Toolkit for Facebook</h1>
+    <br/>
+    <br/>
+    <apex:outputLink value="FacebookSamplePage">Sample Page</apex:outputLink>&nbsp;&nbsp;<h2>Test User Connections</h2>
+    <p>This page allows you to retrieve fields and connections for a given user. Enter a Facebook user ID (use <b>me</b> 
+    to see your own data) or search term and click the buttons to retrieve data.</p>
+    <p>Your access token: {!accessToken}</p>    
+    
+    <!-- A simple Form that calls methods in the Controller, the USER ID is used to call the connections of the user object in the graph api.  -->
+    <apex:pageBlock title="Facebook Toolkit - User Object Tests">
+        <apex:form >
+            <label>Query&nbsp;</label>
+            <apex:inputText value="{!uid}"/>
+            <br/>
+            
+            <br/><br/><h3>These are the connections of the User Object , listed per returned Object type.</h3><br/><br/>
+            
+            <label>User Connections&nbsp;</label>
+            <apex:commandButton action="{!getUserData}" value="User Data" onclick="showThrobber();" rerender="results"/>
+            <apex:commandButton action="{!getFriendsData}" value="Friends" onclick="showThrobber();" rerender="results"/><br/>
+            
+            <label>Post Connections&nbsp;</label>
+            <apex:commandButton action="{!getHomeData}" value="Home" onclick="showThrobber();" rerender="results"/>
+            <apex:commandButton action="{!getFeedData}" value="Feed" onclick="showThrobber();" rerender="results"/>
+            <apex:commandButton action="{!getPostsData}" value="Posts" onclick="showThrobber();" rerender="results"/>
+            <apex:commandButton action="{!getTaggedData}" value="Tagged" onclick="showThrobber();" rerender="results"/><br/>
+            
+            <label>Page Connections&nbsp;</label>
+            <apex:commandButton action="{!getLikesData}" value="Likes" onclick="showThrobber();" rerender="results"/>
+            <apex:commandButton action="{!getActivitiesData}" value="Activities" onclick="showThrobber();" rerender="results"/>
+            <apex:commandButton action="{!getMusicData}" value="Music" onclick="showThrobber();" rerender="results"/>
+            <apex:commandButton action="{!getMoviesData}" value="Movies" onclick="showThrobber();" rerender="results"/>
+            <apex:commandButton action="{!getBooksData}" value="Books" onclick="showThrobber();" rerender="results"/>
+            <apex:commandButton action="{!getInterestsData}" value="Interests" onclick="showThrobber();" rerender="results"/>
+            <apex:commandButton action="{!getTelevisionData}" value="Television" onclick="showThrobber();" rerender="results"/><br/>
+            
+            <label>Photo Connections&nbsp;</label>
+            <apex:commandButton action="{!getPhotoData}" value="Photos" onclick="showThrobber();" rerender="results"/><br/>
+            
+            <label>Album Connections&nbsp;</label>
+            <apex:commandButton action="{!getAlbumsData}" value="Albums" onclick="showThrobber();" rerender="results"/><br/>
+            
+            <label>Note Connections&nbsp;</label>
+            <apex:commandButton action="{!getNotesData}" value="Notes" onclick="showThrobber();" rerender="results"/><br/>        
+            
+            <label>Event Connections&nbsp;</label>
+            <apex:commandButton action="{!getEventsData}" value="Events" onclick="showThrobber();" rerender="results"/><br/>
+
+            <label>Group Connections&nbsp;</label>
+            <apex:commandButton action="{!getGroupsData}" value="Groups" onclick="showThrobber();" rerender="results"/><br/>
+            
+            <label>Status Message Connections&nbsp;</label>
+            <apex:commandButton action="{!getStatusesData}" value="Statuses" onclick="showThrobber();" rerender="results"/><br/>
+            
+            <label>Link Connections&nbsp;</label>
+            <apex:commandButton action="{!getLinksData}" value="Links" onclick="showThrobber();" rerender="results"/><br/>
+            
+            <br/><br/><h3>These are the available searches.</h3><br/><br/>
+            
+            <label>Searches&nbsp;</label>
+            <apex:commandButton action="{!searchPosts}" value="Posts" onclick="showThrobber();" rerender="results"/>
+            <apex:commandButton action="{!searchUsers}" value="Users" onclick="showThrobber();" rerender="results"/>
+            <apex:commandButton action="{!searchPages}" value="Pages" onclick="showThrobber();" rerender="results"/>
+            <apex:commandButton action="{!searchEvents}" value="Events" onclick="showThrobber();" rerender="results"/>
+            <apex:commandButton action="{!searchGroups}" value="Groups" onclick="showThrobber();" rerender="results"/>
+            <apex:commandButton action="{!searchPlaces}" value="Places" onclick="showThrobber();" rerender="results"/>
+            <apex:commandButton action="{!searchCheckins}" value="Checkins" onclick="showThrobber();" rerender="results"/><br/>
+            
+        </apex:form>
+    </apex:pageBlock>
+    
+    
+    <!-- The results for each call are handled here. -->
+    <apex:outputPanel layout="block" id="results">
+    	<!-- Placeholder for throbber -->
+    	<span id="throbber"></span>
+        <apex:outputPanel >
+            
+            
+            <!-- This is the result of /userid call. -->
+            <apex:pageBlock rendered="{!IF(action=='getData',true,false)}" title="User">
+                <apex:pageBlock title="User Info">
+                    <apex:pageBlockSection columns="2" title="Personal Info">
+                        <apex:outputLabel >Name</apex:outputLabel><apex:outputText value="{!user.name}"/>
+                        <apex:outputLabel >First Name</apex:outputLabel><apex:outputText value="{!user.first_name}"/>
+                        <apex:outputLabel >Last Name</apex:outputLabel><apex:outputText value="{!user.last_name}"/>
+                        <apex:outputLabel >Link</apex:outputLabel><a href="{!user.link}">Facebook Profile</a>
+                        <apex:outputLabel >Bio</apex:outputLabel><apex:outputText value="{!user.bio}"/>
+                        <apex:outputLabel >Quotes</apex:outputLabel><apex:outputText value="{!user.quotes}"/>
+                        <apex:outputLabel >Birthday</apex:outputLabel><apex:outputText value="{!user.birthday}"/>
+                        <apex:outputLabel >Religion</apex:outputLabel><apex:outputText value="{!user.religion}"/>
+                        <apex:outputLabel >Political</apex:outputLabel><apex:outputText value="{!user.political}"/>
+                        
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection columns="2" title="Location Info">
+                        <apex:outputLabel >Hometown Id</apex:outputLabel><apex:outputText value="{!user.hometown.id}"/>
+                        <apex:outputLabel >Hometown Name</apex:outputLabel><apex:outputText value="{!user.hometown.name}"/>
+                        <apex:outputLabel >Location Id</apex:outputLabel><apex:outputText value="{!user.location.id}"/>
+                        <apex:outputLabel >Location Name</apex:outputLabel><apex:outputText value="{!user.location.name}"/>
+                        <apex:outputLabel >Locale</apex:outputLabel><apex:outputText value="{!user.locale}"/>
+                        <apex:outputLabel >Timezone</apex:outputLabel><apex:outputText value="{!user.timezone}"/>
+                        
+                        
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection columns="2" title="Relationship Info">   
+                        <apex:outputLabel >Relationship Status</apex:outputLabel><apex:outputText value="{!user.relationship_status}"/>
+                        <apex:outputLabel >Significant Other Id</apex:outputLabel><apex:outputText value="{!user.significant_other.id}"/>
+                        <apex:outputLabel >Significant Other Name</apex:outputLabel><apex:outputText value="{!user.significant_other.name}"/>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection columns="2" title="Contact Info">
+                        <apex:outputLabel >Website</apex:outputLabel><apex:outputText value="{!user.website}"/>
+                        <apex:outputLabel >Email</apex:outputLabel><apex:outputText value="{!user.email}"/>
+                    </apex:pageBlockSection>
+                    
+                </apex:pageBlock>
+                
+                <apex:pageBlock title="Education">
+                    <apex:repeat value="{!user.education}" var="education">
+                        <apex:pageBlockSection columns="2" title="Education Item">
+                            <label>School Id</label><apex:outputText value="{!education.school.id}"/>
+                            <label>School Name</label><apex:outputText value="{!education.school.name}"/>
+                            <label>Concentrations</label>
+                            <apex:pageBlockTable value="{!education.concentration}" var="c">
+                                <apex:column value="{!c.id}" headerValue="Id"/> 
+                                <apex:column value="{!c.name}" headerValue="Name"/>
+                            </apex:pageBlockTable>
+                        </apex:pageBlockSection>
+                    </apex:repeat>
+                </apex:pageBlock>
+                <apex:pageBlock title="Work">
+                    <apex:repeat value="{!user.work}" var="work">
+                        <apex:pageBlockSection columns="2" title="Work Item">   
+                            <apex:outputLabel >Employer Id</apex:outputLabel><apex:outputText value="{!work.employer.id}"/>
+                            <apex:outputLabel >Employer Name</apex:outputLabel><apex:outputText value="{!work.employer.name}"/>
+                            <apex:outputLabel >Position Id</apex:outputLabel><apex:outputText value="{!work.position.id}"/>
+                            <apex:outputLabel >Position Name</apex:outputLabel><apex:outputText value="{!work.position.name}"/>
+                            <apex:outputLabel >Start Date</apex:outputLabel><apex:outputText value="{!work.start_date}"/>
+                            <apex:outputLabel >End Date</apex:outputLabel><apex:outputText value="{!work.end_date}"/>
+                        </apex:pageBlockSection>
+                    </apex:repeat>
+                </apex:pageBlock>
+            </apex:pageBlock>   
+            
+            
+            <!-- This is the result of /userid/friends call. -->
+            <apex:pageBlock rendered="{!IF(action=='getFriends',true,false)}" title="User Friends">
+                <apex:pageBlockTable value="{!users.data}" var="friend">
+                    <apex:column value="{!friend.id}" headerValue="Id"/> 
+                    <apex:column value="{!friend.name}" headerValue="Name"/>
+                    <apex:column value="{!friend.hometown.name}" headerValue="Hometown"/>
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+            
+            
+            <!-- This is the result of /userid/home call. -->
+            <apex:pageBlock rendered="{!IF(action=='getHome',true,false)}" title="User Home">
+                <apex:repeat value="{!posts.data}" var="post">
+                    <c:FacebookPostDetail post="{!post}"/>
+                </apex:repeat>
+            </apex:pageBlock>
+            
+            
+            <!-- This is the result of /userid/feed call. -->
+            <apex:pageBlock rendered="{!IF(action=='getFeed',true,false)}" title="User Feed">
+                <apex:repeat value="{!posts.data}" var="post">
+                    <c:FacebookPostDetail post="{!post}"/>
+                </apex:repeat>
+            </apex:pageBlock>
+            
+            
+            <!-- This is the result of /userid/posts call. -->
+            <apex:pageBlock rendered="{!IF(action=='getPosts',true,false)}" title="User Posts">
+                <apex:repeat value="{!posts.data}" var="post">
+                    <c:FacebookPostDetail post="{!post}"/>
+                </apex:repeat>
+            </apex:pageBlock>
+            
+            
+            <!-- This is the result of /userid/tagged call. -->
+            <apex:pageBlock rendered="{!IF(action=='getTagged',true,false)}" title="User Tagged">
+                <apex:repeat value="{!posts.data}" var="post">
+                    <c:FacebookPostDetail post="{!post}"/>
+                </apex:repeat>
+            </apex:pageBlock>
+            
+            
+            <!-- This is the result of /userid/likes call. -->
+            <apex:outputPanel rendered="{!IF(action=='getLikes',true,false)}">
+                <c:FacebookRefList refs="{!likes.data}" title="User Likes"/>
+            </apex:outputPanel>     
+            
+            
+            <!-- This is the result of /userid/activities call. -->
+            <apex:outputPanel rendered="{!IF(action=='getActivities',true,false)}">
+                <c:FacebookRefList refs="{!refs.data}" title="User Activities"/>
+            </apex:outputPanel>     
+            
+            
+            <!-- This is the result of /userid/movies call. -->
+            <apex:outputPanel rendered="{!IF(action=='getMovies',true,false)}">
+                <c:FacebookRefList refs="{!refs.data}" title="User Movies"/>
+            </apex:outputPanel>
+            
+            
+            <!-- This is the result of /userid/books call. -->
+            <apex:outputPanel rendered="{!IF(action=='getBooks',true,false)}">
+                <c:FacebookRefList refs="{!refs.data}" title="User Books"/>
+            </apex:outputPanel>
+            
+            
+            <!-- This is the result of /userid/interests call. -->
+            <apex:outputPanel rendered="{!IF(action=='getInterests',true,false)}">
+                <c:FacebookRefList refs="{!refs.data}" title="User Interests"/>
+            </apex:outputPanel>
+            
+            
+            <!-- This is the result of /userid/television call. -->
+            <apex:outputPanel rendered="{!IF(action=='getTelevision',true,false)}">
+                <c:FacebookRefList refs="{!refs.data}" title="User Television"/>
+            </apex:outputPanel>
+            
+            
+            <!-- This is the result of /userid/music call. -->
+            <apex:outputPanel rendered="{!IF(action=='getMusic',true,false)}">
+                <c:FacebookRefList refs="{!refs.data}" title="User Music"/>
+            </apex:outputPanel>
+            
+            
+            <!-- This is the result of /userid/photos call. -->
+            <apex:pageBlock rendered="{!IF(action=='getPhotos',true,false)}" title="User Photos">
+                <apex:pageBlockTable value="{!photos.data}" var="photo">
+                    <apex:column value="{!photo.id}" headerValue="Id"/> 
+                    <apex:column value="{!photo.name}" headerValue="Name"/>
+                    <apex:column value="{!photo.picture}" headerValue="Picture"/>
+                    <apex:column value="{!photo.height}" headerValue="Height"/>
+                    <apex:column value="{!photo.width}" headerValue="Width"/>
+                    <apex:column headerValue="Link">
+                        <apex:outputLink value="{!photo.link}" target="_blank">View Photo</apex:outputLink>
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+            
+            
+            <!-- This is the result of /userid/albums call. -->
+            <apex:pageBlock rendered="{!IF(action=='getAlbums',true,false)}" title="User Albums">
+                <apex:pageBlockTable value="{!albums.data}" var="album">
+                    <apex:column value="{!album.id}" headerValue="Id"/> 
+                    <apex:column value="{!album.name}" headerValue="Name"/>
+                    <apex:column value="{!album.description}" headerValue="Description"/>
+                    <apex:column headerValue="Link">
+                        <apex:outputLink value="{!album.link}" target="_blank">View Album</apex:outputLink>
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+            
+            
+            <!-- This is the result of /userid/groups call. -->
+            <apex:pageBlock rendered="{!IF(action=='getGroups',true,false)}" title="User Groups">
+                <apex:pageBlockTable value="{!groups.data}" var="group">
+                    <apex:column value="{!group.id}" headerValue="Id"/> 
+                    <apex:column value="{!group.name}" headerValue="Name"/>
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+            
+            
+            <!-- This is the result of /userid/events call. -->
+            <apex:pageBlock rendered="{!IF(action=='getEvents',true,false)}" title="User Events">
+                <apex:pageBlockTable value="{!events.data}" var="event">
+                    <apex:column value="{!event.id}" headerValue="Id"/> 
+                    <apex:column value="{!event.name}" headerValue="Name"/>
+                    <apex:column value="{!event.description}" headerValue="Description"/>
+                    <apex:column value="{!event.owner.name}" headerValue="Owner Name"/>
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+            
+            
+            <!-- This is the result of /userid/statuses call. -->
+            <apex:pageBlock rendered="{!IF(action=='getStatuses',true,false)}" title="User Status Messages">
+                <apex:pageBlockTable value="{!statuses.data}" var="status">
+                    <apex:column value="{!status.id}" headerValue="Id"/> 
+                    <apex:column value="{!status.message}" headerValue="Message"/>
+                    <apex:column value="{!status.updated_time}" headerValue="Updated Time"/>
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+            
+            
+            <!-- This is the result of /userid/notes call. -->
+            <apex:pageBlock rendered="{!IF(action=='getNotes',true,false)}" title="User Notes">
+                <apex:pageBlockTable value="{!notes.data}" var="note">
+                    <apex:column value="{!note.id}" headerValue="Id"/> 
+                    <apex:column value="{!note.from_z.name}" headerValue="From Name"/>
+                    <apex:column value="{!note.subject}" headerValue="Message"/>
+                    <apex:column value="{!note.updated_time}" headerValue="Updated Time"/>
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+            
+            
+            <!-- This is the result of /userid/links call. -->
+            <apex:pageBlock rendered="{!IF(action=='getLinks',true,false)}" title="User Links">
+                <apex:pageBlockTable value="{!links.data}" var="link">
+                    <apex:column value="{!link.id}" headerValue="Id"/> 
+                    <apex:column value="{!link.from_z.name}" headerValue="From Name"/>
+                    <apex:column value="{!link.message}" headerValue="Message"/>
+                    <apex:column value="{!link.description}" headerValue="Description"/>
+                    
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+            
+            <!-- This is the result of /search?q=QUERY?type=user call. -->
+            <apex:pageBlock rendered="{!IF(action=='getUsers',true,false)}" title="Users">
+                <apex:pageBlockTable value="{!users.data}" var="user">
+                    <apex:column value="{!user.id}" headerValue="Id"/> 
+                    <apex:column value="{!user.name}" headerValue="Name"/>
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+
+            <!-- This is the result of /search?q=QUERY?type=page call. -->
+            <apex:pageBlock rendered="{!IF(action=='getPages',true,false)}" title="Pages">
+                <apex:pageBlockTable value="{!pages_z.data}" var="page">
+                    <apex:column value="{!page.id}" headerValue="Id"/> 
+                    <apex:column value="{!page.category}" headerValue="Category"/> 
+                    <apex:column value="{!page.name}" headerValue="Name"/>
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+
+            <!-- This is the result of /search?q=QUERY?type=place call. -->
+            <apex:pageBlock rendered="{!IF(action=='getPlaces',true,false)}" title="Places">
+                <apex:pageBlockTable value="{!places.data}" var="place">
+                    <apex:column value="{!place.id}" headerValue="Id"/> 
+                    <apex:column value="{!place.category}" headerValue="Category"/> 
+                    <apex:column value="{!place.name}" headerValue="Name"/>
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+
+            <!-- This is the result of /search?q=QUERY?type=checkin call. -->
+            <apex:pageBlock rendered="{!IF(action=='getCheckins',true,false)}" title="Checkins">
+                <apex:pageBlockTable value="{!checkins.data}" var="checkin">
+                    <apex:column value="{!checkin.id}" headerValue="Id"/> 
+                    <apex:column value="{!checkin.place.name}" headerValue="Category"/> 
+                    <apex:column value="{!checkin.message}" headerValue="Name"/>
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!IF(action=='error',true,false)}">
+            <apex:pageBlock title="An error ocurred">
+                <p>{!errorMessage}</p>
+            </apex:pageBlock> 
+        </apex:outputPanel>
+    </apex:outputPanel>
+</apex:page>
