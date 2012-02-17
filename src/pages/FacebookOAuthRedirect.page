@@ -1,6 +1,0 @@
-<apex:page controller="FacebookStandardController" >
-<!-- Begin Default Content REMOVE THIS -->
-<h1>Congratulations</h1>
-You have successfully authenticated your app.
-<!-- End Default Content REMOVE THIS -->
-</apex:page>

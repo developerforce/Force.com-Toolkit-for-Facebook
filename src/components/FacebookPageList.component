@@ -8,7 +8,7 @@
 	       	<apex:column value="{!page.id}" headerValue="Id"/> 
 	        <apex:column value="{!page.name}" headerValue="Name"/>
 	        <apex:column value="{!page.category}" headerValue="Category"/>
-	        <apex:column value="{!page.fan_count}" headerValue="Fan Count"/>
+	        <apex:column value="{!page.likes}" headerValue="Likes"/>
 		</apex:pageBlockTable>
 	</apex:pageBlock>
 </apex:component>

@@ -33,69 +33,296 @@
         <type>Default</type>
     </actionOverrides>
     <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
     <fields>
-        <fullName>AppKey__c</fullName>
-        <label>App Key</label>
-        <length>50</length>
+        <fullName>clientID__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Also know as the Application ID</inlineHelpText>
+        <label>App ID</label>
+        <length>255</length>
+        <required>true</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
-        <fullName>AppSecret__c</fullName>
+        <fullName>clientSecret__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Also known as Application Secret</inlineHelpText>
         <label>App Secret</label>
-        <length>50</length>
+        <length>255</length>
+        <required>true</required>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
-        <fullName>FBEmail__c</fullName>
-        <label>Facebook Email</label>
-        <type>Email</type>
-    </fields>
-    <fields>
-        <fullName>FBUserId__c</fullName>
-        <label>FBUserId</label>
-        <length>50</length>
-        <type>Text</type>
-    </fields>
-    <fields>
-        <fullName>SessionKey__c</fullName>
-        <label>SessionKey</label>
-        <length>50</length>
-        <type>Text</type>
-    </fields>
-    <fields>
-        <fullName>UserType__c</fullName>
-        <label>UserType</label>
+        <fullName>permissions__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>When a Facebook user authorizes your application, your application gets access to the user&apos;s data. By default, your application can access all public data in a user&apos;s profile. If you need to access other data you must request additional permissions.</inlineHelpText>
+        <label>Permissions</label>
         <picklist>
             <picklistValues>
-                <fullName>Standard</fullName>
+                <fullName>user_about_me</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>PowerPartner</fullName>
+                <fullName>user_activities</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>PowerCustomerSuccess</fullName>
+                <fullName>user_birthday</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>CustomerSuccess</fullName>
+                <fullName>user_checkins</fullName>
                 <default>false</default>
             </picklistValues>
             <picklistValues>
-                <fullName>Guest</fullName>
+                <fullName>user_education_history</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>user_events</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>user_groups</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>user_hometown</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>user_interests</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>user_likes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>user_location</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>user_notes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>user_online_presence</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>user_photo_video_tags</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>user_photos</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>user_questions</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>user_relationships</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>user_relationship_details</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>user_religion_politics</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>user_status</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>user_videos</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>user_website</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>user_work_history</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>email</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_about_me</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_activities</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_birthday</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_checkins</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_education_history</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_events</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_groups</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_hometown</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_interests</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_likes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_location</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_notes</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_online_presence</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_photo_video_tags</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_photos</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_questions</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_relationships</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_relationship_details</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_religion_politics</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_status</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_videos</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_website</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>friends_work_history</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>read_friendlists</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>read_insights</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>read_mailbox</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>read_requests</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>read_stream</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>xmpp_login</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>ads_management</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>create_event</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>manage_friendlists</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>manage_notifications</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>offline_access</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>publish_checkins</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>publish_stream</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>rsvp_event</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>publish_actions</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>manage_pages</fullName>
                 <default>false</default>
             </picklistValues>
             <sorted>false</sorted>
         </picklist>
-        <type>Picklist</type>
-    </fields>
-    <fields>
-        <fullName>User__c</fullName>
-        <label>User</label>
-        <referenceTo>User</referenceTo>
-        <relationshipName>FacebookApp</relationshipName>
-        <type>Lookup</type>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>MultiselectPicklist</type>
+        <visibleLines>10</visibleLines>
     </fields>
     <label>Facebook App</label>
     <listViews>
@@ -104,10 +331,21 @@
         <label>All</label>
     </listViews>
     <nameField>
-        <label>App Name</label>
+        <label>FacebookApp Name</label>
+        <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
     </nameField>
     <pluralLabel>Facebook Apps</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>Authorize</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>url</linkType>
+        <masterLabel>Authorize</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>/apex/FacebookLogin?id={!FacebookApp__c.Id}</url>
+    </webLinks>
 </CustomObject>
