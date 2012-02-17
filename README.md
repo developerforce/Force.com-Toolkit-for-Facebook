@@ -27,7 +27,7 @@ There are two mechanisms for installing the toolkit: as an unmanaged package, or
 2. Create a new Force.com project in the [Force.com IDE](http://wiki.developerforce.com/index.php/Force.com_IDE) using your new org's credentials. In the 'Choose Initial Project Contents' dialog, select 'Selected metadata components', hit 'Choose...' and select ALL of the components in the next page. This will give you a complete project directory tree.
 3. Clone this GitHub project into the Force.com IDE project directory. You will need to clone it first to a temporary location, since git will not let you clone to a directory with existing content:
 
-        $ git clone --no-checkout git://github.com/metadaddy-sfdc/Force.com-Toolkit-for-Facebook.git /path/to/your/projectdir/tmp
+        $ git clone --no-checkout git://github.com/developerforce/Force.com-Toolkit-for-Facebook.git /path/to/your/projectdir/tmp
         $ mv /path/to/your/projectdir/tmp/.git /path/to/your/projectdir
         $ rm -rf /path/to/your/projectdir/tmp
         $ cd /path/to/your/projectdir
