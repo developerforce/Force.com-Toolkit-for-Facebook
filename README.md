@@ -17,7 +17,7 @@ There are two mechanisms for installing the toolkit: as an unmanaged package, or
 ### Installing the Unmanaged Package
 
 1. Create a new Developer Edition (DE) account at http://developer.force.com/join. You will receive an activation email - click the enclosed link to complete setup of your DE environment. This will also log you in to your new DE environment.
-2. Install the unmanaged package into your new DE org via this URL: https://login.salesforce.com/packaging/installPackage.apexp?p0=04td000000019mf
+2. Install the unmanaged package into your new DE org via this URL: https://login.salesforce.com/packaging/installPackage.apexp?p0=04td000000019n4
 3. Click through the screens to complete installation.
 4. Go to **Setup | Administration Setup | Security Controls | Remote Site Settings** and add https://graph.facebook.com as a new remote site.
 
