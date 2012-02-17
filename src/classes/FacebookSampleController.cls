@@ -3,6 +3,10 @@
  */
 
 global with sharing class FacebookSampleController extends FacebookLoginController {
+	// Set this to an auth provider id (e.g. '0SOD00000000012') to use an 
+	// auth provider (new in Spring '12)
+	private static String authProviderId = null;
+
 	public String message {get; set;}
 	public String postId {get; set;}
 	public String userData {get; set;} 
@@ -12,6 +16,20 @@ global with sharing class FacebookSampleController extends FacebookLoginControll
 		userData = 'null';
 	}
 	
+	// You wouldn't usually need to override login(). We do here to be able
+	// to change the behavior depending on whether we want to use the platform
+	// auth provider. If you want to use the auth provider in your controller,
+	// just don't extend FacebookLoginController
+	public override PageReference login() {
+		return ( authProviderId == null ) ? super.login() : null;
+	}
+	
+    public static String getAccessToken() {
+    	return ( authProviderId == null ) 
+    		? FacebookToken.getAccessToken()
+    		: Auth.AuthToken.getAccessToken(authProviderId, 'facebook');
+    }
+
 	public FacebookUser me {
 		get {
 			try {
@@ -70,10 +88,6 @@ global with sharing class FacebookSampleController extends FacebookLoginControll
         return null;
     }
     
-    public static String getAccessToken() {
-    	return FacebookToken.getAccessToken();
-    }
-
 	// Can't get the cookies in a remote method, so pass it in explicitly
     @RemoteAction
     global static String getFriends(String accessToken) {
@@ -87,7 +101,7 @@ global with sharing class FacebookSampleController extends FacebookLoginControll
 			friends = e.getMessage();
 		}
 		
-		return null;
+		return friends;
     }
 
     public PageReference postToFeed() {

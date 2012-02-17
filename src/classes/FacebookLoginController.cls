@@ -15,7 +15,7 @@ public virtual class FacebookLoginController {
         return fapps[0].clientID__c;
     }
 
-    public PageReference login() {
+    public virtual PageReference login() {
         List<FacebookApp__c> fapps = [SELECT clientID__c, clientSecret__c, permissions__c 
             FROM FacebookApp__c 
             WHERE clientID__c = :getAppId()];

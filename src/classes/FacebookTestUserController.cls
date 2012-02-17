@@ -5,6 +5,10 @@
  */
 
 public with sharing class FacebookTestUserController extends FacebookLoginController {
+	// Set this to an auth provider id (e.g. '0SOD00000000012') to use an 
+	// auth provider (new in Spring '12)
+	private static String authProviderId = null;
+
 	transient public string uid {get;set;}
 	transient public string action {get;set;}
 	transient public string errorMessage {get;set;}
@@ -29,8 +33,18 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 		uid = 'me';
 	}
 
+	// You wouldn't usually need to override login(). We do here to be able
+	// to change the behavior depending on whether we want to use the platform
+	// auth provider. If you want to use the auth provider in your controller,
+	// just don't extend FacebookLoginController
+	public override PageReference login() {
+		return ( authProviderId == null ) ? super.login() : null;
+	}
+	
     public static String getAccessToken() {
-    	return FacebookToken.getAccessToken();
+    	return ( authProviderId == null ) 
+    		? FacebookToken.getAccessToken()
+    		: Auth.AuthToken.getAccessToken(authProviderId, 'facebook');
     }
 
 	public void getUserData(){
