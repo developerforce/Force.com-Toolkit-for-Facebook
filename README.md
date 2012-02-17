@@ -101,4 +101,4 @@ You can see many similar examples in the sample pages and controllers:
 * `FacebookTestUser`
 * `FacebookTestUserController`
 
-For more information, see the [getting started guide](http://wiki.developerforce.com/index.php/Getting_Started_with_the_new_Facebook_Toolkit) (NOTE - as of the current date, this has yet to be updated for version 3 of the toolkit).
+For more information, see the [getting started guide](http://wiki.developerforce.com/page/Getting_Started_with_the_Force.com_Toolkit_for_Facebook,_Version_3.0).
