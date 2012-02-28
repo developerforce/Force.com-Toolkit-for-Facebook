@@ -1,45 +1,45 @@
 public with sharing class FacebookToken {
-	public static boolean testmode { get; set; }
-	public static String cookieName = 'fbsession';
+    public static boolean testmode { get; set; }
+    public static String cookieName = 'fbsession';
 
-	/**
-	 * Get the access token for the current user
-	 */
-	public static String getAccessToken(){
-		if (testmode != null && testmode == true){
-			return '';
-		} else {
-			if (ApexPages.currentPage() == null) {
-				throw new FacebookException('ApexPages.currentPage() is null - Facebook API not supported');
-			}
-			if (ApexPages.currentPage().getCookies().get(cookieName) == null) {
+    /**
+     * Get the access token for the current user
+     */
+    public static String getAccessToken(){
+        if (testmode != null && testmode == true){
+            return '';
+        } else {
+            if (ApexPages.currentPage() == null) {
+                throw new FacebookException('ApexPages.currentPage() is null - Facebook API not supported');
+            }
+            if (ApexPages.currentPage().getCookies().get(cookieName) == null) {
                 return null;
-			}
-			if (ApexPages.currentPage().getParameters().containsKey('code')) {
-				// We're still doing the login flow with Facebook - we've set 
-				// the access token, but we need to let the redirect complete
-				// to avoid the "You have uncommitted work pending. Please 
-				// commit or rollback before calling out" error
-				return null;
-			}
-			String sessionid = ApexPages.currentPage().getCookies().get(cookieName).getValue();
-			
+            }
+            if (ApexPages.currentPage().getParameters().containsKey('code')) {
+                // We're still doing the login flow with Facebook - we've set 
+                // the access token, but we need to let the redirect complete
+                // to avoid the "You have uncommitted work pending. Please 
+                // commit or rollback before calling out" error
+                return null;
+            }
+            String sessionid = ApexPages.currentPage().getCookies().get(cookieName).getValue();
+            
             List<FacebookSession__c> sessions = [SELECT SessionId__c, AccessToken__c 
                 FROM FacebookSession__c 
                 WHERE SessionId__c = :sessionid];
             
-			System.debug('sessionid='+sessionid);
-			System.debug('sessions='+sessions.size());
-			
-			if(sessions.size() == 0 || sessions[0].AccessToken__c == null) {
-				return null;
-			}
-			
-            return sessions[0].AccessToken__c;
-		}
-	}
-	
-	public static void setAccessToken(String response) {
+            System.debug('sessionid='+sessionid);
+            System.debug('sessions='+sessions.size());
+            
+            if(sessions.size() == 0 || sessions[0].AccessToken__c == null) {
+                return null;
+            }
+            
+            return FacebookCrypto.decrypt(sessions[0].AccessToken__c);
+        }
+    }
+    
+    public static void setAccessToken(String response) {
         //response in format of access_token=XXXXX&expires=YYYY
         String accessToken = '';
         Integer expires = 3600;
@@ -73,10 +73,10 @@ public with sharing class FacebookToken {
         }
         ApexPages.currentPage().setCookies(new Cookie[]{new Cookie(cookieName,sessionId,null,-1,false)});
 
-        insert new FacebookSession__c(AccessToken__c = accessToken, SessionId__c = sessionId, Expiry__c = DateTime.now().addSeconds(expires));
-	}
-	
-	public static void deleteAccessToken() {
+        insert new FacebookSession__c(AccessToken__c = FacebookCrypto.encrypt(accessToken), SessionId__c = sessionId, Expiry__c = DateTime.now().addSeconds(expires));
+    }
+    
+    public static void deleteAccessToken() {
         if (ApexPages.currentPage() == null) {
             throw new FacebookException('ApexPages.currentPage() is null - Facebook API not supported');
         }
@@ -95,22 +95,22 @@ public with sharing class FacebookToken {
         if(sessions.size() > 0) {
            delete sessions[0];
         }
-	}
-	
-	
-	/**
-	 * Facebook provides access tokens for a period of 2hours before expiring them
-	 */
-	private boolean hasTokenExpired(Datetime lastmod) {
-		if(lastmod.addHours(2) < DateTime.now())
-		{
-			System.debug(LoggingLevel.INFO, 'FACEBOOK ACCESS TOKEN IS OK');
-			return true;
-		}
-		else
-		{
-			System.debug(LoggingLevel.INFO, 'FACEBOOK ACCESS TOKEN HAS EXPIRED');
-			return false;
-		}
-	}
+    }
+    
+    
+    /**
+     * Facebook provides access tokens for a period of 2hours before expiring them
+     */
+    private boolean hasTokenExpired(Datetime lastmod) {
+        if(lastmod.addHours(2) < DateTime.now())
+        {
+            System.debug(LoggingLevel.INFO, 'FACEBOOK ACCESS TOKEN IS OK');
+            return true;
+        }
+        else
+        {
+            System.debug(LoggingLevel.INFO, 'FACEBOOK ACCESS TOKEN HAS EXPIRED');
+            return false;
+        }
+    }
 }
