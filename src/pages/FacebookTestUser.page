@@ -17,7 +17,6 @@
     <apex:outputLink value="FacebookSamplePage">Sample Page</apex:outputLink>&nbsp;&nbsp;<h2>Test User Connections</h2>
     <p>This page allows you to retrieve fields and connections for a given user. Enter a Facebook user ID (use <b>me</b> 
     to see your own data) or search term and click the buttons to retrieve data.</p>
-    <p>Your access token: {!accessToken}</p>    
     
     <!-- A simple Form that calls methods in the Controller, the USER ID is used to call the connections of the user object in the graph api.  -->
     <apex:pageBlock title="Facebook Toolkit - User Object Tests">
