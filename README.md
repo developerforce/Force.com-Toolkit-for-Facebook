@@ -101,4 +101,10 @@ You can see many similar examples in the sample pages and controllers:
 * `FacebookTestUser`
 * `FacebookTestUserController`
 
+### Security Considerations
+
+The toolkit AES-256 encrypts secrets at rest (Facebook application client secrets and user access tokens), dynamically creating a key on first use and saving that key in a protected custom setting. As a result, these secrets are secure when the toolkit is used in a managed package - the key is inaccessible outside the package, and can only be created when a user with the 'Customize Application' permission (for example, a user with the System Administrator profile) creates the first Facebook App record.
+
+Note that, if the toolkit is used outside a managed package, these secrets are accessible to any users that can access the custom setting, either directly in the console, or indirectly via Apex code.
+
 For more information, see the [getting started guide](http://wiki.developerforce.com/page/Getting_Started_with_the_Force.com_Toolkit_for_Facebook,_Version_3.0).
