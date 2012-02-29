@@ -42,7 +42,7 @@
         <fullName>AccessToken__c</fullName>
         <externalId>false</externalId>
         <label>AccessToken</label>
-        <length>120</length>
+        <length>255</length>
         <required>true</required>
         <type>Text</type>
         <unique>false</unique>

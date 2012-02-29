@@ -76,7 +76,7 @@ public virtual class FacebookLoginController {
                 
             String authuri = 'https://graph.facebook.com/oauth/access_token?client_id='+
                             fapps[0].clientID__c+'&redirect_uri='+rediruri+exPerms+
-                            '&client_secret='+fapps[0].clientSecret__c+'&code='+code;                    
+                            '&client_secret='+FacebookCrypto.decrypt(fapps[0].clientSecret__c)+'&code='+code;                    
             System.debug('authuri is:'+authuri);
                 
             HttpRequest req = new HttpRequest();

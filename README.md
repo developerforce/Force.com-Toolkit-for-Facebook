@@ -17,7 +17,7 @@ There are two mechanisms for installing the toolkit: as an unmanaged package, or
 ### Installing the Unmanaged Package
 
 1. Create a new Developer Edition (DE) account at http://developer.force.com/join. You will receive an activation email - click the enclosed link to complete setup of your DE environment. This will also log you in to your new DE environment.
-2. Install the unmanaged package into your new DE org via this URL: https://login.salesforce.com/packaging/installPackage.apexp?p0=04td000000019n4
+2. Install the unmanaged package into your new DE org via this URL: https://login.salesforce.com/packaging/installPackage.apexp?p0=04td00000001Hsg
 3. Click through the screens to complete installation.
 4. Go to **Setup | Administration Setup | Security Controls | Remote Site Settings** and add https://graph.facebook.com as a new remote site.
 
@@ -42,7 +42,7 @@ There are two mechanisms for installing the toolkit: as an unmanaged package, or
 1. Go to **Setup | App Setup | Develop | Sites** and create a new site. Set the home page to `FacebookSamplePage` and add `FacebookTestUser` to the list of Site Visualforce Pages. Ensure you activate the site.
 2. Go to **Setup | App Setup | Develop | Apex Classes**, hit the 'Compile All Classes' link, then click 'Schedule Apex' and add `FacebookHousekeeping` - set it to run at midnight every night. This scheduled Apex job will remove expired session records from the FacebookSession__c object.
 3. Go to the [Facebook Apps Page](https://developers.facebook.com/apps), click 'Create New App' and complete the required fields. Under 'Website', set Site URL to your site's secure URL - for example, https://fbtest-developer-edition.na14.force.com/
-4. In your DE environment, select the 'Facebook Toolkit 3' app from the application menu at top right, then click the 'Facebook Apps' tab. Create a new Facebook app, copying 'App ID' and 'App Secret' from your new app's settings in Facebook. Set 'Extended Permissions' to a comma-separated list of permissions to allow the sample app to access more data; for example, you might use `read_stream, publish_stream` to allow the app to read and write posts on the user's feed. See the [Facebook Graph API documentation](https://developers.facebook.com/docs/reference/api/permissions/) for a full discussion of permissions.
+4. In your DE environment, select the 'Facebook Toolkit 3' app from the application menu at top right, then click the 'Facebook Apps' tab. Create a new Facebook app, copying 'App ID' from your new app's settings in Facebook. Set 'Permissions' to allow the sample app to access more data; for example, you might use `read_stream, publish_stream` to allow the app to read and write posts on the user's feed. See the [Facebook Graph API documentation](https://developers.facebook.com/docs/reference/api/permissions/) for a full discussion of permissions. Note that, after you save the Facebook App record, you must click the 'Set App Secret' button to enter the 'App Secret' from your new app's settings in Facebook.
 5. Go to your site URL (e.g. https://fbtest-developer-edition.na14.force.com/) and you should be prompted to log in to your new app. Do so and you should see a sample page showing your Facebook user name, profile picture, feed, 'Like' button etc. There are buttons to dynamically retrieve your user profile and friends list.
 6. Now you have the sample page working, you have a starting point for a Facebook app running on Force.com. Examine `FacebookSamplePage` and `FacebookSampleController` to see how the sample app is put together.
 
@@ -100,5 +100,11 @@ You can see many similar examples in the sample pages and controllers:
 * `FacebookSampleController`
 * `FacebookTestUser`
 * `FacebookTestUserController`
+
+### Security Considerations
+
+The toolkit AES-256 encrypts secrets at rest (Facebook application client secrets and user access tokens), dynamically creating a key on first use and saving that key in a protected custom setting. As a result, these secrets are secure when the toolkit is used in a managed package - the key is inaccessible outside the package, and can only be created when a user with the 'Customize Application' permission (for example, a user with the System Administrator profile) creates the first Facebook App record.
+
+Note that, if the toolkit is used outside a managed package, these secrets are accessible to any users that can access the custom setting, either directly in the console, or indirectly via Apex code.
 
 For more information, see the [getting started guide](http://wiki.developerforce.com/page/Getting_Started_with_the_Force.com_Toolkit_for_Facebook,_Version_3.0).

@@ -55,7 +55,7 @@
         <inlineHelpText>Also known as Application Secret</inlineHelpText>
         <label>App Secret</label>
         <length>255</length>
-        <required>true</required>
+        <required>false</required>
         <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
         <unique>false</unique>
@@ -331,7 +331,7 @@
         <label>All</label>
     </listViews>
     <nameField>
-        <label>FacebookApp Name</label>
+        <label>App Name</label>
         <trackFeedHistory>false</trackFeedHistory>
         <type>Text</type>
     </nameField>
@@ -339,13 +339,14 @@
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
     <webLinks>
-        <fullName>Authorize</fullName>
+        <fullName>Set_App_Secret</fullName>
         <availability>online</availability>
         <displayType>button</displayType>
-        <linkType>url</linkType>
-        <masterLabel>Authorize</masterLabel>
-        <openType>replace</openType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Set App Secret</masterLabel>
+        <openType>sidebar</openType>
+        <page>FacebookAppSecret</page>
         <protected>false</protected>
-        <url>/apex/FacebookLogin?id={!FacebookApp__c.Id}</url>
     </webLinks>
 </CustomObject>
