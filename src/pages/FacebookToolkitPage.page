@@ -1,0 +1,16 @@
+<apex:page sidebar="false" showHeader="false" title="Force.com Toolkit for Facebook">
+    <h1>Force.com Toolkit for Facebook</h1>
+    <br/>
+    <br/>
+    <apex:tabPanel switchType="client" selectedTab="tab1" id="theTabPanel">
+        <apex:tab label="Sample Page" name="tab1" id="tab1">
+        	<apex:include pageName="FacebookSamplePage"/>
+        </apex:tab>
+        <apex:tab label="User Connections" name="tab2" id="tab2">
+        	<apex:include pageName="FacebookTestUser"/>
+        </apex:tab>
+        <apex:tab label="Inbox" name="tab3" id="tab3">
+        	<apex:include pageName="FacebookInboxPage"/>
+        </apex:tab>
+    </apex:tabPanel>
+</apex:page>

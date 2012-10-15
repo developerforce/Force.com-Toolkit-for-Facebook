@@ -1,4 +1,4 @@
-<apex:page controller="FacebookTestUserController" action="{!login}" 
+<apex:page controller="FacebookTestUserController" action="{!init}" 
   cache="false" sidebar="false" showHeader="false" 
   title="Force.com Toolkit for Facebook - User Object Test Page">
     <apex:stylesheet value="{!URLFOR($Resource.style)}"/>
@@ -11,10 +11,6 @@
             $j("#throbber").html('<img src="{!$Resource.ajax}" width="16" height="11"/>');
         }
     </script>
-    <h1>Force.com Toolkit for Facebook</h1>
-    <br/>
-    <br/>
-    <apex:outputLink value="FacebookSamplePage">Sample Page</apex:outputLink>&nbsp;&nbsp;<h2>Test User Connections</h2>
     <p>This page allows you to retrieve fields and connections for a given user. Enter a Facebook user ID (use <b>me</b> 
     to see your own data) or search term and click the buttons to retrieve data.</p>
     

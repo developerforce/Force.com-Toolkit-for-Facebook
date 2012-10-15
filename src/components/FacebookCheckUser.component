@@ -1,0 +1,28 @@
+<apex:component controller="FacebookCheckUserController" allowDML="true" selfClosing="true">
+    <apex:attribute name="appId" type="String" required="true"  description="Facebook Application ID" />
+    <apex:attribute name="userId" type="String" required="true" description="Facebook User ID" />
+    <apex:attribute name="timeout" type="Integer" required="false" default="0" description="Timeout to recheck user status" />
+    <script src="https://connect.facebook.net/en_US/all.js"></script>
+    <div id="fb-root"></div>
+    <apex:form >
+        <apex:actionFunction name="logout" action="{!logout}"/>
+    </apex:form>
+    <script>
+    function checkLoginStatus(){
+	    // We are logged in, but we need getLoginStatus() to get the FB JS
+	    // lib to pick up the access token
+	    FB.getLoginStatus(function(response) {
+	        if ('{!userId}' && (response.status !== 'connected' || response.authResponse.userID !== '{!userId}')) {
+	            logout();
+	        } else if ( {!timeout} && response.status === 'connected' ) {
+			    setTimeout(checkLoginStatus, {!timeout} * 1000);
+		    }
+	    }, true);
+    }
+    
+    // Get required permissions from the controller
+    FB.init({appId: '{!appId}', xfbml: true, cookie: true});
+    
+    checkLoginStatus();
+    </script>
+</apex:component>

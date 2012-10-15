@@ -4,11 +4,34 @@ The Force.com Toolkit for Facebook allows your Force.com apps to manipulate the 
 
 There is a sample deployment of the toolkit at https://testfbtk3-developer-edition.na14.force.com/ - you can visit this Force.com Site, login via Facebook, and see the toolkit in action. All the code behind the sample site is included in the toolkit.
 
+## Changes in version 3.3
+
+* Added `FacebookCallback` page and associated controller to handle callback from Facebook centrally.
+* Added `FacebookCheckUser` custom Visualforce component and associated controller to periodically check that the current user has a valid Facebook session, and log them out of the Force.com app if the Facebook session is no longer valid. Usage:
+
+        <!-- appId - Facebook Application ID -->
+        <!-- userId - ID of currently logged in Facebook User -->
+        <!-- timeout - Timeout, in seconds -->
+        <c:FacebookCheckUser appId="{!appId}" userId="{!me.id}" timeout="60" />
+
+* Added `FacebookMessage` and `FacebookThread` classes - wrap [Message](https://developers.facebook.com/docs/reference/api/message/) and [Thread](https://developers.facebook.com/docs/reference/api/thread/) Graph API Objects.
+* Added `FacebookInbox` page and associated controller to show how to view Facebook Messages with the Toolkit. Note that there is no mechanism for apps to *send* Facebook Messages.
+* Refactored `FacebookSamplePage` to no longer automatically log the user in. Added a login button, and use of the `FacebookCheckUser` custom component. The previous auth-login functionality can be restored by overriding `FacebookLoginController.getAutoLogin()` to return `false`.
+* Added optional `title` attribute to the `FacebookProfilePicture` custom component to specify tooltip text for the image.
+* Added new `FacebookToolkitPage`, collecting the sample, user connections and inbox pages into a tab panel.
+
+## Changes in version 3.2
+
+* Secured the Facebook application client secret and user access tokens by encrypting with a key stored as a custom setting.
+
+## Changes in version 3.1
+
+* Minor fixes plus Authentication Providers support.
+
 ## Major changes in Version 3
 
 * There is a new custom object, `FacebookSession__c`, that associates the Facebook access token with a session cookie. This allows a Force.com Site to authenticate users via Facebook.
 * The toolkit uses the new native JSON implementation, mitigating issues in earlier versions where JSON was parsed in an Apex utility class, which severely limited the amount of data that could be parsed.
-* TODO - add code to use Spring '12 Facebook Authentication Provider
 
 ## Installation
 
@@ -17,7 +40,7 @@ There are two mechanisms for installing the toolkit: as an unmanaged package, or
 ### Installing the Unmanaged Package
 
 1. Create a new Developer Edition (DE) account at http://developer.force.com/join. You will receive an activation email - click the enclosed link to complete setup of your DE environment. This will also log you in to your new DE environment.
-2. Install the unmanaged package into your new DE org via this URL: https://login.salesforce.com/packaging/installPackage.apexp?p0=04td00000001Hsg
+2. Install the unmanaged package into your new DE org via this URL: https://login.salesforce.com/packaging/installPackage.apexp?p0=04td00000001LuM
 3. Click through the screens to complete installation.
 4. Go to **Setup | Administration Setup | Security Controls | Remote Site Settings** and add https://graph.facebook.com as a new remote site.
 
@@ -39,12 +62,12 @@ There are two mechanisms for installing the toolkit: as an unmanaged package, or
 
 ## Configuring the Sample Force.com Site
 
-1. Go to **Setup | App Setup | Develop | Sites** and create a new site. Set the home page to `FacebookSamplePage` and add `FacebookTestUser` to the list of Site Visualforce Pages. Ensure you activate the site.
+1. Go to **Setup | App Setup | Develop | Sites** and create a new site. Set the home page to `FacebookToolkitPage` and add `FacebookCallback`, `FacebookInboxPage`, `FacebookSamplePage` and `FacebookTestUser` to the list of Site Visualforce Pages. Ensure you activate the site.
 2. Go to **Setup | App Setup | Develop | Apex Classes**, hit the 'Compile All Classes' link, then click 'Schedule Apex' and add `FacebookHousekeeping` - set it to run at midnight every night. This scheduled Apex job will remove expired session records from the FacebookSession__c object.
 3. Go to the [Facebook Apps Page](https://developers.facebook.com/apps), click 'Create New App' and complete the required fields. Under 'Website', set Site URL to your site's secure URL - for example, https://fbtest-developer-edition.na14.force.com/
 4. In your DE environment, select the 'Facebook Toolkit 3' app from the application menu at top right, then click the 'Facebook Apps' tab. Create a new Facebook app, copying 'App ID' from your new app's settings in Facebook. Set 'Permissions' to allow the sample app to access more data; for example, you might use `read_stream, publish_stream` to allow the app to read and write posts on the user's feed. See the [Facebook Graph API documentation](https://developers.facebook.com/docs/reference/api/permissions/) for a full discussion of permissions. Note that, after you save the Facebook App record, you must click the 'Set App Secret' button to enter the 'App Secret' from your new app's settings in Facebook.
 5. Go to your site URL (e.g. https://fbtest-developer-edition.na14.force.com/) and you should be prompted to log in to your new app. Do so and you should see a sample page showing your Facebook user name, profile picture, feed, 'Like' button etc. There are buttons to dynamically retrieve your user profile and friends list.
-6. Now you have the sample page working, you have a starting point for a Facebook app running on Force.com. Examine `FacebookSamplePage` and `FacebookSampleController` to see how the sample app is put together.
+6. Now you have the sample pages working, you have a starting point for a Facebook app running on Force.com. Examine `FacebookSamplePage` and `FacebookSampleController` to see how the sample app is put together.
 
 ## Developing a Facebook App with the Toolkit
 

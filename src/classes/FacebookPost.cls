@@ -3,382 +3,369 @@
 //
 
 public class FacebookPost {
-	public class To {
-		public List<FacebookRef> data {get;set;}
+    public class To {
+        public List<FacebookRef> data {get;set;}
 
-		public To(JSONParser parser) {
-			while (parser.nextToken() != JSONToken.END_OBJECT) {
-				if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
-					String text = parser.getText();
-					if (parser.nextToken() != JSONToken.VALUE_NULL) {
-						if (text == 'data') {
-							data = new List<FacebookRef>();
-							while (parser.nextToken() != JSONToken.END_ARRAY) {
-								data.add(new FacebookRef(parser));
-							}
-						} else {
-							System.debug(LoggingLevel.WARN, 'To consuming unrecognized property: '+text);
-							FacebookUtil.consumeObject(parser);
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	public static Set<String> types = new Set<String>{'status', 'link', 'photo', 'video'};
-	
-	public String id {get;set;}
-	public FacebookRef from_z {get;set;}
-	public To to {get;set;}
-	public String message {get;set;}
-	// public Tags message_tags {get;set;} -- TODO
-	public String picture {get;set;}
-	public String link {get;set;}
-	public String name {get;set;}
-	public String caption {get;set;}
-	public String description {get;set;}
-	public String source {get;set;}
-	public List<Property> properties {get;set;}
-	public String icon {get;set;}
-	public List<Action> actions {get;set;}
-	// public Privacy privacy {get;set;} -- TODO
-	public String type {get;set;}
-	public FacebookRef application {get;set;}
-	public String created_time {get;set;}
-	public String updated_time {get;set;}
-	public FacebookLikes likes {get;set;}
-	// public Place place {get;set;} -- TODO
-	public String story {get;set;}
-	// public Tags story_tags {get;set;} -- TODO
-	public FacebookComments comments {get;set;}
-	public String object_id {get;set;}
+        public To(JSONParser parser) {
+            while (parser.nextToken() != JSONToken.END_OBJECT) {
+                if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
+                    String text = parser.getText();
+                    if (parser.nextToken() != JSONToken.VALUE_NULL) {
+                        if (text == 'data') {
+                            data = new List<FacebookRef>();
+                            while (parser.nextToken() != JSONToken.END_ARRAY) {
+                                data.add(new FacebookRef(parser));
+                            }
+                        } else {
+                            System.debug(LoggingLevel.WARN, 'To consuming unrecognized property: '+text);
+                            FacebookUtil.consumeObject(parser);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    public String id {get;set;}
+    public FacebookRef from_z {get;set;}
+    public To to {get;set;}
+    public String message {get;set;}
+    // public Tags message_tags {get;set;} -- TODO
+    public String picture {get;set;}
+    public String link {get;set;}
+    public String name {get;set;}
+    public String caption {get;set;}
+    public String description {get;set;}
+    public String source {get;set;}
+    public List<Property> properties {get;set;}
+    public String icon {get;set;}
+    public List<Action> actions {get;set;}
+    // public Privacy privacy {get;set;} -- TODO
+    public String type {get;set;}
+    public FacebookRef application {get;set;}
+    public String created_time {get;set;}
+    public String updated_time {get;set;}
+    public FacebookLikes likes {get;set;}
+    // public Place place {get;set;} -- TODO
+    public String story {get;set;}
+    // public Tags story_tags {get;set;} -- TODO
+    public FacebookComments comments {get;set;}
+    public String object_id {get;set;}
 
-	public FacebookPost(JSONParser parser) {
-		while (parser.nextToken() != JSONToken.END_OBJECT) {
-			if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
-				String text = parser.getText();
-				if (parser.nextToken() != JSONToken.VALUE_NULL) {
-					if (text == 'id') {
-						id = parser.getText();
-					} else if (text == 'from') {
-						from_z = new FacebookRef(parser);
-					} else if (text == 'to') {
-						to = new To(parser);
-					} else if (text == 'message') {
-						message = parser.getText();
-					} else if (text == 'picture') {
-						picture = parser.getText();
-					} else if (text == 'link') {
-						link = parser.getText();
-					} else if (text == 'name') {
-						name = parser.getText();
-					} else if (text == 'caption') {
-						caption = parser.getText();
-					} else if (text == 'description') {
-						description = parser.getText();
-					} else if (text == 'source') {
-						source = parser.getText();
-					} else if (text == 'properties') {
-						properties = new List<Property>();
-						while (parser.nextToken() != JSONToken.END_ARRAY) {
-							properties.add(new Property(parser));
-						}
-					} else if (text == 'icon') {
-						icon = parser.getText();
-					} else if (text == 'actions') {
-						actions = new List<Action>();
-						while (parser.nextToken() != JSONToken.END_ARRAY) {
-							actions.add(new Action(parser));
-						}
-					} else if (text == 'type') {
-						type = parser.getText();
-						if (!types.contains(type)) {
-							throw new FacebookException('FacebookPost found object type '+type+' - expected one of '+types);
-						}
-					} else if (text == 'application') {
-						application = new FacebookRef(parser);
-					} else if (text == 'created_time') {
-						created_time = parser.getText();
-					} else if (text == 'updated_time') {
-						updated_time = parser.getText();
-					} else if (text == 'likes') {
-						likes = new FacebookLikes(parser);
-					} else if (text == 'story') {
-						story = parser.getText();
-					} else if (text == 'comments') {
-						comments = new FacebookComments(parser);
-					} else if (text == 'object_id') {
-						object_id = parser.getText();
-					} else {
-						System.debug(LoggingLevel.WARN, 'FacebookPost consuming unrecognized property: '+text);
-						FacebookUtil.consumeObject(parser);
-					}
-				}
-			}
-		}
-	}
-	
-	public FacebookPost(String accessToken, String id, Map<String, String> params) {
-		this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
-	}
-	
-	public FacebookPost(String accessToken, String id) {
-		this(accessToken, id, null);
-	}
-	
-	public class Action {
-		public String name {get;set;}
-		public String link {get;set;}
+    public FacebookPost(JSONParser parser) {
+        while (parser.nextToken() != JSONToken.END_OBJECT) {
+            if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
+                String text = parser.getText();
+                if (parser.nextToken() != JSONToken.VALUE_NULL) {
+                    if (text == 'id') {
+                        id = parser.getText();
+                    } else if (text == 'from') {
+                        from_z = new FacebookRef(parser);
+                    } else if (text == 'to') {
+                        to = new To(parser);
+                    } else if (text == 'message') {
+                        message = parser.getText();
+                    } else if (text == 'picture') {
+                        picture = parser.getText();
+                    } else if (text == 'link') {
+                        link = parser.getText();
+                    } else if (text == 'name') {
+                        name = parser.getText();
+                    } else if (text == 'caption') {
+                        caption = parser.getText();
+                    } else if (text == 'description') {
+                        description = parser.getText();
+                    } else if (text == 'source') {
+                        source = parser.getText();
+                    } else if (text == 'properties') {
+                        properties = new List<Property>();
+                        while (parser.nextToken() != JSONToken.END_ARRAY) {
+                            properties.add(new Property(parser));
+                        }
+                    } else if (text == 'icon') {
+                        icon = parser.getText();
+                    } else if (text == 'actions') {
+                        actions = new List<Action>();
+                        while (parser.nextToken() != JSONToken.END_ARRAY) {
+                            actions.add(new Action(parser));
+                        }
+                    } else if (text == 'type') {
+                        type = parser.getText();
+                    } else if (text == 'application') {
+                        application = new FacebookRef(parser);
+                    } else if (text == 'created_time') {
+                        created_time = parser.getText();
+                    } else if (text == 'updated_time') {
+                        updated_time = parser.getText();
+                    } else if (text == 'likes') {
+                        likes = new FacebookLikes(parser);
+                    } else if (text == 'story') {
+                        story = parser.getText();
+                    } else if (text == 'comments') {
+                        comments = new FacebookComments(parser);
+                    } else if (text == 'object_id') {
+                        object_id = parser.getText();
+                    } else {
+                        System.debug(LoggingLevel.WARN, 'FacebookPost consuming unrecognized property: '+text);
+                        FacebookUtil.consumeObject(parser);
+                    }
+                }
+            }
+        }
+    }
+    
+    public FacebookPost(String accessToken, String id, Map<String, String> params) {
+        this(System.JSON.createParser(FacebookUtil.get(accessToken, id, params)));
+    }
+    
+    public FacebookPost(String accessToken, String id) {
+        this(accessToken, id, null);
+    }
+    
+    public class Action {
+        public String name {get;set;}
+        public String link {get;set;}
 
-		public Action(JSONParser parser) {
-			while (parser.nextToken() != JSONToken.END_OBJECT) {
-				if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
-					String text = parser.getText();
-					if (parser.nextToken() != JSONToken.VALUE_NULL) {
-						if (text == 'name') {
-							name = parser.getText();
-						} else if (text == 'link') {
-							link = parser.getText();
-						} else {
-							System.debug(LoggingLevel.WARN, 'Actions consuming unrecognized property: '+text);
-							FacebookUtil.consumeObject(parser);
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	public class Property {
-		public String name {get;set;}
-		public String text {get;set;}
-		public String href {get;set;}
+        public Action(JSONParser parser) {
+            while (parser.nextToken() != JSONToken.END_OBJECT) {
+                if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
+                    String text = parser.getText();
+                    if (parser.nextToken() != JSONToken.VALUE_NULL) {
+                        if (text == 'name') {
+                            name = parser.getText();
+                        } else if (text == 'link') {
+                            link = parser.getText();
+                        } else {
+                            System.debug(LoggingLevel.WARN, 'Actions consuming unrecognized property: '+text);
+                            FacebookUtil.consumeObject(parser);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    public class Property {
+        public String name {get;set;}
+        public String text {get;set;}
+        public String href {get;set;}
 
-		public Property(JSONParser parser) {
-			while (parser.nextToken() != JSONToken.END_OBJECT) {
-				if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
-					String text = parser.getText();
-					if (parser.nextToken() != JSONToken.VALUE_NULL) {
-						if (text == 'name') {
-							name = parser.getText();
-						} else if (text == 'text') {
-							text = parser.getText();
-						} else if (text == 'href') {
-							href = parser.getText();
-						} else {
-							System.debug(LoggingLevel.WARN, 'Properties consuming unrecognized property: '+text);
-							FacebookUtil.consumeObject(parser);
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	
-	public static FacebookPost parse(String json) {
-		return new FacebookPost(System.JSON.createParser(json));
-	}
-	
-	// This test method should give 100% coverage
-	static testMethod void testParse() {
-		String json = '{'+
-		'  \"id\": \"19292868552_10150189643478553\",'+
-		'  \"from\": {'+
-		'    \"name\": \"Facebook Platform\",'+
-		'    \"category\": \"Product/service\",'+
-		'    \"id\": \"19292868552\"'+
-		'  },'+
-		'  \"to\": {'+
-		'    \"data\": ['+
-		'      {'+
-		'        \"name\": \"MobileTeam Chennai\",'+
-		'        \"id\": \"100002401954920\"'+
-		'      },'+
-		'      {'+
-		'        \"name\": \"Rafa Lopez\",'+
-		'        \"id\": \"100003193016348\"'+
-		'      }'+
-		'    ]'+
-		'  },'+
-		'  \"message\": \"Some text\",'+
-		'  \"picture\": \"https://www.facebook.com/app_full_proxy.php?app=9953271133&v=1&size=z&cksum=d1808f3c56d2609c1d3f6aeaf35b9895&src=http\\u00253A\\u00252F\\u00252Fimg.bitpixels.com\\u00252Fgetthumbnail\\u00253Fcode\\u00253D78793\\u002526size\\u00253D120\\u002526url\\u00253Dhttp\\u00253A\\u00252F\\u00252Fdevelopers.facebook.com\\u00252Fblog\\u00252F\",'+
-		'  \"link\": \"http://developers.facebook.com/blog/post/497\",'+
-		'  \"name\": \"Developer Roadmap Update: Moving to OAuth 2.0 + HTTPS\",'+
-		'  \"caption\": \"Some text\",'+
-		'  \"description\": \"\\nWe continue to make Platform more secure for users. Earlier this year, we introduced the ability for users to browse Facebook over HTTPS. As a result, we provided “Secure Canvas URL” and “Secure Tab URL” fields in the Developer App for developers to serve their apps through an H\",'+
-		'  \"source\": \"Some text\",'+
-		'  \"properties\": ['+
-		'    {'+
-		'      \"name\": \"source\",'+
-		'      \"text\": \"Official Facebook Developer Blog\",'+
-		'      \"href\": \"http://apps.facebook.com/blognetworks/blog/official_facebook_developer_blog\"'+
-		'    },'+
-		'    {'+
-		'      \"name\": \"link\",'+
-		'      \"text\": \"Full Article...\",'+
-		'      \"href\": \"http://developers.facebook.com/blog/post/497\"'+
-		'    }'+
-		'  ],'+
-		'  \"icon\": \"https://fbcdn-photos-a.akamaihd.net/photos-ak-snc1/v43/169/9953271133/app_2_9953271133_9023.gif\",'+
-		'  \"actions\": ['+
-		'    {'+
-		'      \"name\": \"Comment\",'+
-		'      \"link\": \"https://www.facebook.com/19292868552/posts/10150189643478553\"'+
-		'    },'+
-		'    {'+
-		'      \"name\": \"Like\",'+
-		'      \"link\": \"https://www.facebook.com/19292868552/posts/10150189643478553\"'+
-		'    },'+
-		'    {'+
-		'      \"name\": \"Share\",'+
-		'      \"link\": \"http://networkedblogs.com/hGWk3?a=share\"'+
-		'    }'+
-		'  ],'+
-		'  \"type\": \"link\",'+
-		'  \"application\": {'+
-		'    \"name\": \"NetworkedBlogs\",'+
-		'    \"canvas_name\": \"blognetworks\",'+
-		'    \"namespace\": \"blognetworks\",'+
-		'    \"id\": \"9953271133\"'+
-		'  },'+
-		'  \"created_time\": \"2011-05-10T18:35:38+0000\",'+
-		'  \"updated_time\": \"2012-01-19T08:45:06+0000\",'+
-		'  \"likes\": {'+
-		'    \"data\": ['+
-		'      {'+
-		'        \"name\": \"Youpi Appli\",'+
-		'        \"id\": \"100002355916992\"'+
-		'      }'+
-		'    ],'+
-		'    \"count\": 532'+
-		'  },'+
-		'  \"story\": \"Some text\",'+
-		'  \"comments\": {'+
-		'    \"data\": ['+
-		'      {'+
-		'        \"id\": \"19292868552_10150189643478553_20129618\",'+
-		'        \"from\": {'+
-		'          \"name\": \"MobileTeam Chennai\",'+
-		'          \"id\": \"100002401954920\"'+
-		'        },'+
-		'        \"message\": \"fsdfsf\",'+
-		'        \"created_time\": \"2011-12-19T12:41:09+0000\"'+
-		'      },'+
-		'      {'+
-		'        \"id\": \"19292868552_10150189643478553_20130828\",'+
-		'        \"from\": {'+
-		'          \"name\": \"Rafa Lopez\",'+
-		'          \"id\": \"100003193016348\"'+
-		'        },'+
-		'        \"message\": \"test\",'+
-		'        \"created_time\": \"2011-12-19T15:01:56+0000\"'+
-		'      }'+
-		'    ],'+
-		'    \"count\": 253'+
-		'  },'+
-		'  \"object_id\": \"1111111111\"'+
-		'}';
-		FacebookPost r = parse(json);
-		System.assert(r != null);
-		System.assert(r.id != null);
-		System.assert(r.from_z != null);
-		System.assert(r.to != null);
-		System.assert(r.message != null);
-		System.assert(r.picture != null);
-		System.assert(r.link != null);
-		System.assert(r.name != null);
-		System.assert(r.caption != null);
-		System.assert(r.description != null);
-		System.assert(r.source != null);
-		System.assert(r.properties != null);
-		System.assert(r.icon != null);
-		System.assert(r.actions != null);
-		System.assert(r.type != null);
-		System.assert(r.application != null);
-		System.assert(r.created_time != null);
-		System.assert(r.updated_time != null);
-		System.assert(r.likes != null);
-		System.assert(r.story != null);
-		System.assert(r.comments != null);
-		System.assert(r.object_id != null);
+        public Property(JSONParser parser) {
+            while (parser.nextToken() != JSONToken.END_OBJECT) {
+                if (parser.getCurrentToken() == JSONToken.FIELD_NAME) {
+                    String text = parser.getText();
+                    if (parser.nextToken() != JSONToken.VALUE_NULL) {
+                        if (text == 'name') {
+                            name = parser.getText();
+                        } else if (text == 'text') {
+                            text = parser.getText();
+                        } else if (text == 'href') {
+                            href = parser.getText();
+                        } else {
+                            System.debug(LoggingLevel.WARN, 'Properties consuming unrecognized property: '+text);
+                            FacebookUtil.consumeObject(parser);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    public static FacebookPost parse(String json) {
+        return new FacebookPost(System.JSON.createParser(json));
+    }
+    
+    // This test method should give 100% coverage
+    static testMethod void testParse() {
+        String json = '{'+
+        '  \"id\": \"19292868552_10150189643478553\",'+
+        '  \"from\": {'+
+        '    \"name\": \"Facebook Platform\",'+
+        '    \"category\": \"Product/service\",'+
+        '    \"id\": \"19292868552\"'+
+        '  },'+
+        '  \"to\": {'+
+        '    \"data\": ['+
+        '      {'+
+        '        \"name\": \"MobileTeam Chennai\",'+
+        '        \"id\": \"100002401954920\"'+
+        '      },'+
+        '      {'+
+        '        \"name\": \"Rafa Lopez\",'+
+        '        \"id\": \"100003193016348\"'+
+        '      }'+
+        '    ]'+
+        '  },'+
+        '  \"message\": \"Some text\",'+
+        '  \"picture\": \"https://www.facebook.com/app_full_proxy.php?app=9953271133&v=1&size=z&cksum=d1808f3c56d2609c1d3f6aeaf35b9895&src=http\\u00253A\\u00252F\\u00252Fimg.bitpixels.com\\u00252Fgetthumbnail\\u00253Fcode\\u00253D78793\\u002526size\\u00253D120\\u002526url\\u00253Dhttp\\u00253A\\u00252F\\u00252Fdevelopers.facebook.com\\u00252Fblog\\u00252F\",'+
+        '  \"link\": \"http://developers.facebook.com/blog/post/497\",'+
+        '  \"name\": \"Developer Roadmap Update: Moving to OAuth 2.0 + HTTPS\",'+
+        '  \"caption\": \"Some text\",'+
+        '  \"description\": \"\\nWe continue to make Platform more secure for users. Earlier this year, we introduced the ability for users to browse Facebook over HTTPS. As a result, we provided “Secure Canvas URL” and “Secure Tab URL” fields in the Developer App for developers to serve their apps through an H\",'+
+        '  \"source\": \"Some text\",'+
+        '  \"properties\": ['+
+        '    {'+
+        '      \"name\": \"source\",'+
+        '      \"text\": \"Official Facebook Developer Blog\",'+
+        '      \"href\": \"http://apps.facebook.com/blognetworks/blog/official_facebook_developer_blog\"'+
+        '    },'+
+        '    {'+
+        '      \"name\": \"link\",'+
+        '      \"text\": \"Full Article...\",'+
+        '      \"href\": \"http://developers.facebook.com/blog/post/497\"'+
+        '    }'+
+        '  ],'+
+        '  \"icon\": \"https://fbcdn-photos-a.akamaihd.net/photos-ak-snc1/v43/169/9953271133/app_2_9953271133_9023.gif\",'+
+        '  \"actions\": ['+
+        '    {'+
+        '      \"name\": \"Comment\",'+
+        '      \"link\": \"https://www.facebook.com/19292868552/posts/10150189643478553\"'+
+        '    },'+
+        '    {'+
+        '      \"name\": \"Like\",'+
+        '      \"link\": \"https://www.facebook.com/19292868552/posts/10150189643478553\"'+
+        '    },'+
+        '    {'+
+        '      \"name\": \"Share\",'+
+        '      \"link\": \"http://networkedblogs.com/hGWk3?a=share\"'+
+        '    }'+
+        '  ],'+
+        '  \"type\": \"link\",'+
+        '  \"application\": {'+
+        '    \"name\": \"NetworkedBlogs\",'+
+        '    \"canvas_name\": \"blognetworks\",'+
+        '    \"namespace\": \"blognetworks\",'+
+        '    \"id\": \"9953271133\"'+
+        '  },'+
+        '  \"created_time\": \"2011-05-10T18:35:38+0000\",'+
+        '  \"updated_time\": \"2012-01-19T08:45:06+0000\",'+
+        '  \"likes\": {'+
+        '    \"data\": ['+
+        '      {'+
+        '        \"name\": \"Youpi Appli\",'+
+        '        \"id\": \"100002355916992\"'+
+        '      }'+
+        '    ],'+
+        '    \"count\": 532'+
+        '  },'+
+        '  \"story\": \"Some text\",'+
+        '  \"comments\": {'+
+        '    \"data\": ['+
+        '      {'+
+        '        \"id\": \"19292868552_10150189643478553_20129618\",'+
+        '        \"from\": {'+
+        '          \"name\": \"MobileTeam Chennai\",'+
+        '          \"id\": \"100002401954920\"'+
+        '        },'+
+        '        \"message\": \"fsdfsf\",'+
+        '        \"created_time\": \"2011-12-19T12:41:09+0000\"'+
+        '      },'+
+        '      {'+
+        '        \"id\": \"19292868552_10150189643478553_20130828\",'+
+        '        \"from\": {'+
+        '          \"name\": \"Rafa Lopez\",'+
+        '          \"id\": \"100003193016348\"'+
+        '        },'+
+        '        \"message\": \"test\",'+
+        '        \"created_time\": \"2011-12-19T15:01:56+0000\"'+
+        '      }'+
+        '    ],'+
+        '    \"count\": 253'+
+        '  },'+
+        '  \"object_id\": \"1111111111\"'+
+        '}';
+        FacebookPost r = parse(json);
+        System.assert(r != null);
+        System.assert(r.id != null);
+        System.assert(r.from_z != null);
+        System.assert(r.to != null);
+        System.assert(r.message != null);
+        System.assert(r.picture != null);
+        System.assert(r.link != null);
+        System.assert(r.name != null);
+        System.assert(r.caption != null);
+        System.assert(r.description != null);
+        System.assert(r.source != null);
+        System.assert(r.properties != null);
+        System.assert(r.icon != null);
+        System.assert(r.actions != null);
+        System.assert(r.type != null);
+        System.assert(r.application != null);
+        System.assert(r.created_time != null);
+        System.assert(r.updated_time != null);
+        System.assert(r.likes != null);
+        System.assert(r.story != null);
+        System.assert(r.comments != null);
+        System.assert(r.object_id != null);
 
-		FacebookUtil.testmode = true;
-		FacebookUtil.teststubresponse = json;
-		r = new FacebookPost('TEST', 'TEST');
-		System.assert(r != null);
-		System.assert(r.id != null);
-		System.assert(r.from_z != null);
-		System.assert(r.to != null);
-		System.assert(r.message != null);
-		System.assert(r.picture != null);
-		System.assert(r.link != null);
-		System.assert(r.name != null);
-		System.assert(r.caption != null);
-		System.assert(r.description != null);
-		System.assert(r.source != null);
-		System.assert(r.properties != null);
-		System.assert(r.icon != null);
-		System.assert(r.actions != null);
-		System.assert(r.type != null);
-		System.assert(r.application != null);
-		System.assert(r.created_time != null);
-		System.assert(r.updated_time != null);
-		System.assert(r.likes != null);
-		System.assert(r.story != null);
-		System.assert(r.comments != null);
-		System.assert(r.object_id != null);
+        FacebookUtil.testmode = true;
+        FacebookUtil.teststubresponse = json;
+        r = new FacebookPost('TEST', 'TEST');
+        System.assert(r != null);
+        System.assert(r.id != null);
+        System.assert(r.from_z != null);
+        System.assert(r.to != null);
+        System.assert(r.message != null);
+        System.assert(r.picture != null);
+        System.assert(r.link != null);
+        System.assert(r.name != null);
+        System.assert(r.caption != null);
+        System.assert(r.description != null);
+        System.assert(r.source != null);
+        System.assert(r.properties != null);
+        System.assert(r.icon != null);
+        System.assert(r.actions != null);
+        System.assert(r.type != null);
+        System.assert(r.application != null);
+        System.assert(r.created_time != null);
+        System.assert(r.updated_time != null);
+        System.assert(r.likes != null);
+        System.assert(r.story != null);
+        System.assert(r.comments != null);
+        System.assert(r.object_id != null);
 
-		json = '{\"type\": \"test\" }';
-		try {
-			FacebookPost objRoot = new FacebookPost(System.JSON.createParser(json));
-			System.assert(false);
-		} catch (FacebookException fbe) {
-			System.assertEquals(fbe.getMessage(), 'FacebookPost found object type test - expected one of '+types);
-		}
+        json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
+        FacebookPost objRoot = new FacebookPost(System.JSON.createParser(json));
+        System.assert(objRoot != null);
+        System.assert(objRoot.id == null);
+        System.assert(objRoot.from_z == null);
+        System.assert(objRoot.to == null);
+        System.assert(objRoot.message == null);
+        System.assert(objRoot.picture == null);
+        System.assert(objRoot.link == null);
+        System.assert(objRoot.name == null);
+        System.assert(objRoot.caption == null);
+        System.assert(objRoot.description == null);
+        System.assert(objRoot.source == null);
+        System.assert(objRoot.properties == null);
+        System.assert(objRoot.icon == null);
+        System.assert(objRoot.actions == null);
+        System.assert(objRoot.type == null);
+        System.assert(objRoot.application == null);
+        System.assert(objRoot.created_time == null);
+        System.assert(objRoot.updated_time == null);
+        System.assert(objRoot.likes == null);
+        System.assert(objRoot.story == null);
+        System.assert(objRoot.comments == null);
+        System.assert(objRoot.object_id == null);
 
-		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
-		FacebookPost objRoot = new FacebookPost(System.JSON.createParser(json));
-		System.assert(objRoot != null);
-		System.assert(objRoot.id == null);
-		System.assert(objRoot.from_z == null);
-		System.assert(objRoot.to == null);
-		System.assert(objRoot.message == null);
-		System.assert(objRoot.picture == null);
-		System.assert(objRoot.link == null);
-		System.assert(objRoot.name == null);
-		System.assert(objRoot.caption == null);
-		System.assert(objRoot.description == null);
-		System.assert(objRoot.source == null);
-		System.assert(objRoot.properties == null);
-		System.assert(objRoot.icon == null);
-		System.assert(objRoot.actions == null);
-		System.assert(objRoot.type == null);
-		System.assert(objRoot.application == null);
-		System.assert(objRoot.created_time == null);
-		System.assert(objRoot.updated_time == null);
-		System.assert(objRoot.likes == null);
-		System.assert(objRoot.story == null);
-		System.assert(objRoot.comments == null);
-		System.assert(objRoot.object_id == null);
+        json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
+        To objTo = new To(System.JSON.createParser(json));
+        System.assert(objTo != null);
+        System.assert(objTo.data == null);
 
-		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
-		To objTo = new To(System.JSON.createParser(json));
-		System.assert(objTo != null);
-		System.assert(objTo.data == null);
+        json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
+        Action objAction = new Action(System.JSON.createParser(json));
+        System.assert(objAction != null);
+        System.assert(objAction.name == null);
+        System.assert(objAction.link == null);
 
-		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
-		Action objAction = new Action(System.JSON.createParser(json));
-		System.assert(objAction != null);
-		System.assert(objAction.name == null);
-		System.assert(objAction.link == null);
-
-		json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
-		Property objProperty = new Property(System.JSON.createParser(json));
-		System.assert(objProperty != null);
-		System.assert(objProperty.name == null);
-		System.assert(objProperty.text == null);
-		System.assert(objProperty.href == null);
-	}
+        json = '{\"TestAMissingObject\": { \"TestAMissingArray\": [ { \"TestAMissingProperty\": \"Some Value\" } ] } }';
+        Property objProperty = new Property(System.JSON.createParser(json));
+        System.assert(objProperty != null);
+        System.assert(objProperty.name == null);
+        System.assert(objProperty.text == null);
+        System.assert(objProperty.href == null);
+    }
 }
