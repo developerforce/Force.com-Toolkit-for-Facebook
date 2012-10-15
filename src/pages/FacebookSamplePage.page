@@ -18,14 +18,16 @@
             FacebookSampleController.getFriends('{!accessToken}', function(result, event) {
                 if (event.status) {
                     // result comes back escaped - use Caja to unescape it
-                    var json = html.unescapeEntities(result);
-                    var friends = JSON.parse(json);
+                    //var json = html.unescapeEntities(result);
+                    var friends = JSON.parse(result);
                     // Truncate the array to a maximum of 10 friends
                     friends.data.length = Math.min(10, friends.data.length);
                     $j("#friends").html('<pre>'+JSON.stringify(friends, null, '    ')+'</pre>');
                 } else {
                     alert(event.message + '\n' + JSON.stringify(event));
                 }
+            }, { 
+                escape: false
             });
         }
         
