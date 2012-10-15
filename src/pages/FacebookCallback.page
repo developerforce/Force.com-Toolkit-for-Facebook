@@ -1,0 +1,3 @@
+<apex:page controller="FacebookCallbackController" sidebar="false" showHeader="false" action="{!init}">
+	<apex:pageMessages />
+</apex:page>

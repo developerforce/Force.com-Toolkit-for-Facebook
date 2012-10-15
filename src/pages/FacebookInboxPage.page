@@ -1,0 +1,40 @@
+<apex:page controller="FacebookInboxController" action="{!init}" 
+  cache="false" sidebar="false" showHeader="false" 
+  title="Force.com Toolkit for Facebook - Sample Page">
+    <apex:stylesheet value="{!URLFOR($Resource.style)}"/>
+    <script src="{!$Resource.jquery}"></script>
+    <script src="{!$Resource.html_sanitizer}"></script>
+    <script>
+        var $j = jQuery.noConflict();
+    </script>
+    <p>This page shows you how to view your Facebook Messages with the 
+    Force.com Toolkit for Facebook. Note that there is no mechanism for
+    apps to send Facebook Messages.</p>
+    <apex:form >
+        <h2>Your Inbox</h2>&nbsp;&nbsp;<apex:commandButton value="Refresh" rerender="inbox"/>
+        <apex:outputPanel id="inbox">
+            <br/><apex:outputText value="{!error}" />
+            <apex:dataTable value="{!myThreads.data}" var="thread" cellpadding="5">
+                <apex:column headerValue="To" style="vertical-align:top;">
+                    <apex:dataTable value="{!thread.to.data}" var="to" cellpadding="5">
+                        <apex:column style="vertical-align:top;">
+                            <c:FacebookProfilePicture fbid="{!to.id}" width="40" height="40"  type="small" title="{!to.name}"/>
+                        </apex:column>
+                    </apex:dataTable>
+                </apex:column>
+                <apex:column headerValue="Comments">
+                    <apex:dataTable value="{!thread.comments.data}" var="thread" cellpadding="5">
+                        <apex:column style="vertical-align:top;">
+                            <c:FacebookProfilePicture fbid="{!thread.from_z.id}" width="40" height="40"  type="small" title="{!thread.from_z.name}"/>
+                        </apex:column>
+                        <apex:column >
+                            <b>{!thread.from_z.name}</b><br/>
+                            {!thread.message}<br/>
+                            {!thread.created_time}
+                        </apex:column>
+                    </apex:dataTable>
+                </apex:column>
+            </apex:dataTable>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

@@ -1,13 +1,12 @@
 public with sharing class FacebookToken {
-    public static boolean testmode { get; set; }
     public static String cookieName = 'fbsession';
 
     /**
      * Get the access token for the current user
      */
     public static String getAccessToken(){
-        if (testmode != null && testmode == true){
-            return '';
+        if (Test.isRunningTest()){
+            return 'TEST';
         } else {
             if (ApexPages.currentPage() == null) {
                 throw new FacebookException('ApexPages.currentPage() is null - Facebook API not supported');

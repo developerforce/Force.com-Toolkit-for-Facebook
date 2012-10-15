@@ -16,17 +16,17 @@ global with sharing class FacebookSampleController extends FacebookLoginControll
 		userData = 'null';
 	}
 	
-	// You wouldn't usually need to override login(). We do here to be able
+	// You wouldn't usually need to override init(). We do here to be able
 	// to change the behavior depending on whether we want to use the platform
 	// auth provider. If you want to use the auth provider in your controller,
 	// just don't extend FacebookLoginController
-	public override PageReference login() {
-		return ( authProviderId == null ) ? super.login() : null;
+	public override PageReference init() {
+		return ( authProviderId == null ) ? super.init() : null;
 	}
 	
-    public static String getAccessToken() {
+    public override String getAccessToken() {
     	return ( authProviderId == null ) 
-    		? FacebookToken.getAccessToken()
+    		? super.getAccessToken()
     		: Auth.AuthToken.getAccessToken(authProviderId, 'facebook');
     }
 

@@ -33,12 +33,12 @@ public with sharing class FacebookTestUserController extends FacebookLoginContro
 		uid = 'me';
 	}
 
-	// You wouldn't usually need to override login(). We do here to be able
+	// You wouldn't usually need to override init(). We do here to be able
 	// to change the behavior depending on whether we want to use the platform
 	// auth provider. If you want to use the auth provider in your controller,
 	// just don't extend FacebookLoginController
-	public override PageReference login() {
-		return ( authProviderId == null ) ? super.login() : null;
+	public override PageReference init() {
+		return ( authProviderId == null ) ? super.init() : null;
 	}
 	
     public static String getAccessToken() {

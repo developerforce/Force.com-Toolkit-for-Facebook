@@ -1,7 +1,9 @@
-<apex:page controller="FacebookSampleController" action="{!login}" 
+<apex:page controller="FacebookSampleController" action="{!init}"
   cache="false" sidebar="false" showHeader="false" 
   title="Force.com Toolkit for Facebook - Sample Page">
     <apex:stylesheet value="{!URLFOR($Resource.style)}"/>
+    <!-- Check that FB user matches user in site -->
+    <c:FacebookCheckUser appId="{!appId}" userId="{!me.id}" timeout="5" />
     <script src="{!$Resource.jquery}"></script>
     <script src="{!$Resource.html_sanitizer}"></script>
     <script>
@@ -31,86 +33,90 @@
             $j("#user").html('<img src="{!$Resource.ajax}" width="16" height="11"/>');
         }
     </script>
-    <h1>Force.com Toolkit for Facebook</h1>
-    <br/>
-    <br/>
-    <h2>Sample Page</h2>&nbsp;&nbsp;<apex:outputLink value="FacebookTestUser">Test User Connections</apex:outputLink>
     <p>This page shows you how to use the Force.com Toolkit for Facebook.</p>
-    
-    <h2>{!me.name}</h2>
-    <br/>
-    <c:FacebookProfilePicture fbid="{!me.id}" width="120" height="120" type="large"/>
-    <br/>
-    <br/>
-    
-    <h2>Status</h2>
     <apex:form >
-        <apex:inputText value="{!message}" id="message"/>&nbsp;&nbsp;
-        <apex:commandButton value="Post" action="{!postToFeed}" rerender="posts"/>
+        <p>
+            <apex:commandLink action="{!login}" value="Login" rendered="{!ISBLANK(accessToken)}" />
+            <apex:commandLink action="{!logout}" value="Logout" rendered="{!NOT(ISBLANK(accessToken))}" />
+        </p>
     </apex:form>
-    <br/>
     
-    <apex:form >
-        <h2>Your Feed</h2>&nbsp;&nbsp;<apex:commandButton value="Refresh" rerender="posts"/>
-        <apex:outputPanel id="posts">
-    		<br/><apex:outputText value="{!error}" />
-            <apex:dataTable value="{!myPosts.data}" var="post" cellpadding="5">
-                <apex:column style="vertical-align:top;">
-                    <c:FacebookProfilePicture fbid="{!post.from_z.id}" width="60" height="60" />
-                </apex:column>
-                <apex:column >
-                    <b>{!post.from_z.name}</b><br/>
-                    {!post.message}<br/>
-                    {!post.story}<br/>
-                    {!post.created_time}<br/>
-                    {!post.likes.count}{!IF(ISBLANK(post.likes), "", IF((post.likes.count == 1), " Like ", " Likes "))}
-                    <apex:commandLink value="Delete" action="{!deletePost}" rerender="posts">
-                        <apex:param name="postId" value="{!post.id}" assignTo="{!postId}"/>
-                    </apex:commandLink>
-                    <apex:dataTable value="{!post.comments.data}" var="comment" cellpadding="5">
-                        <apex:column style="vertical-align:top;">
-                            <c:FacebookProfilePicture fbid="{!comment.from_z.id}" width="40" height="40"  type="small"/>
-                        </apex:column>
-                        <apex:column >
-                            <b>{!comment.from_z.name}</b><br/>
-                            {!comment.message}<br/>
-                            {!comment.created_time}<br/>
-                            {!comment.likes}{!IF(ISBLANK(comment.likes), "", IF((comment.likes == 1), " Like", " Likes"))}
-                        </apex:column>
-                    </apex:dataTable>
-                </apex:column>
-            </apex:dataTable>
-        </apex:outputPanel>
-    </apex:form>
-    <hr/>
-
-    <h2>Your user record in JSON (via action method):</h2>
-    <apex:form >
-        <apex:commandButton value="Get It Now!" onclick="showUserDataThrobber();" action="{!getUserData}" rerender="userPanel"/>
-    </apex:form>
-    <apex:outputPanel id="userPanel">
-        <script>
-        	// Use a little JavaScript to pretty print the JSON
-            var user = {!facebookUser};
-            $j("#user").html('<pre>'+JSON.stringify(user, null, '    ')+'</pre>');
-        </script>
-        <pre id="user"></pre>
-    </apex:outputPanel>
-    <hr/>
-    
-    <h2>10 of your friends in JSON (via JS remoting):</h2>
-    <br/>
-    <input type="submit" class="btn" onclick="getFriends();" value="Get Them Now!"/>
-    <pre id="friends"></pre>
-
-    <hr/>
-    (Note: the following tags are intended to  be used on a sites page in order to get the correct share url. To view them correctly, expose this page as a sites page)
-    <p>Facebook like tag:</p>
-    <c:FacebookLike />
-
-    <p>Facebook recommendations tag:</p>
-    <c:FacebookRecommendations />
-
-    <p>Facebook Activities tag:</p>
-    <c:FacebookActivity />
+    <apex:outputPanel rendered="{!NOT(ISBLANK(accessToken))}" >
+	    <h2>{!me.name}</h2>
+	    <br/>
+	    <c:FacebookProfilePicture fbid="{!me.id}" width="120" height="120" type="large"/>
+	    <br/>
+	    <br/>
+	    
+	    <h2>Status</h2>
+	    <apex:form >
+	        <apex:inputText value="{!message}" id="message"/>&nbsp;&nbsp;
+	        <apex:commandButton value="Post" action="{!postToFeed}" rerender="posts"/>
+	    </apex:form>
+	    <br/>
+	    
+	    <apex:form >
+	        <h2>Your Feed</h2>&nbsp;&nbsp;<apex:commandButton value="Refresh" rerender="posts"/>
+	        <apex:outputPanel id="posts">
+	    		<br/><apex:outputText value="{!error}" />
+	            <apex:dataTable value="{!myPosts.data}" var="post" cellpadding="5">
+	                <apex:column style="vertical-align:top;">
+	                    <c:FacebookProfilePicture fbid="{!post.from_z.id}" width="60" height="60" />
+	                </apex:column>
+	                <apex:column >
+	                    <b>{!post.from_z.name}</b><br/>
+	                    {!post.message}<br/>
+	                    {!post.story}<br/>
+	                    {!post.created_time}<br/>
+	                    {!post.likes.count}{!IF(ISBLANK(post.likes), "", IF((post.likes.count == 1), " Like ", " Likes "))}
+	                    <apex:commandLink value="Delete" action="{!deletePost}" rerender="posts">
+	                        <apex:param name="postId" value="{!post.id}" assignTo="{!postId}"/>
+	                    </apex:commandLink>
+	                    <apex:dataTable value="{!post.comments.data}" var="comment" cellpadding="5">
+	                        <apex:column style="vertical-align:top;">
+	                            <c:FacebookProfilePicture fbid="{!comment.from_z.id}" width="40" height="40"  type="small"/>
+	                        </apex:column>
+	                        <apex:column >
+	                            <b>{!comment.from_z.name}</b><br/>
+	                            {!comment.message}<br/>
+	                            {!comment.created_time}<br/>
+	                            {!comment.likes}{!IF(ISBLANK(comment.likes), "", IF((comment.likes == 1), " Like", " Likes"))}
+	                        </apex:column>
+	                    </apex:dataTable>
+	                </apex:column>
+	            </apex:dataTable>
+	        </apex:outputPanel>
+	    </apex:form>
+	    <hr/>
+	
+	    <h2>Your user record in JSON (via action method):</h2>
+	    <apex:form >
+	        <apex:commandButton value="Get It Now!" onclick="showUserDataThrobber();" action="{!getUserData}" rerender="userPanel"/>
+	    </apex:form>
+	    <apex:outputPanel id="userPanel">
+	        <script>
+	        	// Use a little JavaScript to pretty print the JSON
+	            var user = {!facebookUser};
+	            $j("#user").html('<pre>'+JSON.stringify(user, null, '    ')+'</pre>');
+	        </script>
+	        <pre id="user"></pre>
+	    </apex:outputPanel>
+	    <hr/>
+	    
+	    <h2>10 of your friends in JSON (via JS remoting):</h2>
+	    <br/>
+	    <input type="submit" class="btn" onclick="getFriends();" value="Get Them Now!"/>
+	    <pre id="friends"></pre>
+	
+	    <hr/>
+	    (Note: the following tags are intended to  be used on a sites page in order to get the correct share url. To view them correctly, expose this page as a sites page)
+	    <p>Facebook like tag:</p>
+	    <c:FacebookLike />
+	
+	    <p>Facebook recommendations tag:</p>
+	    <c:FacebookRecommendations />
+	
+	    <p>Facebook Activities tag:</p>
+	    <c:FacebookActivity />
+	</apex:outputPanel>
 </apex:page>
