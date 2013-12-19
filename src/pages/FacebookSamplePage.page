@@ -5,7 +5,6 @@
     <!-- Check that FB user matches user in site -->
     <c:FacebookCheckUser appId="{!appId}" userId="{!me.id}" timeout="5" />
     <script src="{!$Resource.jquery}"></script>
-    <script src="{!$Resource.html_sanitizer}"></script>
     <script>
         var $j = jQuery.noConflict();
         
@@ -17,8 +16,6 @@
             // get it from an action method and pass it here
             FacebookSampleController.getFriends('{!accessToken}', function(result, event) {
                 if (event.status) {
-                    // result comes back escaped - use Caja to unescape it
-                    //var json = html.unescapeEntities(result);
                     var friends = JSON.parse(result);
                     // Truncate the array to a maximum of 10 friends
                     friends.data.length = Math.min(10, friends.data.length);
@@ -27,6 +24,7 @@
                     alert(event.message + '\n' + JSON.stringify(event));
                 }
             }, { 
+                // Tell remote method not to escape the response
                 escape: false
             });
         }

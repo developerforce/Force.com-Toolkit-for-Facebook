@@ -3,7 +3,6 @@
   title="Force.com Toolkit for Facebook - User Object Test Page">
     <apex:stylesheet value="{!URLFOR($Resource.style)}"/>
     <script src="{!$Resource.jquery}"></script>
-    <script src="{!$Resource.html_sanitizer}"></script>
     <script>
         var $j = jQuery.noConflict();
         
