@@ -4,11 +4,37 @@
     <apex:stylesheet value="{!URLFOR($Resource.style)}"/>
     <script src="{!$Resource.jquery}"></script>
     <script>
-        var $j = jQuery.noConflict();
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : {!appid},
+      xfbml      : true,
+      version    : 'v2.5'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
+    var $j = jQuery.noConflict();
+        
+        var sendMessage = function(id) {
+            FB.ui({
+                app_id: {!appid},
+                to: id,
+                method: 'send',
+                link: 'https://github.com/developerforce/Force.com-Toolkit-for-Facebook',
+            });
+        };
     </script>
     <p>This page shows you how to view your Facebook Messages with the 
     Force.com Toolkit for Facebook. Note that there is no mechanism for
-    apps to send Facebook Messages.</p>
+    apps to send Facebook Messages via the Graph API. Click a user's photo 
+    in the left column to send a message using the Facebook JavaScript SDK.</p>
     <apex:form >
         <h2>Your Inbox</h2>&nbsp;&nbsp;<apex:commandButton value="Refresh" rerender="inbox"/>
         <apex:outputPanel id="inbox">
@@ -17,7 +43,9 @@
                 <apex:column headerValue="To" style="vertical-align:top;">
                     <apex:dataTable value="{!thread.to.data}" var="to" cellpadding="5">
                         <apex:column style="vertical-align:top;">
-                            <c:FacebookProfilePicture fbid="{!to.id}" width="40" height="40"  type="small" title="{!to.name}"/>
+                            <a href="javascript:sendMessage('{!to.id}')">
+                                <c:FacebookProfilePicture fbid="{!to.id}" width="40" height="40"  type="small" title="{!to.name}"/>
+                            </a>
                         </apex:column>
                     </apex:dataTable>
                 </apex:column>
