@@ -4,34 +4,14 @@ The Force.com Toolkit for Facebook allows your Force.com apps to manipulate the 
 
 There is a sample deployment of the toolkit at https://testfbtk3-developer-edition.na14.force.com/ - you can visit this Force.com Site, login via Facebook, and see the toolkit in action. All the code behind the sample site is included in the toolkit.
 
-## Changes in version 3.3
+## Changes in version 3.4
 
-* Added `FacebookCallback` page and associated controller to handle callback from Facebook centrally.
-* Added `FacebookCheckUser` custom Visualforce component and associated controller to periodically check that the current user has a valid Facebook session, and log them out of the Force.com app if the Facebook session is no longer valid. Usage:
+* Added sample code to FacebookInboxPage to show how to send Facebook Messages using the [Facebook SDK for JavaScript](https://developers.facebook.com/docs/javascript)
+* Better error handling during OAuth flow
+* Access Token field in Facebook Session object is now 1024 bytes
+* Updated Permissions picklist in Facebook App to match [Facebook Permissions Reference](https://developers.facebook.com/docs/facebook-login/permissions)  
 
-        <!-- appId - Facebook Application ID -->
-        <!-- userId - ID of currently logged in Facebook User -->
-        <!-- timeout - Timeout, in seconds -->
-        <c:FacebookCheckUser appId="{!appId}" userId="{!me.id}" timeout="60" />
-
-* Added `FacebookMessage` and `FacebookThread` classes - wrap [Message](https://developers.facebook.com/docs/reference/api/message/) and [Thread](https://developers.facebook.com/docs/reference/api/thread/) Graph API Objects.
-* Added `FacebookInbox` page and associated controller to show how to view Facebook Messages with the Toolkit. Note that there is no mechanism for apps to *send* Facebook Messages.
-* Refactored `FacebookSamplePage` to no longer automatically log the user in. Added a login button, and use of the `FacebookCheckUser` custom component. The previous auth-login functionality can be restored by overriding `FacebookLoginController.getAutoLogin()` to return `false`.
-* Added optional `title` attribute to the `FacebookProfilePicture` custom component to specify tooltip text for the image.
-* Added new `FacebookToolkitPage`, collecting the sample, user connections and inbox pages into a tab panel.
-
-## Changes in version 3.2
-
-* Secured the Facebook application client secret and user access tokens by encrypting with a key stored as a custom setting.
-
-## Changes in version 3.1
-
-* Minor fixes plus Authentication Providers support.
-
-## Major changes in Version 3
-
-* There is a new custom object, `FacebookSession__c`, that associates the Facebook access token with a session cookie. This allows a Force.com Site to authenticate users via Facebook.
-* The toolkit uses the new native JSON implementation, mitigating issues in earlier versions where JSON was parsed in an Apex utility class, which severely limited the amount of data that could be parsed.
+[Older Changes](OlderChanges.md)
 
 ## Installation
 
@@ -40,9 +20,8 @@ There are two mechanisms for installing the toolkit: as an unmanaged package, or
 ### Installing the Unmanaged Package
 
 1. Create a new Developer Edition (DE) account at http://developer.force.com/join. You will receive an activation email - click the enclosed link to complete setup of your DE environment. This will also log you in to your new DE environment.
-2. Install the unmanaged package into your new DE org via this URL: https://login.salesforce.com/packaging/installPackage.apexp?p0=04td00000001LuM
+2. Install the unmanaged package into your new DE org via this URL: https://login.salesforce.com/packaging/installPackage.apexp?p0=04td00000001q8m
 3. Click through the screens to complete installation.
-4. Go to **Setup | Administration Setup | Security Controls | Remote Site Settings** and add https://graph.facebook.com as a new remote site.
 
 ### Installing from GitHub
 
@@ -85,14 +64,9 @@ Your controller code can now retrieve the current user's token with `FacebookTok
 
 ### Map Facebook Accounts to Salesforce Users
 
-Alternatively, from Spring ''12 onwards, you can implement your app within a Salesforce org or portal. In this case, each Facebook account is mapped to a unique user within your Salesforce org. [Social Single Sign-On – Authentication Providers in Spring ’12](http://blogs.developerforce.com/developer-relations/2012/01/social-single-sign-on-authentication-providers-in-spring-12.html) gives an overview of configuring Facebook as an *Authentication Provider* and linking existing salesforce.com users'' accounts to their Facebook accounts, or creating new accounts for users arriving from Facebook.
+Alternatively, from Spring ’12 onwards, you can implement your app within a Salesforce org or portal. In this case, each Facebook account is mapped to a unique user within your Salesforce org. [Social Single Sign-On – Authentication Providers in Spring ’12](http://blogs.developerforce.com/developer-relations/2012/01/social-single-sign-on-authentication-providers-in-spring-12.html) gives an overview of configuring Facebook as an *Authentication Provider* and linking existing salesforce.com users’ accounts to their Facebook accounts, or creating new accounts for users arriving from Facebook.
 
-If you are using the Facebook Authentication Provider, you need not use `FacebookLoginController`; the platform will manage interaction with Facebook for you. Your Apex code can retrieve the current user''s token with `Auth.AuthToken.getAccessToken(AuthProviderID, AuthProviderType);`.
-
-Since the main intent of this first, Spring ''12, release of Authentication Provider functionality is to provide single sign-on and account linking, there are some limitations in using the FB access token with the Graph API: 
-
-* The Facebook Authentication Provider requests only the `email` permission, limiting the amount of data you can retrieve via the Graph API to the user's email address, user id, name, profile picture, gender, age range, locale, networks, list of friends, and any other information they have made public. It is expected that developers will be able to set a custom set of requested permissions in a future release.
-* The Facebook access token will expire after two hours. There is currently no mechanism for obtaining a fresh access token. One possible strategy for handling this issue would be to detect token expiry and offer to redirect the user to the Authentication Provider SSO link to reauthenticate to Salesforce.
+If you are using the Facebook Authentication Provider, you need not use `FacebookLoginController`; the platform will manage interaction with Facebook for you. Your Apex code can retrieve the current user’s token with `Auth.AuthToken.getAccessToken(AuthProviderID, AuthProviderType);`.
 
 ### Accessing the Graph API
 

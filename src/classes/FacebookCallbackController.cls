@@ -1,7 +1,19 @@
 public with sharing class FacebookCallbackController extends FacebookLoginController {
     // Page initialization - handle FB authorization code
-    public override PageReference init() {      
-        if (! ApexPages.currentPage().getParameters().containsKey('code')) {
+    public override PageReference init() {
+        if (ApexPages.currentPage().getParameters().containsKey('error_code')) {
+        	ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.FATAL, 
+				'error_code=' + ApexPages.currentPage().getParameters().get('error_code')));
+        	ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.FATAL,
+                ApexPages.currentPage().getParameters().get('error_message')));
+        	return null;
+        } else if (ApexPages.currentPage().getParameters().containsKey('error')) {
+        	ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.FATAL, 
+				ApexPages.currentPage().getParameters().get('error')));
+        	ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.FATAL,
+                ApexPages.currentPage().getParameters().get('error_description')));
+        	return null;
+        } else if (! ApexPages.currentPage().getParameters().containsKey('code')) {
         	ApexPages.Message msg = new ApexPages.Message(ApexPages.Severity.FATAL, 'Missing code parameter');
         	ApexPages.addMessage(msg);
         	return null;

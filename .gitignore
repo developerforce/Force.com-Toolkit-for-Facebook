@@ -3,6 +3,15 @@
 .settings
 Referenced Packages
 salesforce.schema
+src/applications/standard__AppLauncher.app
+src/applications/standard__Chatter.app
+src/applications/standard__Community.app
+src/applications/standard__Marketing.app
+src/applications/standard__Platform.app
+src/applications/standard__Sales.app
+src/applications/standard__Service.app
+src/applications/standard__ServiceConsole.app
+src/applications/standard__Sites.app
 src/classes/ChangePasswordController.cls
 src/classes/ChangePasswordController.cls-meta.xml
 src/classes/ForgotPasswordController.cls
