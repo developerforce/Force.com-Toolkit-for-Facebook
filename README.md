@@ -7,6 +7,9 @@ There is a sample deployment of the toolkit at https://testfbtk3-developer-editi
 ## Changes in version 3.4
 
 * Added sample code to FacebookInboxPage to show how to send Facebook Messages using the [Facebook SDK for JavaScript](https://developers.facebook.com/docs/javascript)
+* Better error handling during OAuth flow
+* Access Token field in Facebook Session object is now 1024 bytes
+* Updated Permissions picklist in Facebook App to match [Facebook Permissions Reference](https://developers.facebook.com/docs/facebook-login/permissions)  
 
 [Older Changes](OlderChanges.md)
 
@@ -17,7 +20,7 @@ There are two mechanisms for installing the toolkit: as an unmanaged package, or
 ### Installing the Unmanaged Package
 
 1. Create a new Developer Edition (DE) account at http://developer.force.com/join. You will receive an activation email - click the enclosed link to complete setup of your DE environment. This will also log you in to your new DE environment.
-2. Install the unmanaged package into your new DE org via this URL: https://login.salesforce.com/packaging/installPackage.apexp?p0=04td00000001LuM
+2. Install the unmanaged package into your new DE org via this URL: https://login.salesforce.com/packaging/installPackage.apexp?p0=04td00000001q8m
 3. Click through the screens to complete installation.
 
 ### Installing from GitHub
